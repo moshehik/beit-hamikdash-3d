@@ -9,7 +9,7 @@
  const nwY=-108.8;                                                                // מסדרון צר בין ההיכל ללשכות הצפון
  const VID='מתוך הסרט "המסע אל המקדש"';
  /* היכל: פשפש מימין לשער הגדול (בצד האולם), תא, מעבר פנימה, והמנורה / מזבח הזהב */
- const GX=V.goldAlt[0],MN=V.menorah,mx=-100.75,lz=i=>MN[1]+(i-3)*.30556,YS=YH+1.5,PASH=[-78.2,ZC-7.5],CELLOUT=[-88.5,ZC-6.2],GATEIN=[-88,ZC-2.6];
+ const GX=V.goldAlt[0],MN=V.menorah,mx=-101.0,lz=i=>MN[1]+(i-3)*.30556,YS=YH+1.5,PASH=[-78.2,ZC-7.5],CELLOUT=[-88.5,ZC-6.2],GATEIN=[-88,ZC-2.6];
  const toUlam=[[-48,ZC],[-52,ZC],[-66,ZC],[-72,ZC-3.5]];                           // מן החצר, במעלות, דרך פתח האולם ופנימה
  const fromHek=[[-84,ZC],[-70,ZC],[-52,ZC],[-48,ZC+2]];
  SERVICES.push({id:'tamid-shachar',name:'תמיד של שחר',cat:'תמידין',src:'משנה תמיד א–ד, ז:ג · רמב״ם תמידין ומוספין א',
@@ -53,7 +53,7 @@
       kw('k4',[[-7,-109],[-34.5,-109],[-34.5,z0],[x0+1.6,z0+1.2]],8,'w'),kw('k2',[[gz[0]+2,gz[1]-3*GS],[gz[0]+2,-109],[-34.5,-109],[-34.5,z0],[x0-1.4,z0+2.6]],8,'n'),kw('k1',[[gz[0],-109],[-34.5,-109],[-34.5,-95],[x0+2,z0-1.8]],8,'w'),kw('k3',[[gz[0]-1,-109],[-36.5,-109],[-36.5,-95],[x0-1.8,z0-1.8]],8,'e'),kw('k6',[[gz[0]+1.2,gz[1]-3*GS],[gz[0]+1.2,-109],[-48,-109],[-50,ZC-1.5]],9,'w'),kw('k7',[[gz[0]-1,gz[1]-3*GS],[gz[0]-1,-109],[-47,-109],[-50,ZC+1.5]],9,'w')]]},
    {text:'פתיחת ההיכל. הזוכים בדישון המזבח הפנימי והמנורה באים עם ארבעה דברים: תני, כוז ושני מפתחות. הם עולים במעלות, נכנסים מבעד לפרוכת האולם אל הפשפש שמימין לשער הגדול, ופותחים שני מנעולים – התחתון: מכניס את כל ידו דרך חור ופותח מבפנים, והעליון בגובה הכהן. אחר כך נכנסים אל התא, ומן התא פותחים במפתח השני את הדלת אל ההיכל.',src:'משנה, תמיד ג:ז · מידות ד:ב · '+VID+' (28:34–30:00)',cam:{pos:[-60,YH+6,ZC+7],tgt:[-80,YH+3,ZC-4]},
     actions:[{who:'k6',pose:'rh'},{who:'k6',take:'key',id:'ky1',hand:'R'},{who:'k6',take:'tani',id:'tn',hand:'L'},{who:'k7',pose:'rh'},{who:'k7',take:'key',id:'ky2',hand:'R'},{who:'k7',take:'kuz',id:'kz',hand:'L'},
-     [kw('k6',[...toUlam.slice(0,3),[-72,ZC-5],PASH],5,'w'),kw('k7',[...toUlam.slice(0,3),[-72,ZC-3],[-76.4,ZC-5.6]],5,'w')],
+     [kw('k6',[...toUlam.slice(0,3),[-72,ZC-5],PASH],5,'w'),kw('k7',[...toUlam.slice(0,3),[-72,ZC-3],[-76.4,ZC-7.3]],5,'w')],
      {who:'k6',anim:'kneel',dur:1.3},{wait:.3},{who:'k6',anim:'upright',dur:.7},{who:'k6',pose:'high'},{wait:1.1},{who:'k6',pose:'rh'},
      {who:'k6',vis:false},{who:'k7',vis:false},{wait:1.3},
      {who:'k6',vis:true,at:CELLOUT,face:'s'},{who:'k7',vis:true,at:[CELLOUT[0],CELLOUT[1]+1.5],face:'s'},
@@ -80,10 +80,10 @@
      ...[0,1,2,3,4].map(i=>[{who:'k7',walk:[[mx,lz(i),YS]],speed:3.5,face:'e'},{who:'k7',anim:'press',dur:1.1}]).flat(),
      {who:'k7',pose:'rh'},{who:'k7',drop:'kz',at:[mx-.5,lz(5)+.2,YS-.5]},{who:'k7',pose:'idle'},kw('k7',[[-92,ZC+1],...fromHek],5.5,'e')]},
    {text:'לא היה שובר את הרגל אלא נוקבה מתוך ערכובה ותולה בה. היה מפשיט ויורד עד שמגיע לחזה; חותך את הראש ונותנו למי שזכה בו, חותך את הכרעיים, ממרק את ההפשט, קורע את הלב ומוציא את דמו, חותך את הידיים, עולה לרגל הימנית וחותכה, וקורע – ונמצא כולו גלוי לפניו. נוטל את הפדר ונותנו על בית שחיטת הראש.',src:'משנה, תמיד ד:ב · רמב״ם מעשה הקרבנות ו:ה',cam:view(px+1.4,pz,YA+2,12,5,60),
-    actions:[{remove:['pl','pl2']},[kw('k4',[[px+3,pz+3]],6,'w'),kw('k3',[[px+1.5,pz+1.5]],6,'w')],{move:'a1',to:[px+1.4,pz],speed:20,face:'s'},{item:'a1',state:'hung',dur:1.3},{who:'k3',pose:'both'},{who:'k3',anim:'press',dur:1.6},{item:'a1',state:'skinned'},{who:'k3',anim:'press',dur:1.2},{who:'k3',pose:'idle'}]},
+    actions:[{remove:['pl','pl2']},[kw('k4',[[-34.5,tz+3],[-34.5,pz+3],[px+3,pz+3]],6,'w'),kw('k3',[[-34.5,tz+3],[-34.5,pz+3],[px+1.5,pz+1.5]],6,'w')],{move:'a1',to:[px+1.4,pz],speed:20,face:'s'},{item:'a1',state:'hung',dur:1.3},{who:'k3',pose:'both'},{who:'k3',anim:'press',dur:1.6},{item:'a1',state:'skinned'},{who:'k3',anim:'press',dur:1.2},{who:'k3',pose:'idle'}]},
    {text:'מדיחים את הקרבים שלוש פעמים על שולחנות השיש שבין העמודים, והכרס – בבית המדיחין כל צרכה. נוטל את הסכין, מפריש את הראה מן הכבד ואצבע הכבד, וחותך את שאר הנתחים: חזה, גרה, שתי דפנות (שתי צלעות רכות מכאן ומכאן), עקץ עם האליה ושתי הכליות, והרגל השמאלית.',src:'משנה, תמיד ד:ב–ג',cam:view(tx,tz,YA+2,14,6,50),
     actions:[{remove:'a1'},{spawn:'meat',id:'p1',opts:{kind:'head'},at:[tx-1.2,tz,YA+2.4]},{spawn:'meat',id:'p2',opts:{kind:'leg'},at:[tx,tz,YA+2.4]},{spawn:'meat',id:'p3',opts:{kind:'legs'},at:[tx+1.2,tz,YA+2.4]},{spawn:'meat',id:'p4',at:[tx-1.2,tz-1,YA+2.4]},{spawn:'meat',id:'p5',at:[tx,tz-1,YA+2.4]},{spawn:'meat',id:'p6',opts:{kind:'entrails'},at:[tx+1.2,tz-1,YA+2.4]},
-     [kw('k1',[[tx-1.6,tz+2]],5,'n'),kw('k2',[[tx+.2,tz+2]],5,'n'),kw('k3',[[tx+2,tz+2]],5,'n'),kw('k4',[[tx+3.6,tz+2]],5,'n')],
+     [kw('k1',[[tx-1.6,tz+2]],5,'n'),kw('k2',[[tx+.2,tz+2]],5,'n'),kw('k3',[[-34.5,pz+3],[-34.5,tz+2],[tx+2,tz+2]],5,'n'),kw('k4',[[-34.5,pz+3],[-34.5,tz+2],[tx+3.6,tz+2]],5,'n')],
      {who:'k1',pose:'hold'},{who:'k2',pose:'hold'},{who:'k3',pose:'hold'},{who:'k4',pose:'hold'},
      {who:'k1',take:'p1',hand:'R'},{who:'k1',take:'p2',hand:'L'},{who:'k2',take:'p3',hand:'R'},{who:'k2',take:'p4',hand:'L'},{who:'k3',take:'p5',hand:'R'},{who:'k3',take:'p6',hand:'L'},{who:'k4',take:'bowl',id:'ns',opts:{fill:'solet'},hand:'R'},{who:'k4',take:'flask',id:'wn',hand:'L'},{wait:.6}]},
    {text:'"נמצאו כולן עומדין בשורה והאברים בידם": הראשון – בראש וברגל, השני – בשתי ידיים, השלישי – בעקץ וברגל, הרביעי – בחזה ובגרה, החמישי – בשתי דפנות, הששי – בקרבים, השביעי – בסלת, השמיני – בחביתין, התשיעי – ביין. (בדגם: ארבעה כהנים נושאים שמונה נתחים, בלי החביתין.)',src:'משנה, תמיד ד:ג',cam:view(tx+2,tz+4,YA+3,16,6,90),
