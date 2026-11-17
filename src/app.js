@@ -491,7 +491,7 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
  lbl('המזבח · 32×32',AX,YA+22,AZ,'azarah',320,1);lbl('הכבש הגדול · 32 על 16',AX,YA+8,AZ+31,'azarah',200);lbl('כבש קטן מזרחי',AX+9,YA+7.5,AZ+23,'azarah',90);lbl('כבש קטן מערבי',AX-9,YA+7.5,AZ+23,'azarah',90);lbl('התפוח',AX,YA+13.5,AZ+1.4,'azarah',70);lbl('מערכה גדולה',AX+6.4,YA+17,AZ+5.6,'azarah',110);lbl('מערכה שנייה (קטורת)',AX-7.8,YA+14,AZ+11.2,'azarah',80);lbl('מערכה שלישית – קיום האש',AX-7.5,YA+13,AZ-5.6,'azarah',80);lbl('שני נקבים',AX-13,YA+11,AZ+13,'azarah',70);lbl('אמת המים',AX-17.3,YA+2.5,AZ,'azarah',60);
  /* --- הכיור: גביע נחושת מפוספס, שתים־עשרה ברזים, מכסה מצולע, ומוכני (גלגל וחבל) עם בור --- */
  {const kx=-58,kz=-30,K=new T.Group();   // הכיור: דרומית למעלות האולם ומזרחית לאולם (תרשים התפארת ישראל), x=-58 z=-30
-  K.position.set(kx,YA,kz);K.scale.setScalar(.9);gA.add(K);
+  K.position.set(kx,YA,kz);K.scale.setScalar(.9);gA.add(K);var KIYOR=K;   // הכיור יורד אל הבור בלילה ועולה בבוקר (life.js)
   const cyc=(x,y,z,rt,rb,h,mat,seg=16)=>{const m=new T.Mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);m.position.set(x,y,z);m.castShadow=true;K.add(m);return m};
   cyc(0,.08,0,2.7,2.7,.16,mDisc,32);                                                                       // מכסה הבור – דיסקה עם קרניים
   const pr=[[0,.16],[1.5,.16],[1.64,.3],[1.45,.46],[1.05,.66],[.9,.86],[1.2,1.1],[1.62,1.48],[1.9,1.93],[1.94,2.33],[1.77,2.73],[1.4,3.03],[1.14,3.16],[1.22,3.26],[1.12,3.36]].map(([r,y])=>new T.Vector2(r,y));

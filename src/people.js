@@ -20,6 +20,11 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
  const mV=mk(0xffffff,{vertexColors:true,roughness:.92,side:T.DoubleSide}),mBeltM=mk(0xffffff,{map:tBelt,roughness:.85,side:T.DoubleSide}),mBeltL=mk(0xf3eede,{roughness:.9,side:T.DoubleSide}),
   mLionM=mk(0xffffff,{map:tLion,roughness:.9}),mHosM=mk(0xffffff,{map:tHoshen,roughness:.35,metalness:.4,emissive:0x2a2010}),mGld=M.gold,
   mSlv=mk(0xdde1e6,{metalness:.7,roughness:.28,emissive:0x23262a});
+ /* --- טקסטורות הכהן מתמונות Gemini (PTEX מ-people_tex.js, אם קיים): רקמת פשתן כמכפיל + אבנט רקום; אחרת נשארים וקטוריים --- */
+ const _pt=(u,rx,ry)=>{if(typeof PTEX=='undefined'||!u)return null;const t=new T.TextureLoader().load(u);t.wrapS=t.wrapT=T.MirroredRepeatWrapping;t.repeat.set(rx,ry);t.encoding=T.sRGBEncoding;t.anisotropy=4;return t};
+ const _tLin=typeof PTEX!='undefined'?_pt(PTEX.linen,3,3):null,_tBlt=typeof PTEX!='undefined'?_pt(PTEX.belt,2,1):null;
+ const mP=mk(0xffffff,Object.assign({vertexColors:true,roughness:.93,side:T.DoubleSide},_tLin?{map:_tLin}:{})),
+  mBeltP=_tBlt?mk(0xffffff,{map:_tBlt,roughness:.88,side:T.DoubleSide}):mBeltM,mFrg=mk(0xece6d6,{roughness:.95,side:T.DoubleSide});
  /* --- כהן: kind = k הדיוט (ארבעה בגדי לבן), g כהן גדול (שמונה בגדים), y כהן גדול ביום הכיפורים (ארבעה בגדי לבן); pose = idle|tray|basket|rake|wave|trumpet --- */
  const POSES={idle:[[-.36,2.62,0],[-.46,2.05,.12],[-.18,1.75,.36],[.36,2.62,0],[.46,2.05,.12],[.18,1.75,.36]],
    tray:[[-.36,2.62,0],[-.46,2.1,.22],[-.28,2.3,.62],[.36,2.62,0],[.46,2.1,.22],[.28,2.3,.62]],
@@ -34,39 +39,55 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
    up:[[-.36,2.62,0],[-.5,3.0,.15],[-.3,3.55,.2],[.36,2.62,0],[.5,3.0,.15],[.3,3.55,.2]],
    low:[[-.36,2.62,0],[-.45,2.0,.25],[-.22,1.62,.55],[.36,2.62,0],[.45,2.0,.25],[.22,1.62,.55]],
    high:[[-.36,2.62,0],[-.46,2.05,.12],[-.18,1.75,.36],[.36,2.62,0],[.55,2.85,.3],[.4,3.2,.75]]};   // תנוחות זרועות: [כתף, מרפק, שורש כף] שמאל (x<0) וימין (x>0); נוספו hold/rh/lh/both/up/low/high לנגן סדרי העבודה
+ /* מדל מעודכן 17.11 לפי גיליון הדמות של Gemini (assets/priest-ref/): כתונת עד חצי השוק עם מכנסיים נראים, מגבעת חרוט מלופפת בספירלה, אבנט רקום מתמונה, פנים/זקן/פיאות מסולסלות, כפות רגליים. צבעים דגומים: פשתן #e3dfd6, עור #c08c74, זקן #3a261d. */
+ const PLIN=0xe4e0d5,PTRO=0xdcd8cc,PSKIN=0xc08c74,PCAP=0xe9e5da;
+ // מגבעת כרוכה: חרוט (פרופיל קמור קלות) עם פס בד ספירלי – כל "כריכה" מבליטה מדרגה קטנה
+ function wcap(R0,H,turns){const pts=[];for(let i=0;i<=26;i++){const t=i/26;pts.push(new T.Vector2(Math.max(.006,R0*Math.pow(1-t,.86)),H*t))}
+  const g=new T.LatheGeometry(pts,44),p=g.attributes.position;
+  for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),t=y/H,th=Math.atan2(z,x),s=((t*turns-th/6.2832)%1+1)%1,k=1+.05*s*(1-.55*t);p.setX(i,x*k);p.setZ(i,z*k)}
+  g.computeVertexNormals();return g}
+ // קצה אבנט תלוי: מישור ש-UV שלו לאורך הרצועה (הדוגמה רצה לאורך הקצה)
+ function beltTail(W,Ln){const g=new T.PlaneGeometry(W,Ln),p=g.attributes.position,u=g.attributes.uv;for(let i=0;i<p.count;i++){u.setXY(i,(p.getY(i)/Ln+.5)*Ln/2.55,.19+.62*(p.getX(i)/W+.5))}return g}
  function priest(kind,pose,beard){pose=pose||'idle';const hp=kind!='k',gold=kind=='g',B=PB(),G=PB(),S=PB(),g=new T.Group();
-  const HAIR=beard!=null?beard:({k:0x3a2a1e,g:0xd8d8d6,y:0xb4b4b2})[kind];
+  const HAIR=beard!=null?beard:({k:0x3a261d,g:0xd8d8d6,y:0xb4b4b2})[kind];
   const mesh=(P,mat,sh=true)=>{if(!P.n())return;const m=new T.Mesh(P.geo(),mat);m.castShadow=sh;g.add(m);return m};
-  [-.14,.14].forEach(o=>{B.add(new T.BoxGeometry(.15,.07,.34),SKIN,o,.035,.06);B.add(new T.SphereGeometry(.075,8,6),SKIN,o,.1,-.05)});   // רגליים יחפות
-  B.add(pleat(new T.CylinderGeometry(.40,.52,1.75,28,6),11,.035),LIN,0,.92,0);                                                          // כתונת: גלימת בד לבן עם קפלים
-  B.add(new T.CylinderGeometry(.31,.40,.95,24,2),LIN,0,2.22,0);[-1,1].forEach(s=>B.add(new T.SphereGeometry(.14,10,8),LIN,s*.34,2.62,0));   // חזה וכתפיים
-  B.add(new T.CylinderGeometry(.085,.1,.18,8),SKIN,0,2.74,0);
-  // ראש: פנים, אף, עיניים, גבות, אוזניים, פיאות וזקן
-  B.add(new T.SphereGeometry(.21,16,12),SKIN,0,2.93,.01,1,1.1,1);B.add(new T.SphereGeometry(.045,8,6),SKIN,0,2.9,.205);
-  [-1,1].forEach(s=>{B.add(new T.SphereGeometry(.028,6,5),0x1a1410,s*.08,2.97,.185);B.add(new T.BoxGeometry(.1,.022,.03),HAIR,s*.08,3.03,.19,1,1,1,0,0,-s*.12);B.add(new T.SphereGeometry(.05,6,5),SKIN,s*.21,2.93,0);
-   B.add(new T.CylinderGeometry(.022,.018,.3,5),HAIR,s*.19,2.8,.04);B.add(new T.SphereGeometry(.03,6,5),HAIR,s*.19,2.64,.04)});
-  B.add(new T.SphereGeometry(.2,12,10),HAIR,0,2.7,.11,1,1.45,.65);B.add(new T.BoxGeometry(.24,.045,.05),HAIR,0,2.835,.215);[-1,1].forEach(s=>B.add(new T.SphereGeometry(.085,8,6),HAIR,s*.14,2.84,.09));
+  // רגליים: כפות יחפות (אליפסואיד + עקב), קרסול, מכנסי פשתן צרים מתחת לכתונת
+  [-.15,.15].forEach(o=>{B.add(new T.SphereGeometry(.1,10,8),PSKIN,o,.055,.1,.9,.5,2.0);B.add(new T.SphereGeometry(.07,8,6),PSKIN,o,.09,-.07,1,1.1,1);B.add(new T.CylinderGeometry(.052,.058,.14,8),PSKIN,o,.14,0);
+   B.add(new T.CylinderGeometry(.118,.13,.5,12),PTRO,o,.38,0)});
+  // כתונת: חרוט מתרחב מצווארון עד חצי השוק, קפלים אנכיים (שני תדרים) ותפיחה מעל האבנט
+  {const tg=new T.LatheGeometry([[.55,.38],[.535,.6],[.505,.95],[.47,1.3],[.435,1.6],[.415,1.8],[.435,1.98],[.41,2.1]].map(a=>new T.Vector2(a[0],a[1])),32);pleat(pleat(tg,10,.035),23,.012);B.add(tg,PLIN)}
+  B.add(new T.CylinderGeometry(.31,.40,.95,24,2),PLIN,0,2.22,0);B.add(new T.SphereGeometry(.31,16,8),PLIN,0,2.69,0,1,.3,1);[-1,1].forEach(s=>B.add(new T.SphereGeometry(.14,10,8),PLIN,s*.34,2.62,0));   // חזה וכתפיים
+  B.add(new T.CylinderGeometry(.085,.1,.18,8),PSKIN,0,2.74,0);B.add(new T.TorusGeometry(.125,.024,6,16),PLIN,0,2.7,0,1,1,1,Math.PI/2,0,0);   // צוואר וצווארון עגול
+  // ראש: פנים, אף, עיניים (לובן+אישון), גבות, אוזניים, שפם, זקן מלא, פיאות מסולסלות
+  B.add(new T.SphereGeometry(.205,18,14),PSKIN,0,2.93,.01,1,1.1,.97);B.add(new T.SphereGeometry(.045,8,6),PSKIN,0,2.915,.2,.95,1.5,1.2);
+  [-1,1].forEach(s=>{B.add(new T.SphereGeometry(.03,8,6),0xf2ece0,s*.08,2.975,.178,1.2,.8,.7);B.add(new T.SphereGeometry(.017,6,5),0x1a1410,s*.08,2.975,.2);
+   B.add(new T.BoxGeometry(.105,.03,.035),HAIR,s*.08,3.025,.185,1,1,1,0,0,-s*.14);B.add(new T.SphereGeometry(.05,6,5),PSKIN,s*.21,2.93,0);
+   B.add(new T.SphereGeometry(.075,8,6),HAIR,s*.135,2.81,.08,.8,1.3,.9);B.add(new T.SphereGeometry(.06,8,6),HAIR,s*.045,2.86,.205,1.35,.55,.6);   // לחי וחצי שפם
+   for(let i=0;i<5;i++)B.add(new T.SphereGeometry(.032,6,5),HAIR,s*(.2+(i%2?.013:-.008)),2.9-.055*i,.05+(i%2)*.012)});   // פיאה: ספירלת תלתלים
+  B.add(new T.SphereGeometry(.19,14,10),HAIR,0,2.69,.08,1,.95,.8);B.add(new T.SphereGeometry(.1,10,8),HAIR,0,2.54,.12,1,1.1,.8);B.add(new T.BoxGeometry(.06,.014,.02),0x6a3a34,0,2.83,.205);
   B.add(new T.SphereGeometry(.2,12,8),HAIR,0,3.0,-.06,1,.8,.85);   // שיער בעורף
-  if(hp){                                                                                                                                 // מצנפת: בד כרוך ורחב ונמוך
+  if(hp){                                                                                                                                 // כהן גדול: מצנפת רחבה ונמוכה
    [[.23,.085,3.1],[.2,.08,3.19],[.14,.075,3.27]].forEach(([R,r,y])=>{B.add(new T.TorusGeometry(R,r,8,22),0xf6f1e4,0,y,0,1,1,1,Math.PI/2,0,0)});B.add(new T.SphereGeometry(.17,12,8),0xf6f1e4,0,3.31,0,1,.7,1);
    if(gold){G.add(new T.BoxGeometry(.34,.1,.025),0xf0c040,0,3.1,.3);B.add(new T.TorusGeometry(.305,.013,6,24),BLUE,0,3.0,0,1,1,1,Math.PI/2,0,0)}}                  // ציץ הזהב ופתיל תכלת
-  else{const pf=[new T.Vector2(.26,3.07)];let y=3.07;for(let i=0;i<6;i++){const r=.30-.032*i;pf.push(new T.Vector2(r,y+.04),new T.Vector2(r+.012,y+.09),new T.Vector2(r-.02,y+.115));y+=.115}pf.push(new T.Vector2(0,y+.02));B.add(new T.LatheGeometry(pf,20),0xf4efe2)}   // מגבעת: חרוט בטבעות
+  else B.add(wcap(.245,.64,9),PCAP,0,3.06,-.01);   // כהן הדיוט: מגבעת חרוט מלופפת בספירלה (9 כריכות)
   // מעיל תכלת, אפוד (סינר רקום), חושן עם י״ב אבנים, כתפיות עם אבני שהם, פעמונים ורימונים
   if(gold){B.add(pleat(new T.CylinderGeometry(.40,.62,1.6,28,6,true),13,.04),BLUE,0,1.65,0);
    rep(18,i=>{const a=i*Math.PI/9;const pm=i%2;if(pm)G.add(new T.SphereGeometry(.055,8,6),0xf0c040,Math.sin(a)*.64,.86,Math.cos(a)*.64);else B.add(new T.SphereGeometry(.07,8,6),[0x2457b8,0x7a3a9a,0xc0392b][i/2%3|0],Math.sin(a)*.64,.86,Math.cos(a)*.64)});
    [-1,1].forEach(s=>{G.add(new T.BoxGeometry(.2,.07,.36),0xf0c040,s*.28,2.74,0,1,1,1,0,0,-s*.18);B.add(new T.SphereGeometry(.065,8,6),0x23201c,s*.3,2.8,.06)})}
-  // זרועות לפי תנוחה: [כתף שמאל, מרפק, שורש כף, כתף ימין, מרפק, שורש כף]
+  // זרועות לפי תנוחה: [כתף שמאל, מרפק, שורש כף, כתף ימין, מרפק, שורש כף] – שרוולים רחבים מעט, כף יד אליפטית
   const PO=POSES[pose]||POSES.idle;
-  [0,3].forEach(k=>{const s=PO[k],e=PO[k+1],w=PO[k+2];B.limb(s,e,.115,.1,LIN);B.limb(e,w,.1,.085,LIN);B.add(new T.SphereGeometry(.1,10,8),LIN,e[0],e[1],e[2]);B.add(new T.SphereGeometry(.085,10,8),SKIN,w[0],w[1],w[2])});
+  [0,3].forEach(k=>{const s=PO[k],e=PO[k+1],w=PO[k+2];B.limb(s,e,.125,.115,PLIN);B.limb(e,w,.118,.1,PLIN);B.add(new T.SphereGeometry(.115,10,8),PLIN,e[0],e[1],e[2]);B.add(new T.SphereGeometry(.082,10,8),PSKIN,w[0],w[1],w[2],.9,1.05,1.2)});
   if(pose=='tray'){S.add(new T.CylinderGeometry(.52,.46,.07,22),0xdde1e6,0,2.3,.68);rep(5,i=>B.add(new T.SphereGeometry(.1,8,6),[0xc0392b,0xe8a838,0x7a3a9a,0x58b868,0xc0392b][i],Math.cos(i*1.26)*.24,2.42,.68+Math.sin(i*1.26)*.24))}
   if(pose=='basket'){B.add(new T.SphereGeometry(.5,14,8),0xb98a4a,0,3.4,.24,1,.55,1);rep(7,i=>B.add(new T.SphereGeometry(.1,8,6),[0xc0392b,0xe8a838,0x7a3a9a,0x58b868,0xd0463c,0xe8a838,0x58b868][i],Math.cos(i*.9)*.28,3.68,.24+Math.sin(i*.9)*.28))}
   if(pose=='rake'){B.limb([-.25,2.75,.5],[.3,.02,.95],.035,.035,0x7a5a38,6);S.add(new T.BoxGeometry(.5,.04,.38),0x555a60,.3,.05,1.0)}
   if(pose=='wave'){B.add(new T.SphereGeometry(.17,10,8),0xa8403a,.5,3.64,.22,1,1.3,.9);B.limb([.5,3.5,.2],[.5,3.78,.22],.03,.03,0xe8e0d0,5)}
   if(pose=='trumpet'){S.limb([0,2.82,.46],[0,3.0,2.3],.035,.035,0xdde1e6,6);S.add(new T.ConeGeometry(.22,.55,12),0xdde1e6,0,3.02,2.45,1,1,1,Math.PI/2,0,0)}
-  mesh(B,mV);mesh(G,mGld);mesh(S,mSlv);
-  // אבנט: פס רקום רחב עם קצוות תלויים (הכהן הגדול ביום הכיפורים – פשתן לבן)
-  {const bm=kind=='y'?mBeltL:mBeltM,bl=new T.Mesh(new T.CylinderGeometry(.43,.43,.34,26,1,true),bm);bl.position.set(0,1.86,0);bl.castShadow=true;g.add(bl);
-   [[.16,-.04],[.04,.04]].forEach(([x,r],i)=>{const t=new T.Mesh(new T.BoxGeometry(.13,.7-i*.12,.04),bm);t.position.set(x,1.4-i*.05,.43);t.rotation.z=r;g.add(t)})}
+  mesh(B,mP);mesh(G,mGld);mesh(S,mSlv);
+  // אבנט: רצועה רקומה (טקסטורה מהתמונה) כרוכה בגובה המותן, קשר וקצוות תלויים עם ציציות (הכהן הגדול ביום הכיפורים – פשתן לבן)
+  {const bm=kind=='y'?mBeltL:mBeltP,bl=new T.Mesh(new T.CylinderGeometry(.445,.445,.24,36,1,true),bm);bl.position.set(0,1.93,0);bl.castShadow=true;g.add(bl);
+   const kn=new T.Mesh(new T.SphereGeometry(.085,10,8),bm);kn.scale.set(1.25,.9,.75);kn.position.set(.06,1.9,.45);g.add(kn);
+   [[.12,.05,.88,-.05],[.0,-.04,.7,.06]].forEach(([x,r,Ln,tz])=>{const t=new T.Group();t.position.set(x,1.9,.5);t.rotation.set(-.1,0,r);
+    const pl=new T.Mesh(beltTail(.16,Ln),bm);pl.position.y=-Ln/2;t.add(pl);const fr=new T.Mesh(new T.BoxGeometry(.16,.07,.012),mFrg);fr.position.y=-Ln-.025;t.add(fr);g.add(t)})}
   if(gold){   // אפוד רקום (סינר אריות) מלפנים ומאחור, וחושן על החזה
    [1,-1].forEach(s=>{const a=new T.Mesh(new T.BoxGeometry(.62,1.25,.04),mLionM);a.position.set(0,1.42,s*.57);a.rotation.x=-s*.137;g.add(a)});
    const hf=new T.Mesh(new T.BoxGeometry(.6,.66,.05),mGld);hf.position.set(0,2.32,.46);g.add(hf);const hs=new T.Mesh(new T.PlaneGeometry(.5,.58),mHosM);hs.position.set(0,2.32,.49);g.add(hs)}

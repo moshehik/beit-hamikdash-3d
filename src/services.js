@@ -262,7 +262,7 @@ const SV=(()=>{
  function scanPoses(sc){const P={};Object.keys(sc.actors).forEach(k=>P[k]=new Set(['idle']));
   const visit=n=>{if(Array.isArray(n))n.forEach(visit);else if(n&&n.seq)n.seq.forEach(visit);else if(n&&n.who&&P[n.who]&&n.pose)P[n.who].add(n.pose)};
   (sc.steps||[]).forEach(st=>visit(st.actions||[]));Object.keys(sc.start||{}).forEach(k=>{if(sc.start[k].pose&&P[k])P[k].add(sc.start[k].pose)});return P}
- function open(id){close(true);const sc=SERVICES.find(s=>s.id==id);if(!sc)return;const poses=scanPoses(sc);
+ function open(id){close(true);const sc=SERVICES.find(s=>s.id==id);if(!sc)return;LIFE.tour(id);const poses=scanPoses(sc);
   S={sc,actors:{},items:{},idx:0,t:0,playing:true,speed:1,run:null,camMode:S&&S.camMode||'follow',follow:sc.main||Object.keys(sc.actors)[0],camTw:null,phase:'run',hold:0,err:null,fr:0};
   Object.keys(sc.actors).forEach(k=>{S.actors[k]=makeActor(k,sc.actors[k],[...poses[k]])});
   uiOpenScript();goTo(0)}
@@ -354,7 +354,7 @@ const SV=(()=>{
   renderer.domElement.addEventListener('pointerdown',()=>{if(S){S.camTw=null;S.ut=performance.now()}});renderer.domElement.addEventListener('wheel',()=>{if(S)S.ut=performance.now()},{passive:true});window.addEventListener('pointerup',()=>{if(S&&S.ut)S.ut=performance.now()})}
  function applyFollowNow(){const A=S.actors[S.follow];if(!A)return;const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,1.2)}
  let _side=null;
- function show(on){if(!ui.panel)return;ui.panel.style.display=on?'flex':'none';ui.cap.style.display=on&&S?'block':'none';const sd=$('side');if(on){_side=sd.style.display;sd.style.display='none';$('card').style.display='none'}else{sd.style.display=_side||'';if(S)close(true);uiBack()}}
+ function show(on){if(!ui.panel)return;ui.panel.style.display=on?'flex':'none';ui.cap.style.display=on&&S?'block':'none';const sd=$('side');if(on){_side=sd.style.display;sd.style.display='none';$('card').style.display='none'}else{sd.style.display=_side||'';if(S)close(true);uiBack();LIFE.tour(null)}}
  function uiOpenScript(){$('svList').style.display='none';$('svPlay').style.display='block';$('svT').textContent=S.sc.name;$('svSrc').textContent=S.sc.src||'';ui.cap.style.display='block';$('svMore').style.display='none';ui.panel.classList.remove('min');$('svMin').textContent='▁';
   const st=$('svSteps');st.innerHTML='';S.sc.steps.forEach((s,i)=>{const b=document.createElement('button');b.className='svst';b.textContent=(i+1)+'. '+(s.title||s.text.slice(0,38)+(s.text.length>38?'…':''));b.onclick=()=>{goTo(i);S.playing=true;uiState()};st.appendChild(b)});
   S.speed=+$('svSpd').value;document.querySelectorAll('input[name=svcm]').forEach(r=>r.checked=r.value==S.camMode);AUD.btn();uiState()}
