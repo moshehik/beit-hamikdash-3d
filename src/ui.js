@@ -157,7 +157,13 @@ $('per').onchange=e=>setPeriod(e.target.value);
 {const L=$('landing'),hide=()=>{L.classList.add('out');setTimeout(()=>{if(L.classList.contains('out'))L.style.display='none'},650)};
  const act={model:()=>{},tours:()=>SV.show(true),walk:()=>setWalk(true),map:()=>openMap(true),kids:()=>openKids(true),about:()=>{$('about').style.display='flex'},
   ark:()=>{const c=$('lArk');c.checked=true;c.onchange();const i=P.findIndex(p=>p[0]=='קודש הקדשים');if(i>=0)goto(P[i])}};
- if(typeof LAND_ICONS!='undefined')L.querySelectorAll('[data-go]').forEach(b=>{const u=LAND_ICONS[b.dataset.go],ic=b.querySelector('.ic');if(!u||!ic)return;ic.innerHTML=u;ic.classList.add('im')});   /* SVG מוטמע (עובר נטפרי); האימוג'י נשאר אם האיור חסר */
+ {const toBlob=u=>{try{const i=u.indexOf(','),s=atob(u.slice(i+1)),a=new Uint8Array(s.length);for(let j=0;j<s.length;j++)a[j]=s.charCodeAt(j);return URL.createObjectURL(new Blob([a],{type:'image/png'}))}catch(e){return null}};   /* תמונה מ-blob: ולא data-URI (נטפרי: blob מקומי עובר) */
+  const svgFb=(ic,k)=>{if(typeof LAND_SVG!='undefined'&&LAND_SVG[k]){ic.innerHTML=LAND_SVG[k];ic.classList.add('im')}};   /* נפילה: SVG וקטורי */
+  let pend=0;const done=()=>{if(--pend<=0)L.classList.add('icons')};   /* האיורים מוסתרים עד שהוחלפו – בלי הבהוב של האימוג'י */
+  L.querySelectorAll('[data-go]').forEach(b=>{const k=b.dataset.go,ic=b.querySelector('.ic');if(!ic)return;pend++;const u=typeof LAND_ICONS!='undefined'&&LAND_ICONS[k],bu=u&&toBlob(u);
+   if(!bu){svgFb(ic,k);done();return}
+   const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{ic.textContent='';ic.classList.add('im');ic.appendChild(im);done()};im.onerror=()=>{svgFb(ic,k);done()};im.src=bu});
+  setTimeout(()=>L.classList.add('icons'),1500)}
  L.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go;if(k!='about')hide();act[k]()});
  $('ldMus').onclick=()=>{AUD.setMusic(!AUD.music)};
  $('bHome').onclick=()=>{L.style.display='flex';setTimeout(()=>L.classList.remove('out'),30)}}
