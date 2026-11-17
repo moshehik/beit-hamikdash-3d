@@ -41,42 +41,8 @@
 @media(max-width:900px){#side{width:210px}#ctl{width:190px}#card{width:calc(100% - 24px);bottom:150px;min-width:0}#mini{display:none}}
 
 #perChip{position:fixed;bottom:12px;right:312px;padding:6px 14px;font-size:13px;cursor:pointer;color:var(--gold)}
-#mapov{display:none;position:fixed;inset:0;z-index:7;background:#0e1626;flex-direction:column}
-#mapov header{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-#mapov h2{margin:0;font-size:17px;color:var(--gold);flex:1;min-width:180px}
-#mapov button,#mapov label{font:inherit;font-size:13px}
-#mapov header button{background:transparent;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:5px 10px;cursor:pointer}
-#mapov header button.pri{background:var(--gold);color:#241a05;font-weight:700;border:0}
-#mper{display:flex;gap:6px;padding:8px 14px;overflow-x:auto;border-bottom:1px solid var(--line)}
-#mper button{flex:0 0 auto;background:rgba(255,255,255,.05);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:6px 12px;cursor:pointer;text-align:center;font:inherit;font-size:13px}
-#mper button small{display:block;color:var(--mut);font-size:11px}
-#mper button.on{background:var(--gold);color:#241a05}#mper button.on small{color:#4a3a10}
-#mapbody{flex:1;display:flex;min-height:0}
-#mapwrap{flex:1;min-width:0;position:relative}#mapc{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
-#mapside{width:330px;overflow:auto;padding:12px 14px;border-right:1px solid var(--line);font-size:13.5px;line-height:1.55}
-#mapside h3{margin:0 0 4px;color:var(--gold);font-size:16px}#mapside .j{color:var(--mut);margin-bottom:6px}
-#mpL span{display:block;margin:2px 0}#mpL i{display:inline-block;width:14px;height:10px;border-radius:2px;margin-left:6px;opacity:.85}
-#mpC{margin-top:10px;padding:8px 10px;background:rgba(232,192,104,.12);border-radius:8px}
-.tg{display:flex;gap:10px;align-items:center;color:var(--txt)}
-@media(max-width:900px){#mapbody{flex-direction:column}#mapside{width:auto;max-height:40%;border-right:0;border-top:1px solid var(--line)}#perChip{display:none}}
 
 .lbl{transition:opacity .15s}
-#kidov{display:none;position:fixed;inset:0;z-index:7;background:linear-gradient(160deg,#fff3c4,#ffd9ec 55%,#cdeefd);flex-direction:column;color:#3e2723}
-#kidov header{display:flex;align-items:center;gap:10px;padding:10px 16px;flex-wrap:wrap}
-#kidov h2{margin:0;flex:1;font-size:26px;color:#e65100;text-shadow:2px 2px 0 #fff}
-#kidov header button{font:inherit;font-size:15px;font-weight:700;border:0;border-radius:14px;padding:8px 14px;cursor:pointer;background:#fff;color:#e65100;box-shadow:0 3px 0 rgba(0,0,0,.15)}
-#kbtns{display:flex;gap:8px;padding:4px 16px 10px;overflow-x:auto}
-#kbtns button{flex:0 0 auto;font:inherit;font-size:15px;font-weight:800;border:0;border-radius:18px;padding:8px 16px;cursor:pointer;color:#fff;background:var(--c);box-shadow:0 4px 0 rgba(0,0,0,.18);opacity:.85;transition:transform .12s}
-#kbtns button span{font-size:20px;margin-left:6px}
-#kbtns button.on{opacity:1;transform:translateY(-3px) scale(1.05);outline:4px solid #fff}
-#kbody{flex:1;display:flex;min-height:0;padding:0 14px 14px;gap:14px}
-#kwrap{flex:1;min-width:0;border-radius:24px;overflow:hidden;border:6px solid #fff;box-shadow:0 8px 24px rgba(0,0,0,.2)}#kidc{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
-#kside{width:310px;overflow:auto;background:rgba(255,255,255,.85);border-radius:24px;padding:14px 16px;font-size:16px;line-height:1.6}
-#kside h3{margin:0 0 6px;color:#e65100;font-size:21px}#kD p{margin:6px 0}
-.kb{margin:10px 0;border-radius:18px;padding:10px 14px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.4)}.kb span{font-size:38px;float:left;margin-right:8px}.kb b{font-size:22px;display:block}
-#kList{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}#kList button{font:inherit;font-size:14px;font-weight:700;border:0;border-radius:12px;padding:5px 10px;color:#fff;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.4)}
-.kd{display:block;width:100%}.kd i{display:inline-block;width:18px;height:12px;border-radius:4px;margin-left:8px;vertical-align:middle}
-@media(max-width:900px){#kbody{flex-direction:column}#kside{width:auto;max-height:42%}#kidov h2{font-size:20px}}
 #lookb{display:none;position:fixed;bottom:16px;left:50%;transform:translateX(-50%);gap:14px;z-index:5}#lookb button{width:54px;height:54px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:#fff;font-size:22px;cursor:pointer;touch-action:none}
 
 /* ===== נגן סדרי העבודה (services.js) ===== */
@@ -118,6 +84,7 @@
 .ldc b{position:relative;z-index:1;font-size:20px;color:#fff3cf}.ldc span.d{position:relative;z-index:1;font-size:14px;line-height:1.5;color:#ffeed2;opacity:.95}
 .ldc .tag{position:relative;z-index:1;margin-top:4px;align-self:flex-start;font-size:11.5px;padding:2px 10px;border-radius:20px;background:rgba(0,0,0,.35);color:#ffd98a}
 .ldc.big{grid-column:span 3;flex-direction:row;justify-content:center;gap:22px;padding:24px 28px;background:linear-gradient(120deg,rgba(150,100,30,.55),rgba(24,20,58,.45))}.ldc.big b{font-size:26px}.ldc.big .ic{width:84px;height:84px;font-size:48px}.ldc.big .tx{display:flex;flex-direction:column;gap:6px;text-align:right}
+#lddedic{margin:14px auto 6px;text-align:center;color:var(--gold);font-size:17px;font-weight:700;letter-spacing:.3px;opacity:.95;text-shadow:0 1px 8px rgba(0,0,0,.5)}
 #landing:not(.icons) .ldc .ic{opacity:0}.ldc .ic{transition:opacity .35s}
 .ldc .ic.im{width:auto;height:auto;border-radius:0;background:none;border:0;box-shadow:none;font-size:0}
 .ldc .ic.im :is(img,svg){display:block;width:112px;height:112px;object-fit:contain;filter:drop-shadow(0 8px 10px rgba(0,0,0,.38));animation:ldfl 4.2s ease-in-out infinite;transition:transform .3s;will-change:transform}
@@ -141,9 +108,19 @@ body.kid #ktime{display:flex;top:12px;left:12px;align-items:center;gap:8px;paddi
 #ktop button{width:64px;height:62px;backdrop-filter:blur(6px)}#kdock button{width:78px;min-width:78px;height:74px}
 #ktop button i,#kdock button i{font-style:normal;font-size:28px;line-height:1}#kdock button i{font-size:32px}
 #ktop button span,#kdock button span{font-size:12.5px;font-weight:700;line-height:1.1;text-align:center}
+#ktop button i.pic img{display:block;width:40px;height:40px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}#kdock button i.pic img{display:block;width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+#ktop button{height:72px}#kdock button{height:92px;width:88px;min-width:88px}
 #ktop button:hover,#kdock button:hover{transform:translateY(-2px);background:rgba(60,52,120,.9)}
 #kdock button.on{background:linear-gradient(160deg,#c89a3a,#8a6420);border-color:#ffd66b}
 #ktop button.off{opacity:.55}
+#kplaces{display:none;position:fixed;inset:0;z-index:20;background:rgba(10,8,30,.7);backdrop-filter:blur(4px);flex-direction:column;align-items:center;padding:14px 12px;overflow:auto}
+#kplaces.on{display:flex}
+#kplaces .kph{width:min(980px,100%);display:flex;align-items:center;justify-content:space-between;color:var(--gold);font-size:26px;margin-bottom:12px}
+#kplaces .kph button{width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:rgba(40,36,90,.9);color:#fff;font-size:22px;cursor:pointer}
+#kplaces .kpg{width:min(980px,100%);display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px}
+#kplaces .kpg button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(160deg,rgba(60,52,120,.85),rgba(28,26,66,.9));color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer;min-height:112px;transition:transform .15s}
+#kplaces .kpg button:hover{transform:translateY(-3px);border-color:#ffd66b}
+#kplaces .kpg button i{font-style:normal;font-size:44px;line-height:1}#kplaces .kpg button i.pic img{display:block;width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 3px 4px rgba(0,0,0,.4))}
 body.kbusy #ktop,body.kbusy #kdock,body.kbusy #ktime,body.ksv #kdock{display:none!important}
 body.kid #card{bottom:104px;width:min(560px,calc(100% - 24px));min-width:0;padding:10px 14px}
 body.kid #card h2{font-size:18px}body.kid #card p{font-size:16px;line-height:1.5}
@@ -157,7 +134,137 @@ body.kid #ncHint{top:78px}
 @media(max-width:900px){body.kid #ktop{top:6px;right:6px;gap:5px}#ktop button{width:52px;height:54px}#ktop button i{font-size:22px}#ktop button span{font-size:10.5px}
  body.kid #ktime{top:68px;left:6px;font-size:18px;padding:6px 10px}body.kid #kdock button{width:68px;min-width:68px;height:66px}
  body.kid #card{bottom:92px}body.kid #svCap{width:calc(100% - 16px);bottom:92px}.ktag{font-size:22px}.ktx{font-size:15px}}
-@media(max-width:460px){body.kid #ktop{gap:4px;right:4px}#ktop button{width:46px;height:52px;border-radius:14px}#ktop button span{font-size:9.5px}#ktop button i{font-size:20px}body.kid #kdock button{width:62px;min-width:62px}}
+@media(max-width:900px){#ktop button i.pic img{width:32px;height:32px}#kdock button i.pic img{width:44px;height:44px}#ktop button{height:60px}#kdock button{height:78px;width:70px;min-width:70px}}
+@media(max-width:460px){body.kid #ktop{gap:4px;right:4px}#ktop button{width:46px;height:52px;border-radius:14px}#ktop button span{font-size:9.5px}#ktop button i{font-size:20px}#ktop button i.pic img{width:26px;height:26px}#ktop button{height:54px}body.kid #kdock button{width:62px;min-width:62px}}
+
+/* ===== נגן סיורים – עיצוב מחדש ===== */
+/* ילדים: מסך כרטיסי סדרים → סרגל בקרה תחתון + כתובית עם סמל פעולה גדול. מבוגרים: הפאנל הישן (#svList/#svPlay) כמו שהיה. */
+body:not(.kid) #svKList,body:not(.kid) #svKPlay,body:not(.kid) #svAct,body:not(.kid) #svEnd{display:none!important}
+body.kid #svc .svh,body.kid #svList,body.kid #svPlay{display:none!important}
+body.kid #svc.kplay #svKList,body.kid #svc:not(.kplay) #svKPlay{display:none!important}
+body.ksv.ksvl #ktime{display:none!important}
+/* מסך כרטיסים */
+body.kid #svc:not(.kplay){inset:0;width:auto;max-height:none;border-radius:0;border:0;padding:84px 14px 24px;overflow:auto;z-index:7;background:radial-gradient(120% 80% at 50% 0%,rgba(70,56,140,.96),rgba(18,16,46,.97))!important;backdrop-filter:blur(8px);font-size:16px}
+#svKList{width:min(940px,100%);margin:0 auto}
+#svKList .kh{display:flex;align-items:center;justify-content:space-between;margin:0 4px 14px}#svKList .kh b{font-size:26px;color:var(--gold)}
+.kx{width:48px;height:48px;border-radius:16px;border:1px solid var(--line);background:rgba(60,52,120,.7);color:#fff;font:inherit;font-size:22px;cursor:pointer}
+.kgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kcard{--g:#c89a3a;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;min-height:170px;padding:16px 10px 14px;border-radius:24px;border:1px solid rgba(255,225,160,.35);color:#fff;font:inherit;cursor:pointer;overflow:hidden;
+ background:linear-gradient(160deg,rgba(40,34,92,.85),rgba(24,20,58,.7));box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.2);transition:transform .2s,box-shadow .2s;-webkit-tap-highlight-color:transparent}
+.kcard::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,var(--g),transparent 66%);opacity:.5;pointer-events:none}
+.kcard:hover,.kcard:focus-visible{transform:translateY(-4px);box-shadow:0 14px 34px rgba(0,0,0,.45),0 0 0 2px rgba(255,214,120,.6);outline:0}
+.kcard:active{transform:scale(.97)}
+.kcard>*{position:relative;z-index:1}
+.kcard[data-id=tamid-shachar]{--g:#ff9a52}.kcard[data-id=ketoret]{--g:#b07be0}.kcard[data-id=menorah]{--g:#ffd24d}.kcard[data-id=olat-behema]{--g:#ff6a5a}.kcard[data-id=minchat-solet]{--g:#e2c06a}.kcard[data-id=olat-haof]{--g:#6cc0f0}
+.kic{display:flex;align-items:center;justify-content:center;width:86px;height:86px;font-size:56px;line-height:1}.kic.im img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 6px 8px rgba(0,0,0,.4))}
+.kcard b{font-size:22px;line-height:1.15;color:#fff3cf;text-align:center}
+.kdt{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;max-width:150px}.kdt i{width:7px;height:7px;border-radius:50%;background:var(--gold);opacity:.85}
+/* סרגל בקרה תחתון */
+body.kid #svc.kplay{top:auto;right:0;left:0;bottom:0;width:auto;max-height:none;border-radius:22px 22px 0 0;border-width:1px 0 0;padding:8px 12px calc(10px + env(safe-area-inset-bottom,0px));overflow:visible;z-index:6;background:rgba(18,16,46,.93)!important}
+#svKPlay{max-width:760px;margin:0 auto}
+#svKPlay .kt{display:flex;align-items:center;gap:8px;font-size:15px;line-height:1}#svKPlay .kt b{flex:1;color:var(--gold);font-size:17px}#svKPlay .kt em{font-style:normal;color:var(--mut);font-size:14px}
+.kti{display:inline-flex;width:28px;height:28px;align-items:center;justify-content:center;font-size:22px}.kti.im img{width:100%;height:100%;object-fit:contain;display:block}
+#svDots{direction:ltr;display:flex;gap:3px;align-items:center;height:32px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#svDots i{flex:1 1 0;min-width:3px;height:10px;border-radius:6px;background:rgba(255,255,255,.2);transition:flex-grow .25s,height .2s,background .2s}
+#svDots i.d{background:var(--gold)}
+#svDots i.c{flex-grow:3.2;height:14px;background:linear-gradient(to right,var(--gold) var(--p,0%),rgba(255,255,255,.3) var(--p,0%))}
+.kctl{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 16px}.kg{display:flex;align-items:center;justify-content:center;gap:8px}
+.kb{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:48px;height:48px;padding:0 6px;border-radius:16px;border:1px solid var(--line);background:rgba(60,52,120,.75);color:#fff;font:inherit;font-size:24px;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.kb:hover{background:rgba(90,80,160,.9)}.kb:active{transform:scale(.94)}.kb:focus-visible,.kx:focus-visible,.kspd button:focus-visible{outline:3px solid #ffd66b;outline-offset:2px}
+.kb.big{width:62px;height:56px;font-size:28px}.kb.pri{background:linear-gradient(160deg,#f0cf78,#b8863a);border-color:#ffd66b;color:#241a05}
+.kb.cam{width:62px;gap:1px}.kb.cam i{font-style:normal;font-size:22px}.kb.cam small{font-size:12px;font-weight:700}.kb.cam.free{background:rgba(40,130,120,.8)}
+.kb.wide{flex-direction:row;gap:6px;font-size:18px;font-weight:700;padding:0 16px;min-width:110px}
+.kb.off{opacity:.55}.kb.off::after{content:"";position:absolute;width:62%;height:3px;border-radius:2px;background:#ff6b6b;transform:rotate(-45deg)}
+.kmain{display:flex;gap:8px;direction:ltr}.kspd{direction:ltr;display:flex;gap:2px;padding:3px;border-radius:18px;background:rgba(0,0,0,.28);border:1px solid var(--line)}.kspd button{width:44px;height:44px;border-radius:15px;border:0;background:transparent;font:inherit;font-size:22px;line-height:1;cursor:pointer;color:#fff;touch-action:manipulation}.kspd button.on{background:linear-gradient(160deg,#f0cf78,#b8863a)}
+/* כתובית: סמל פעולה גדול + תגית + משפט + "עוד" */
+body.kid #svCap{bottom:calc(var(--kstrip,130px) + 10px);width:min(720px,calc(100% - 20px));min-width:0;padding:10px 14px;text-align:right}
+body.kid #svCap .svn{display:none}
+body.kid #svCapT{display:flex;align-items:center;gap:12px}
+.kbadge{flex:0 0 auto;width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;line-height:1;background:radial-gradient(circle at 35% 30%,#5d4fb0,#2a2466);border:3px solid var(--gold);box-shadow:0 4px 14px rgba(0,0,0,.4)}
+.kbadge.kpop{animation:kpop .5s ease-out}.kbody{flex:1;min-width:0}.kbody .ktag{margin-bottom:2px}
+@keyframes kpop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1)}}
+body.kid #svCap.kend{display:none!important}
+/* סמל הפעולה ליד הכהן */
+#svAct{position:fixed;left:0;top:0;z-index:5;width:64px;height:64px;border-radius:50%;align-items:center;justify-content:center;font-size:38px;line-height:1;background:rgba(18,16,46,.85);border:3px solid var(--gold);box-shadow:0 4px 18px rgba(0,0,0,.5);pointer-events:none;animation:kbob 1.6s ease-in-out infinite}
+#svAct::after{content:"";position:absolute;left:50%;bottom:-13px;margin-left:-8px;border:8px solid transparent;border-top:12px solid var(--gold);border-bottom:0}
+#svAct.pop{animation:kpopS .45s ease-out,kbob 1.6s ease-in-out .45s infinite}
+@keyframes kpopS{0%{scale:.3;opacity:0}60%{scale:1.2;opacity:1}100%{scale:1}}
+@keyframes kbob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+/* סיכום בסוף הסיור */
+#svEnd{position:fixed;z-index:6;left:50%;transform:translateX(-50%);bottom:calc(var(--kstrip,130px) + 10px);width:min(560px,calc(100% - 20px));padding:14px 16px;border-radius:22px;border:1px solid var(--line);background:rgba(18,16,46,.92);backdrop-filter:blur(8px);box-shadow:0 8px 30px rgba(0,0,0,.45);text-align:center}
+#svEnd .ke1{font-size:46px;line-height:1.1}#svEnd b{display:block;font-size:26px;color:var(--gold);margin:2px 0 8px}
+#svEnd .ke2{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;font-size:26px;line-height:1.1;margin-bottom:12px}
+#svEnd .ke3{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+@media(max-width:700px){.kgrid{gap:10px}.kcard{min-height:150px}.kic{width:72px;height:72px;font-size:46px}.kcard b{font-size:20px}}
+@media(max-width:560px){.kgrid{grid-template-columns:repeat(2,1fr)}body.kid #svc:not(.kplay){padding-top:80px}.kb.big{width:58px;height:52px}#svDots{height:26px}.kctl{gap:2px 12px}
+ .kbadge{width:54px;height:54px;font-size:30px}body.kid #svCapT{gap:10px}#svAct{width:54px;height:54px;font-size:32px}}
+@media(max-width:380px){.kctl{gap:4px 8px}.kg{gap:5px}.kb{min-width:44px}.kb.big{width:54px}.kspd button{width:42px}}
+@media(prefers-reduced-motion:reduce){#svAct,#svAct.pop,.kbadge.kpop{animation:none}}
+
+/* ===== עמודי מפות – עיצוב מחדש ===== */
+#mapov,#kidov{display:none;position:fixed;inset:0;z-index:7;flex-direction:column;font-family:inherit;color:#3b2a14;-webkit-tap-highlight-color:transparent}
+#mapov{background:linear-gradient(170deg,#d8ecff,#fff4d8 60%,#ffe6c4)}
+#kidov{background:linear-gradient(160deg,#fff3c4,#ffd9ec 55%,#cdeefd)}
+.mhd{display:flex;align-items:center;gap:8px;padding:8px 12px}
+.mhd h2{margin:0;flex:1;min-width:0;font-size:24px;color:#d4570f;text-shadow:2px 2px 0 #fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mtg{display:flex;gap:6px}
+.mib{width:48px;height:48px;min-width:48px;border:0;border-radius:16px;background:#fff;font:inherit;font-size:22px;line-height:1;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.16);display:flex;align-items:center;justify-content:center;padding:0;color:#3b2a14;touch-action:manipulation}
+.mib:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.16)}
+.mtg .mib:not(.on){opacity:.5;background:#e9e4d8}
+.mtg .mib.on{background:#ffd56a;outline:3px solid #fff}
+.mib.mx{background:#ef5350;color:#fff;font-weight:800;font-size:24px}
+.mcards{display:flex;gap:8px;padding:4px 12px 12px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:0 0 auto}
+.mcards::-webkit-scrollbar{display:none}
+.mcard{flex:0 0 auto;width:106px;border:0;border-radius:18px;padding:0;overflow:hidden;cursor:pointer;background:#fff;box-shadow:0 4px 0 rgba(0,0,0,.18);font:inherit;color:#3b2a14;text-align:center;transition:transform .12s;touch-action:manipulation}
+.mcard .mpic{height:60px;font-size:30px}
+.mcard b{display:block;font-size:15px;line-height:1.2;padding:5px 4px 6px;white-space:nowrap}
+.mcard small{display:block;font-size:11px;color:#7a6a58;padding:0 4px 6px;margin-top:-3px;white-space:nowrap}
+.mcard.on{transform:translateY(-3px) scale(1.04);outline:4px solid var(--c,#ffb300);outline-offset:0}
+.mpic{position:relative;background:linear-gradient(135deg,var(--c,#f6c26b),#fff0c9);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mpic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+#mapbody,#kbody{flex:1;display:flex;min-height:0;padding:0 12px 12px;gap:12px}
+#mapwrap,#kwrap{flex:1;min-width:0;position:relative;border-radius:22px;overflow:hidden;border:5px solid #fff;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+#mapc,#kidc{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.mzb{position:absolute;bottom:12px;left:12px;display:flex;flex-direction:column;gap:8px}
+.mzb .mib{box-shadow:0 3px 0 rgba(0,0,0,.2),0 0 0 2px rgba(255,255,255,.9)}
+#mtoast{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:rgba(59,42,20,.88);color:#fff;font-size:18px;font-weight:800;padding:6px 18px;border-radius:20px;opacity:0;transition:opacity .25s;pointer-events:none}
+#mtoast.on{opacity:1}
+#mapside,#kside{width:340px;overflow:auto;background:rgba(255,255,255,.92);border-radius:22px;padding:12px 14px;font-size:16px;line-height:1.5;-webkit-overflow-scrolling:touch}
+.mpw{position:relative;border-radius:16px;overflow:hidden;margin-bottom:8px;box-shadow:0 3px 0 rgba(0,0,0,.14)}
+.mpw .mpic{aspect-ratio:8/5;font-size:48px}
+.mpw.go{cursor:pointer}
+.mcap{position:absolute;bottom:0;right:0;left:0;padding:3px 10px;font-size:13px;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6))}
+.mpw .mtop{position:absolute;top:6px;left:6px;width:44px;height:44px;min-width:44px;font-size:20px;border-radius:14px;opacity:.95}
+#mapside h3,#kside h3{margin:0;color:#d4570f;font-size:21px;line-height:1.25}
+#mapside .j{color:#7a6a58;font-size:14px;margin-bottom:4px}
+#mpD,#kD{margin:4px 0}
+.mmore{display:inline-block;margin:2px 0 6px;min-height:44px;border:0;border-radius:14px;padding:6px 16px;background:#ffe3a3;color:#7a4a00;font:inherit;font-size:15px;font-weight:700;cursor:pointer;touch-action:manipulation}
+#mpFull,#kFull{display:none;font-size:15px}
+#mpFull p,#kFull p{margin:6px 0}
+#mapside.open #mpFull,#kside.open #kFull{display:block}
+#mpL{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:14px;margin:4px 0}
+#mpL span{display:inline-flex;align-items:center}#mpL i{display:inline-block;width:14px;height:12px;border-radius:4px;margin-left:6px;opacity:.9}
+#mpC{margin:8px 0;padding:8px 12px;background:#fff0c4;border-radius:14px;display:none}#mpC b{font-size:18px}#mpC div{font-size:15px}
+.mgo{width:100%;min-height:48px;margin:6px 0;border:0;border-radius:16px;background:linear-gradient(90deg,#ff9800,#ec407a);color:#fff;font:inherit;font-size:18px;font-weight:800;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);touch-action:manipulation}
+#mpPl{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.mth{flex:0 0 auto;width:96px;height:64px;border:0;padding:0;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;background:#ddd;box-shadow:0 3px 0 rgba(0,0,0,.18);touch-action:manipulation}
+.mth .mpic{position:absolute;inset:0;font-size:26px}
+.mth span{position:absolute;bottom:0;right:0;left:0;font-size:12.5px;font-weight:800;color:#fff;padding:2px 4px;background:linear-gradient(transparent,rgba(0,0,0,.7));text-align:center}
+.kb{margin:8px 0;border-radius:18px;padding:10px 14px;color:#fff;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.4)}.kb span{font-size:38px;float:left;margin-right:8px}.kb b{font-size:22px;display:block}
+.khint{font-size:18px;font-weight:800;color:#e65100;margin:6px 0}
+#kList{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}#kList button{min-height:44px;font:inherit;font-size:15px;font-weight:700;border:0;border-radius:14px;padding:5px 12px;color:#fff;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.4);touch-action:manipulation}
+.kd{display:block;width:100%}.kd i{display:inline-block;width:18px;height:12px;border-radius:4px;margin-left:8px;vertical-align:middle}
+@media(max-width:900px){
+ #mapbody,#kbody{flex-direction:column;padding:0 8px 8px;gap:8px}
+ #mapside,#kside{width:auto;max-height:36%;flex:0 0 auto;padding:8px 10px;font-size:15px}
+ .mhd{padding:6px 8px;gap:6px}.mhd h2{font-size:19px}
+ .mpw{float:right;width:112px;margin:0 0 6px 10px}.mpw .mpic{aspect-ratio:1/1;font-size:34px}.mcap{font-size:11px;padding:2px 6px}
+ #mapside h3,#kside h3{font-size:18px}
+ .mcard{width:92px}.mcard .mpic{height:50px}.mcard b{font-size:14px}
+ .mgo{font-size:16px}
+}
+@media(max-width:420px){.mhd h2{font-size:17px}.mib{width:44px;height:44px;min-width:44px;font-size:20px}.mtg{gap:4px}.mcards{padding:2px 8px 8px}}
+@media(prefers-reduced-motion:reduce){.mcard,#mtoast{transition:none}}
 </style>
 </head>
 <body>
@@ -191,14 +298,14 @@ body.kid #ncHint{top:78px}
 <div id="card" class="panel"><span class="x" id="cardX">✕</span><h2 id="cT"></h2><p id="cD"></p><p class="src" id="cS"></p></div>
 <div id="mini" class="panel"><canvas id="map" width="190" height="190"></canvas></div>
 <div id="perChip" class="panel"></div>
-<div id="mapov"><header><h2>🗺️ ארץ ישראל והאזור – לפי תקופות (גבולות משוערים)</h2>
- <span class="tg"><label><input type="checkbox" id="mapE" checked> מעצמות</label><label><input type="checkbox" id="mapC" checked> ערים</label><label><input type="checkbox" id="mapL" checked> שמות</label></span>
- <button id="zAll">האזור</button><button id="zIl">ארץ ישראל</button><button id="zGr">יוון ורומא</button><button id="zEg">מצרים ובבל</button>
- <button class="pri" id="mapTo3d">הצג את ירושלים בתקופה זו ←</button><button id="mapX">✕ סגור</button></header>
- <div id="mper"></div>
- <div id="mapbody"><div id="mapwrap"><canvas id="mapc"></canvas></div><div id="mapside"><h3 id="mpT"></h3><div class="j" id="mpJ"></div><div id="mpD"></div><p id="mpM" style="color:var(--mut)"></p><div id="mpL"></div><div id="mpC"></div></div></div></div>
-<div id="kidov"><header><h2>🧒 ארץ ישראל שלנו – שבטים וגבולות לפי תקופות</h2><button id="kFit">🎯 למרכז</button><button id="kidX">✕ סגור</button></header>
- <div id="kbtns"></div><div id="kbody"><div id="kwrap"><canvas id="kidc"></canvas></div><div id="kside"><h3 id="kT"></h3><div id="kD"></div><div id="kS"></div><div id="kList"></div></div></div></div>
+<div id="mapov" role="dialog" aria-label="המפה"><header class="mhd"><h2>🗺️ המפה</h2>
+ <span class="mtg"><button class="mib on" id="mapE" aria-label="מעצמות" title="מעצמות">🏛️</button><button class="mib on" id="mapC" aria-label="ערים" title="ערים">📍</button><button class="mib on" id="mapL" aria-label="שמות" title="שמות">🏷️</button></span>
+ <button class="mib mx" id="mapX" aria-label="סגור" title="סגור">✕</button></header>
+ <div id="mper" class="mcards"></div>
+ <div id="mapbody"><div id="mapwrap"><canvas id="mapc"></canvas><div class="mzb"><button class="mib" id="zIn" aria-label="קרב" title="קרב">➕</button><button class="mib" id="zOut" aria-label="הרחק" title="הרחק">➖</button><button class="mib" id="zIl" aria-label="למרכז – ארץ ישראל" title="למרכז">🎯</button><button class="mib" id="zFind" aria-label="אזור אחר" title="אזור אחר">🔍</button></div><div id="mtoast"></div></div>
+ <div id="mapside"><div class="mpw" id="mpPic"></div><h3 id="mpT"></h3><div class="j" id="mpJ"></div><div id="mpD"></div><button class="mmore" id="mpMore">📖 עוד</button><div id="mpFull"></div><div id="mpL"></div><div id="mpC"></div><button class="mgo" id="mapTo3d">🕍 לדגם התלת־ממדי</button><div id="mpPl"></div></div></div></div>
+<div id="kidov" role="dialog" aria-label="ארץ ישראל"><header class="mhd"><h2>🧒 ארץ ישראל שלנו</h2><button class="mib" id="kFit" aria-label="למרכז" title="למרכז">🎯</button><button class="mib mx" id="kidX" aria-label="סגור" title="סגור">✕</button></header>
+ <div id="kbtns" class="mcards"></div><div id="kbody"><div id="kwrap"><canvas id="kidc"></canvas><div class="mzb"><button class="mib" id="kzIn" aria-label="קרב" title="קרב">➕</button><button class="mib" id="kzOut" aria-label="הרחק" title="הרחק">➖</button></div></div><div id="kside"><div class="mpw" id="kPic"></div><h3 id="kT"></h3><div id="kD"></div><button class="mmore" id="kMore">📖 עוד</button><div id="kFull"></div><div id="kS"></div><div id="kList"></div></div></div></div>
 <div id="hint" class="panel"></div>
 <div id="lookb"><button id="lkU" aria-label="מעלה">⬆️</button><button id="lkD" aria-label="מטה">⬇️</button></div>
 <div id="about"><div><h3 style="margin-top:0">על המודל</h3>
@@ -254,6 +361,7 @@ body.kid #ncHint{top:78px}
    <button class="ldc" data-go="about" style="--g:#9ad7d0"><div class="ic">ℹ️</div><b>על הדגם</b><span class="d">מה כתוב במשנה</span></button>
   </div>
   <div id="ldfoot"><button id="ldMus">🎵 מוזיקה</button></div>
+  <div id="lddedic">האתר פתוח לציבור – להרבות תורה ולהאדירה</div>
  </div>
 </div>
 <!-- ===== שיחה עם הדמויות (src/npc_chat.js) ===== -->

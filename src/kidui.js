@@ -15,16 +15,25 @@ const TAG={
  'olat-haof':['🕊️ מביאים עוף','⬆️ עולים בכבש','↪️ הולכים בסובב','🤏 מליקה','🩸 ממצים את הדם','🔥 הראש לאש','🪶 זורקים נוצות','🔥 הגוף לאש','🔄 ממשיכים להקיף','⬇️ יורדים']
 };
 
+/* ---------- איקונים: PNG בסגנון חימר מ-UI_ICONS דרך blob: (נטפרי) עם נפילה לאימוג'י ---------- */
+const toBlob=u=>{try{const i=u.indexOf(','),s=atob(u.slice(i+1)),a=new Uint8Array(s.length);for(let j=0;j<s.length;j++)a[j]=s.charCodeAt(j);return URL.createObjectURL(new Blob([a],{type:'image/png'}))}catch(e){return null}};
+const _bc={};
+const ico=(key,emo)=>{const i=document.createElement('i');i.textContent=emo;
+ const u=typeof UI_ICONS!='undefined'&&UI_ICONS[key];
+ if(u){const bu=_bc[key]||(_bc[key]=toBlob(u));if(bu){const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{i.textContent='';i.classList.add('pic');i.appendChild(im)};im.src=bu}}
+ return i};
+window.KTAG=TAG;   /* נגן הסיורים (services.js) משתמש באותן תגיות: סמל ליד הכהן ומסך הסיכום */
+
 /* ---------- סרגל עליון: כפתורי תמונה ---------- */
 const top=document.createElement('div');top.id='ktop';
-const mk=(ic,lb,fn,id)=>{const b=document.createElement('button');if(id)b.id=id;b.innerHTML='<i>'+ic+'</i><span>'+lb+'</span>';b.onclick=fn;top.appendChild(b);return b};
-mk('🏠','בית',()=>$('bHome').click());
-mk('🕎','סיורים',()=>$('bSvc').click());
-mk('🚶','ללכת',()=>$('bWalk').click(),'kWalk');
-mk('🗺️','מפות',()=>$('bMap').click());
-mk('🧒','שבטים',()=>$('bKids').click());
-mk('🎵','מוזיקה',()=>$('bMus').click(),'kMus');
-mk('⚙️','למבוגרים',()=>setAdult(!adult),'kAdult');
+const mk=(key,emo,lb,fn,id)=>{const b=document.createElement('button');if(id)b.id=id;const s=document.createElement('span');s.textContent=lb;b.appendChild(ico(key,emo));b.appendChild(s);b.onclick=fn;top.appendChild(b);return b};
+mk('home','🏠','בית',()=>$('bHome').click());
+mk('tours','🕎','סיורים',()=>$('bSvc').click());
+mk('walk','🚶','ללכת',()=>$('bWalk').click(),'kWalk');
+mk('map','🗺️','מפות',()=>$('bMap').click());
+mk('kids','🧒','שבטים',()=>$('bKids').click());
+mk('music','🎵','מוזיקה',()=>$('bMus').click(),'kMus');
+mk('adult','⚙️','למבוגרים',()=>setAdult(!adult),'kAdult');
 body.appendChild(top);
 
 /* ---------- שעון היום: שמש ← → ירח ---------- */
@@ -36,11 +45,25 @@ setInterval(()=>{if(!drag&&$('tm'))kr.value=$('tm').value},700);
 
 /* ---------- מעגן מקומות: תמונה + מילה ---------- */
 const dock=document.createElement('div');dock.id='kdock';
-const PL=[['🕍','הר הבית','מבט על'],['🔥','המזבח','המזבח והכבשים'],['💧','הכיור','הכיור'],['✨','ההיכל','ההיכל מצד מערב'],['🕎','בתוך ההיכל','בתוך ההיכל'],['📦','קודש הקדשים','קודש הקדשים'],['🧔','הכהנים','כהן וכהן גדול'],['🏙️','ירושלים','ירושלים כולה']];
+const PL=[['har','🕍','הר הבית','מבט על'],['mizbeach','🔥','המזבח','המזבח והכבשים'],['kiyor','💧','הכיור','הכיור'],['heichal','✨','ההיכל','ההיכל מצד מערב'],['inside','🕎','בתוך ההיכל','בתוך ההיכל'],['kodesh','📦','קודש הקדשים','קודש הקדשים'],['kohanim','🧔','הכהנים','כהן וכהן גדול'],['yerushalayim','🏙️','ירושלים','ירושלים כולה']];
 let cur=null;
-PL.forEach(([ic,lb,pf])=>{const p=P.find(x=>x[0]!='sec'&&x[0].indexOf(pf)==0);if(!p)return;
- const b=document.createElement('button');b.innerHTML='<i>'+ic+'</i><span>'+lb+'</span>';
+PL.forEach(([key,ic,lb,pf])=>{const p=P.find(x=>x[0]!='sec'&&x[0].indexOf(pf)==0);if(!p)return;
+ const b=document.createElement('button');const sp=document.createElement('span');sp.textContent=lb;b.appendChild(ico(key,ic));b.appendChild(sp);
  b.onclick=()=>{if(cur)cur.classList.remove('on');cur=b;b.classList.add('on');goto(p)};dock.appendChild(b)});
+
+/* ---------- כל המקומות: רשת אריחי תמונה (לחיצה = טיסה למקום) ---------- */
+const ALLP=[['מבט על','har','הר הבית'],['הר הבית וחומותיו','p_walls','החומות'],['שערי ההר','p_hulda','שערי חולדה'],['הסטיו המלכותי','p_stoa','הסטיו'],['שער שושן','p_shushan','שער שושן'],
+ ['ירושלים כולה','yerushalayim','ירושלים'],['עיר דוד','p_irdavid','עיר דוד'],['העיר העליונה','p_upper','ארמון הורדוס'],['אנטוניה','p_antonia','אנטוניה'],['קשת וילסון','p_wilson','הקשת'],
+ ['החיל והסורג','p_chel','החיל'],['עזרת נשים','p_nashim','עזרת נשים'],['שער ניקנור','p_nikanor','שער ניקנור'],['עזרת ישראל','p_yisrael','עזרת ישראל'],['המזבח והכבשים','mizbeach','המזבח'],['בית המטבחיים','p_slaughter','בית המטבחיים'],['הכיור','kiyor','הכיור'],
+ ['לשכות העזרה – צפון','p_north','לשכות צפון'],['בית הטבילה','p_mikveh','בית הטבילה'],['המסיבה','p_tunnel','המסיבה'],['לשכות העזרה – דרום','p_south','לשכות דרום'],
+ ['כהן וכהן גדול','kohanim','הכהנים'],['האולם','p_ulam','האולם'],['ההיכל מצד מערב','heichal','ההיכל'],['חתך – בתוך ההיכל','p_cutin','חתך ההיכל'],['חתך – תאי הלשכות','p_cutsouth','תאים בדרום'],['חתך – תאי המערב','p_cutwest','תאים במערב'],['בתוך ההיכל','inside','בתוך ההיכל'],['קודש הקדשים','kodesh','קודש הקדשים']];
+const pw=document.createElement('div');pw.id='kplaces';pw.innerHTML='<div class="kph"><b>לאן נלך?</b><button id="kpx" aria-label="סגור">✕</button></div><div class="kpg"></div>';body.appendChild(pw);
+const pg=pw.querySelector('.kpg');
+ALLP.forEach(([pf,key,lb])=>{const p=P.find(x=>x[0]!='sec'&&x[0].indexOf(pf)==0);if(!p)return;
+ const b=document.createElement('button'),s=document.createElement('span');s.textContent=lb;b.appendChild(ico(key,'📍'));b.appendChild(s);
+ b.onclick=()=>{pw.classList.remove('on');goto(p)};pg.appendChild(b)});
+const closeP=()=>pw.classList.remove('on');$('kpx').onclick=closeP;pw.onclick=e=>{if(e.target===pw)closeP()};
+{const b=document.createElement('button'),s=document.createElement('span');s.textContent='כל המקומות';const i=document.createElement('i');i.textContent='🧭';b.appendChild(i);b.appendChild(s);b.onclick=()=>pw.classList.add('on');dock.insertBefore(b,dock.firstChild)}
 body.appendChild(dock);
 
 /* ---------- כרטיס מידע קצר + "עוד" ---------- */
@@ -51,15 +74,18 @@ window.showCard=function(t,d,s){_showCard(t,d,s);if(adult)return;card.dataset.fu
 more.onclick=()=>{const o=card.classList.toggle('open');$('cD').textContent=o?card.dataset.full:short(card.dataset.full);$('cS').style.display=o?'block':'none';more.textContent=o?'🔼 פחות':'📖 עוד'};
 
 /* ---------- כתוביות הסיור: תגית פעולה + משפט אחד + "עוד" ---------- */
-const capT=$('svCapT'),capN=$('svCapN');let capBusy=false;
+const capT=$('svCapT'),capN=$('svCapN');let capBusy=false,lastKey=null;
 if(capT){
  const cap=$('svCap'),mb=document.createElement('button');mb.id='kcapmore';mb.textContent='📖 עוד';cap.appendChild(mb);
  const render=()=>{
   const S=SV&&SV.S;if(!S||adult)return;const full=capT.dataset.full||'',tag=(TAG[S.sc.id]||[])[S.idx]||'';
   const open=cap.classList.contains('kopen');
   capBusy=true;capT.innerHTML='';
-  if(tag){const h=document.createElement('div');h.className='ktag';h.textContent=tag;capT.appendChild(h)}
-  const p=document.createElement('div');p.className='ktx';p.textContent=open?full:short(full);capT.appendChild(p);
+  const sp=tag.indexOf(' '),ic=sp>0?tag.slice(0,sp):'',lb=sp>0?tag.slice(sp+1):tag,key=S.sc.id+'-'+S.idx;
+  if(ic){const bd=document.createElement('div');bd.className='kbadge'+(lastKey!==key?' kpop':'');bd.textContent=ic;capT.appendChild(bd)}
+  const bx=document.createElement('div');bx.className='kbody';
+  if(lb){const h=document.createElement('div');h.className='ktag';h.textContent=lb;bx.appendChild(h)}
+  const p=document.createElement('div');p.className='ktx';p.textContent=open?full:short(full);bx.appendChild(p);capT.appendChild(bx);lastKey=key;
   capBusy=false;
   mb.style.display=(short(full)===full.trim())?'none':'inline-block';mb.textContent=open?'🔼 פחות':'📖 עוד';
   const n=$('svCapN');if(n&&S)n.textContent=(S.idx+1)+' / '+S.sc.steps.length;
@@ -72,7 +98,7 @@ if(capT){
 /* ---------- מצב ילדים / מבוגרים ---------- */
 function setAdult(on){adult=on;LS.set('bh_adult',on?'1':'0');body.classList.toggle('kid',!on);
  const lm=$('lblMode');if(lm){lm.value=on?'smart':'main';lm.dispatchEvent(new Event('change'))}
- const b=$('kAdult');if(b){b.querySelector('span').textContent=on?'לילדים':'למבוגרים';b.querySelector('i').textContent=on?'🧒':'⚙️'}
+ const b=$('kAdult');if(b)b.querySelector('span').textContent=on?'לילדים':'למבוגרים';
  const nh=$('ncHint');if(nh)nh.textContent='💬 לחצו על כהן ושאלו אותו';
  if(!on&&card.style.display=='block'){const d=card.dataset.full||$('cD').textContent;if(d)window.showCard($('cT').textContent,d,(card.dataset.src||$('cS').textContent||'').replace(/^מקור: /,''))}}
 setAdult(adult);
@@ -81,6 +107,6 @@ setAdult(adult);
 const busy=()=>{const v=id=>{const e=$(id);return e&&getComputedStyle(e).display!=='none'};const L=$('landing');return (L&&L.style.display!=='none'&&!L.classList.contains('out'))||v('mapov')||v('kidov')||v('about')};
 setInterval(()=>{const hide=busy(),sv=$('svc')&&getComputedStyle($('svc')).display!=='none',walk=!!$('lookb')&&getComputedStyle($('lookb')).display!=='none';
  body.classList.toggle('kbusy',hide);body.classList.toggle('ksv',!!sv);body.classList.toggle('kwalk',walk);
- const w=$('kWalk');if(w){w.querySelector('span').textContent=walk?'למעלה':'ללכת';w.querySelector('i').textContent=walk?'🛰️':'🚶'}
+ const w=$('kWalk');if(w)w.querySelector('span').textContent=walk?'למעלה':'ללכת';
  const m=$('kMus'),bm=$('bMus');if(m&&bm){m.classList.toggle('off',/כבוי|הפעל/.test(bm.textContent)&&!/פועלת/.test(bm.textContent))}},300);
 })();

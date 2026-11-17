@@ -1,0 +1,3053 @@
+{
+ "generated": "2026-11-17T22:55:50.113Z",
+ "tool": "tools/render-snapshots.mjs",
+ "time": 11,
+ "images": [
+  {
+   "key": "r_jer0",
+   "w": 420,
+   "h": 420,
+   "q": 0.78,
+   "stats": {
+    "mean": 164.86,
+    "std": 19.23,
+    "flat": 0.2,
+    "colors": 425
+   },
+   "period": 0,
+   "periodName": "פרס – שיבת ציון",
+   "visibleGroups": [
+    "pBar",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -300,
+     3000,
+     420
+    ],
+    "halfH": 1050,
+    "halfW": 1050,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 0,
+    "periodName": "פרס – שיבת ציון"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 18030,
+   "sha256": "2968285f34df59edea8fdca227e136000062472a5cbaab5ccebe560311ffe445"
+  },
+  {
+   "key": "r_jo0",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 169.7,
+    "std": 23.41,
+    "flat": 0.37,
+    "colors": 693
+   },
+   "period": 0,
+   "periodName": "פרס – שיבת ציון",
+   "visibleGroups": [
+    "pBar",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 0,
+    "periodName": "פרס – שיבת ציון",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 14249,
+   "sha256": "9af79ce49a3ff5872f449c5f3dfb0dbdfc0afec159837d29e7fd216778e41378"
+  },
+  {
+   "key": "r_jer1",
+   "w": 420,
+   "h": 420,
+   "q": 0.78,
+   "stats": {
+    "mean": 164.86,
+    "std": 19.23,
+    "flat": 0.2,
+    "colors": 425
+   },
+   "period": 1,
+   "periodName": "אלכסנדר והדיאדוכים",
+   "visibleGroups": [
+    "pBar",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -300,
+     3000,
+     420
+    ],
+    "halfH": 1050,
+    "halfW": 1050,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 1,
+    "periodName": "אלכסנדר והדיאדוכים"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 18030,
+   "sha256": "2968285f34df59edea8fdca227e136000062472a5cbaab5ccebe560311ffe445"
+  },
+  {
+   "key": "r_jo1",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 169.7,
+    "std": 23.41,
+    "flat": 0.37,
+    "colors": 693
+   },
+   "period": 1,
+   "periodName": "אלכסנדר והדיאדוכים",
+   "visibleGroups": [
+    "pBar",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 1,
+    "periodName": "אלכסנדר והדיאדוכים",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 14249,
+   "sha256": "9af79ce49a3ff5872f449c5f3dfb0dbdfc0afec159837d29e7fd216778e41378"
+  },
+  {
+   "key": "r_jer2",
+   "w": 420,
+   "h": 420,
+   "q": 0.78,
+   "stats": {
+    "mean": 164.95,
+    "std": 19.33,
+    "flat": 0.2,
+    "colors": 425
+   },
+   "period": 2,
+   "periodName": "שלטון תלמי",
+   "visibleGroups": [
+    "pBar",
+    "pBeth",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -300,
+     3000,
+     420
+    ],
+    "halfH": 1050,
+    "halfW": 1050,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 2,
+    "periodName": "שלטון תלמי"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 18145,
+   "sha256": "99a1551e856a08f1373eaa3f096e9cc7696a03ad05f7a0d8942a6fbf5b4a1697"
+  },
+  {
+   "key": "r_jo2",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 170.05,
+    "std": 23.63,
+    "flat": 0.37,
+    "colors": 693
+   },
+   "period": 2,
+   "periodName": "שלטון תלמי",
+   "visibleGroups": [
+    "pBar",
+    "pBeth",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 2,
+    "periodName": "שלטון תלמי",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 14609,
+   "sha256": "929c799fbc226cfc4bcad533a041aacc6655a4c250b0dec7ed09b5ed7b91722d"
+  },
+  {
+   "key": "r_jer3",
+   "w": 420,
+   "h": 420,
+   "q": 0.78,
+   "stats": {
+    "mean": 164.99,
+    "std": 19.57,
+    "flat": 0.2,
+    "colors": 425
+   },
+   "period": 3,
+   "periodName": "שלטון סלווקי",
+   "visibleGroups": [
+    "pAkr",
+    "pBar",
+    "pBeth",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -300,
+     3000,
+     420
+    ],
+    "halfH": 1050,
+    "halfW": 1050,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 3,
+    "periodName": "שלטון סלווקי"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 18310,
+   "sha256": "e3a673d7295df69b134128aa3499a1106dd5553e87b93c4560b25ca4685a2a57"
+  },
+  {
+   "key": "r_jo3",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 170.04,
+    "std": 23.71,
+    "flat": 0.37,
+    "colors": 693
+   },
+   "period": 3,
+   "periodName": "שלטון סלווקי",
+   "visibleGroups": [
+    "pAkr",
+    "pBar",
+    "pBeth",
+    "pLow",
+    "pWN"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 3,
+    "periodName": "שלטון סלווקי",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 14659,
+   "sha256": "ad7f0be584507b37d97c69a6b3a79878f5acb0d91381609325afa5b19191ef32"
+  },
+  {
+   "key": "r_jer4",
+   "w": 420,
+   "h": 420,
+   "q": 0.72,
+   "stats": {
+    "mean": 168.92,
+    "std": 23.52,
+    "flat": 0.16,
+    "colors": 439
+   },
+   "period": 4,
+   "periodName": "החשמונאים",
+   "visibleGroups": [
+    "pAkr",
+    "pBar",
+    "pBeth",
+    "pHas",
+    "pLow",
+    "pOph",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -300,
+     3000,
+     420
+    ],
+    "halfH": 1050,
+    "halfW": 1050,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 4,
+    "periodName": "החשמונאים"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 25860,
+   "sha256": "2b2b654762883f3d57d4d187ea7fcb8b815f354ba95a6716aca523dcc437d4df"
+  },
+  {
+   "key": "r_jo4",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 170.2,
+    "std": 24.17,
+    "flat": 0.37,
+    "colors": 693
+   },
+   "period": 4,
+   "periodName": "החשמונאים",
+   "visibleGroups": [
+    "pAkr",
+    "pBar",
+    "pBeth",
+    "pHas",
+    "pLow",
+    "pOph",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 4,
+    "periodName": "החשמונאים",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 16955,
+   "sha256": "aabce76498df58ea513a4468ed4c1a33fec8cdb093ab72a700319fe79a8d754d"
+  },
+  {
+   "key": "r_jer5",
+   "w": 420,
+   "h": 420,
+   "q": 0.72,
+   "stats": {
+    "mean": 170.75,
+    "std": 25.25,
+    "flat": 0.15,
+    "colors": 460
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -300,
+     3000,
+     420
+    ],
+    "halfH": 1050,
+    "halfW": 1050,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 5,
+    "periodName": "רומא והורדוס"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 28213,
+   "sha256": "c1e4df8f3d5ae01a478a94858e16bf01b187899610c7b19445ca339d2214edc9"
+  },
+  {
+   "key": "r_jo5",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 171.16,
+    "std": 24.69,
+    "flat": 0.37,
+    "colors": 720
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 5,
+    "periodName": "רומא והורדוס",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 18373,
+   "sha256": "53f51e17fa839505b10feb3cb87f55ab71af8a20a3654d1e0d535e4ab893b946"
+  },
+  {
+   "key": "r_jer6",
+   "w": 420,
+   "h": 420,
+   "q": 0.78,
+   "stats": {
+    "mean": 163.71,
+    "std": 20.13,
+    "flat": 0.17,
+    "colors": 403
+   },
+   "period": 6,
+   "periodName": "פרוקורטורים והמרד",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "pW3",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     -400,
+     3000,
+     -40
+    ],
+    "halfH": 1550,
+    "halfW": 1550,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "jerusalem",
+    "expectPeriod": 6,
+    "periodName": "פרוקורטורים והמרד"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 25935,
+   "sha256": "4769d7a6b168b92393cf59c6e98186379a37623b54677924f1b9747e0a75025f"
+  },
+  {
+   "key": "r_jo6",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 171.22,
+    "std": 24.69,
+    "flat": 0.37,
+    "colors": 720
+   },
+   "period": 6,
+   "periodName": "פרוקורטורים והמרד",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "pW3",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     900,
+     380,
+     -300
+    ],
+    "fov": 55,
+    "target": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "meta": {
+    "kind": "jerusalem-oblique",
+    "expectPeriod": 6,
+    "periodName": "פרוקורטורים והמרד",
+    "tg": [
+     -300,
+     0,
+     250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "periodMatches": true
+   },
+   "bytes": 18576,
+   "sha256": "08ce2044d62a0fa69d62a809afaff7c427eaadb06b80a2d80d1b1c82dec221b2"
+  },
+  {
+   "key": "r_p0",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 179.8,
+    "std": 28.63,
+    "flat": 0.13,
+    "colors": 726
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     330,
+     330,
+     470
+    ],
+    "fov": 55,
+    "target": [
+     -20,
+     0,
+     -40
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 0,
+    "name": "מבט על – הר הבית",
+    "tg": [
+     -20,
+     0,
+     -40
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     330,
+     330,
+     470
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 24278,
+   "sha256": "a6bb67ce9526ca6012285407a94160c96e88fea790aa9adbc673485c28100222"
+  },
+  {
+   "key": "r_p1",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 171.05,
+    "std": 30.77,
+    "flat": 0.22,
+    "colors": 893
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -430,
+     170,
+     -440
+    ],
+    "fov": 55,
+    "target": [
+     0,
+     0,
+     0
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 1,
+    "name": "הר הבית וחומותיו",
+    "tg": [
+     0,
+     0,
+     0
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -430,
+     170,
+     -440
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 21771,
+   "sha256": "2f855b9438971beb3fccd5224d76caedf48a80a4758f75e4dfee0a3db3a0e0f3"
+  },
+  {
+   "key": "r_p2",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 197.27,
+    "std": 21.26,
+    "flat": 0.07,
+    "colors": 512
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     25,
+     45,
+     330
+    ],
+    "fov": 55,
+    "target": [
+     25,
+     12,
+     246
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 2,
+    "name": "שערי ההר – חולדה",
+    "tg": [
+     25,
+     12,
+     246
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     25,
+     45,
+     330
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 24542,
+   "sha256": "667ffc38308d5914fd2f16c561dfdb39ab830dd18603b5e2754cc1ff05282aca"
+  },
+  {
+   "key": "r_p3",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 182.55,
+    "std": 22.54,
+    "flat": 0.27,
+    "colors": 436
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -150,
+     70,
+     100
+    ],
+    "fov": 55,
+    "target": [
+     40,
+     40,
+     210
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 3,
+    "name": "הסטיו המלכותי",
+    "tg": [
+     40,
+     40,
+     210
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -150,
+     70,
+     100
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 17498,
+   "sha256": "bca71b929a995fa9f67cb2bc588ceb722655a1683ef24d3f0a21d748a6df3094"
+  },
+  {
+   "key": "r_p4",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 163.45,
+    "std": 32.59,
+    "flat": 0.21,
+    "colors": 788
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     640,
+     70,
+     -130
+    ],
+    "fov": 55,
+    "target": [
+     300,
+     0,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 4,
+    "name": "שער שושן וגשר פרה אדומה",
+    "tg": [
+     300,
+     0,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     640,
+     70,
+     -130
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 19488,
+   "sha256": "3bc84127a3fec4f760e4797c0b9ae13aa8081055dd95da0d7fe8aaf86299a364"
+  },
+  {
+   "key": "r_p5",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 180.49,
+    "std": 26.94,
+    "flat": 0.1,
+    "colors": 595
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     1500,
+     650,
+     -250
+    ],
+    "fov": 55,
+    "target": [
+     -250,
+     0,
+     300
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 5,
+    "name": "ירושלים כולה",
+    "tg": [
+     -250,
+     0,
+     300
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     1500,
+     650,
+     -250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 14779,
+   "sha256": "616fdd37914450adfee8996578528865a623f5cff08af14b73c87af2bebed58e"
+  },
+  {
+   "key": "r_p6",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 176.19,
+    "std": 21.53,
+    "flat": 0.11,
+    "colors": 338
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     200,
+     420,
+     2250
+    ],
+    "fov": 55,
+    "target": [
+     -40,
+     -100,
+     1000
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 6,
+    "name": "עיר דוד וברכת השילוח",
+    "tg": [
+     -40,
+     -100,
+     1000
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     200,
+     420,
+     2250
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 13879,
+   "sha256": "59ea1db079084f7f4d4f9804c06647622e7fe93bfafa9bd35e38e39226191287"
+  },
+  {
+   "key": "r_p7",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 182.08,
+    "std": 16.1,
+    "flat": 0.22,
+    "colors": 206
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -560,
+     300,
+     560
+    ],
+    "fov": 55,
+    "target": [
+     -1000,
+     40,
+     -40
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 7,
+    "name": "העיר העליונה וארמון הורדוס",
+    "tg": [
+     -1000,
+     40,
+     -40
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -560,
+     300,
+     560
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": true,
+    "cameraMatchesData": true
+   },
+   "bytes": 16659,
+   "sha256": "0bcc685fccc805c68032dfc1726f1d6bd8504a84aa9883def1e843e97fa90d4f"
+  },
+  {
+   "key": "r_p8",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 175.43,
+    "std": 23.92,
+    "flat": 0.22,
+    "colors": 704
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     250,
+     200,
+     -700
+    ],
+    "fov": 55,
+    "target": [
+     -100,
+     20,
+     -330
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 8,
+    "name": "אנטוניה ובית חסדא",
+    "tg": [
+     -100,
+     20,
+     -330
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     250,
+     200,
+     -700
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 21380,
+   "sha256": "6473b74657ff8cdaf1eb4f84f4d4d26853e6ecd2a744a2b2ca01cac0d0bc50ce"
+  },
+  {
+   "key": "r_p9",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 173.7,
+    "std": 23.61,
+    "flat": 0.16,
+    "colors": 500
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -720,
+     130,
+     330
+    ],
+    "fov": 55,
+    "target": [
+     -330,
+     -30,
+     100
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 9,
+    "name": "קשת וילסון ורובינסון",
+    "tg": [
+     -330,
+     -30,
+     100
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -720,
+     130,
+     330
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 23040,
+   "sha256": "00dd9619d3a9386a80eaee1453e63ff529d60a3536e8b5d5056854dc1d220c9b"
+  },
+  {
+   "key": "r_p10",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 186.46,
+    "std": 33.33,
+    "flat": 0.08,
+    "colors": 1201
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     215,
+     50,
+     0
+    ],
+    "fov": 55,
+    "target": [
+     150,
+     5,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 10,
+    "name": "החיל והסורג",
+    "tg": [
+     150,
+     5,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     215,
+     50,
+     0
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 30542,
+   "sha256": "3053ec423dbb18e9ff0bcc4bb1c8f6fce7efc8b41aee1040ee8f2a431f4abf68"
+  },
+  {
+   "key": "r_p11",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 186.21,
+    "std": 40.26,
+    "flat": 0.2,
+    "colors": 1708
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     165,
+     95,
+     -115
+    ],
+    "fov": 55,
+    "target": [
+     85,
+     6,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 11,
+    "name": "עזרת נשים",
+    "tg": [
+     85,
+     6,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     165,
+     95,
+     -115
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 32560,
+   "sha256": "592fb10600068274ba8f91cab71b46fe6f9dcccf1b595094a743ab322b1ecfa6"
+  },
+  {
+   "key": "r_p12",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 165.48,
+    "std": 50.6,
+    "flat": 0.13,
+    "colors": 1036
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     65,
+     40,
+     -35
+    ],
+    "fov": 55,
+    "target": [
+     14.5,
+     20,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 12,
+    "name": "שער ניקנור וט״ו המעלות",
+    "tg": [
+     14.5,
+     20,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     65,
+     40,
+     -35
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 21399,
+   "sha256": "f0f1e330caf8528385c5da563f5c7b90fdfe028725a4d70767903011d7ab806a"
+  },
+  {
+   "key": "r_p13",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 186.33,
+    "std": 38.56,
+    "flat": 0.09,
+    "colors": 1609
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     45,
+     55,
+     -35
+    ],
+    "fov": 55,
+    "target": [
+     -5,
+     17,
+     -60
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 13,
+    "name": "עזרת ישראל וכהנים",
+    "tg": [
+     -5,
+     17,
+     -60
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     45,
+     55,
+     -35
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 25039,
+   "sha256": "df503b48d73b4422f0ed9b8d5d2f0a200fa91af576c0e8472b8e29df58328538"
+  },
+  {
+   "key": "r_p14",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 188.36,
+    "std": 19.9,
+    "flat": 0.21,
+    "colors": 614
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     15,
+     45,
+     25
+    ],
+    "fov": 55,
+    "target": [
+     -26,
+     16,
+     -43
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 14,
+    "name": "המזבח והכבשים",
+    "tg": [
+     -26,
+     16,
+     -43
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     15,
+     45,
+     25
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 18674,
+   "sha256": "968619703add628260e1fc5199e64b7710415213bb12ad6206540753a2a184f2"
+  },
+  {
+   "key": "r_p15",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 206.34,
+    "std": 30.21,
+    "flat": 0.3,
+    "colors": 659
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     5,
+     40,
+     -70
+    ],
+    "fov": 55,
+    "target": [
+     -22,
+     16,
+     -105
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 15,
+    "name": "בית המטבחיים",
+    "tg": [
+     -22,
+     16,
+     -105
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     5,
+     40,
+     -70
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 19352,
+   "sha256": "1edd3a1a311b436e44807bd458c12d29a8cff7f7d28e55b1e4d10b8d29250a59"
+  },
+  {
+   "key": "r_p16",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 207.17,
+    "std": 27.7,
+    "flat": 0.22,
+    "colors": 1001
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -38,
+     30,
+     -8
+    ],
+    "fov": 55,
+    "target": [
+     -58,
+     18,
+     -30
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 16,
+    "name": "הכיור",
+    "tg": [
+     -58,
+     18,
+     -30
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -38,
+     30,
+     -8
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 16742,
+   "sha256": "42a38a51f9590424292d230c1e134e6242a86de3e1ebefa7b2d91e18b903df49"
+  },
+  {
+   "key": "r_p17",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 180.86,
+    "std": 44.74,
+    "flat": 0.12,
+    "colors": 1528
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -30,
+     50,
+     -40
+    ],
+    "fov": 55,
+    "target": [
+     -115,
+     18,
+     -118
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 17,
+    "name": "לשכות העזרה – צפון",
+    "tg": [
+     -115,
+     18,
+     -118
+    ],
+    "cameraOverride": true,
+    "dataCamera": [
+     -110,
+     70,
+     -70
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 24618,
+   "sha256": "17b8835f6ca0855f0dd848eb03711e6733b9c427b9ac47571d6a76ef1aa0a0bb"
+  },
+  {
+   "key": "r_p18",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 175.44,
+    "std": 42.56,
+    "flat": 0.13,
+    "colors": 835
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -30,
+     45,
+     -70
+    ],
+    "fov": 55,
+    "target": [
+     -100,
+     18,
+     -115
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 18,
+    "name": "בית הטבילה והמסיבה",
+    "tg": [
+     -100,
+     18,
+     -115
+    ],
+    "cameraOverride": true,
+    "dataCamera": [
+     -60,
+     70,
+     -60
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 22431,
+   "sha256": "29a1566d8951e5e128c4bed5583510f3c0d7597b8ff41ce4741c75a6523b97af"
+  },
+  {
+   "key": "r_p19",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 173.92,
+    "std": 46.26,
+    "flat": 0.11,
+    "colors": 674
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     40,
+     45,
+     -170
+    ],
+    "fov": 55,
+    "target": [
+     -102,
+     0,
+     -190
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 19,
+    "name": "המסיבה ושער טדי",
+    "tg": [
+     -102,
+     0,
+     -190
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     40,
+     45,
+     -170
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 24461,
+   "sha256": "407c994819a90e9d3eb81034e37ae247ebe1c5ef508bf191a2cf0bbcbc977eb8"
+  },
+  {
+   "key": "r_p20",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 181.99,
+    "std": 33.55,
+    "flat": 0.11,
+    "colors": 1703
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     60,
+     70,
+     -30
+    ],
+    "fov": 55,
+    "target": [
+     -100,
+     18,
+     3
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 20,
+    "name": "לשכות העזרה – דרום",
+    "tg": [
+     -100,
+     18,
+     3
+    ],
+    "cameraOverride": true,
+    "dataCamera": [
+     -100,
+     60,
+     -40
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 24796,
+   "sha256": "0b1d0f5eb983c79c9e8669bcd11a5987cbc1b6d132de141ca386d31f8f2268c6"
+  },
+  {
+   "key": "r_p21",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 209.14,
+    "std": 23.81,
+    "flat": 0.33,
+    "colors": 640
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     4,
+     20,
+     -31
+    ],
+    "fov": 55,
+    "target": [
+     -7.5,
+     18,
+     -31
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 21,
+    "name": "כהן וכהן גדול – בגדי כהונה",
+    "tg": [
+     -7.5,
+     18,
+     -31
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     4,
+     20,
+     -31
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 9699,
+   "sha256": "3cc71b0d846389a1d1c82a8c6cd3b9a051a82971bef8e2dd028df3393419afed"
+  },
+  {
+   "key": "r_p22",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 181.14,
+    "std": 38.84,
+    "flat": 0.12,
+    "colors": 1813
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     40,
+     70,
+     -60
+    ],
+    "fov": 55,
+    "target": [
+     -65,
+     48,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 22,
+    "name": "האולם",
+    "tg": [
+     -65,
+     48,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     40,
+     70,
+     -60
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 23666,
+   "sha256": "cf9ae5a577ecbb6edfb86b0b4c7b024e1440335aa8d0a4394fe4f70948f1c23e"
+  },
+  {
+   "key": "r_p23",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 170.16,
+    "std": 29.16,
+    "flat": 0.13,
+    "colors": 687
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -260,
+     110,
+     -40
+    ],
+    "fov": 55,
+    "target": [
+     -125,
+     55,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 23,
+    "name": "ההיכל מצד מערב",
+    "tg": [
+     -125,
+     55,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -260,
+     110,
+     -40
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 20831,
+   "sha256": "e61e7989df40afacf0fddc2d5de4c8c64b35ff4520a705f6e3c54b55008f783d"
+  },
+  {
+   "key": "r_p24",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 162.75,
+    "std": 33.24,
+    "flat": 0.19,
+    "colors": 1320
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "z:-57",
+   "roofs": false,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -112,
+     95,
+     -235
+    ],
+    "fov": 55,
+    "target": [
+     -112,
+     48,
+     -58
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 24,
+    "name": "חתך – בתוך ההיכל",
+    "tg": [
+     -112,
+     48,
+     -58
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -112,
+     95,
+     -235
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 21439,
+   "sha256": "1010b26ae0f6eb566fc7ccb6bdb3a5b7099722c40fd3c33178d643b3361489b6"
+  },
+  {
+   "key": "r_p25",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 156.82,
+    "std": 37.13,
+    "flat": 0.16,
+    "colors": 1106
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "z:-41",
+   "roofs": false,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -112,
+     52,
+     -175
+    ],
+    "fov": 55,
+    "target": [
+     -112,
+     22,
+     -35.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 25,
+    "name": "חתך – תאי הלשכות (דרום)",
+    "tg": [
+     -112,
+     22,
+     -35.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -112,
+     52,
+     -175
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 21890,
+   "sha256": "f5264cf4acc334e6a827f7195c59f565c88208e9023bc79367625a89f58091f4"
+  },
+  {
+   "key": "r_p26",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 148.25,
+    "std": 31.77,
+    "flat": 0.18,
+    "colors": 428
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "x:-153",
+   "roofs": false,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -100,
+     40,
+     -57.4
+    ],
+    "fov": 55,
+    "target": [
+     -158,
+     16,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 26,
+    "name": "חתך – תאי המערב",
+    "tg": [
+     -158,
+     16,
+     -57.5
+    ],
+    "cameraOverride": false,
+    "dataCamera": [
+     -100,
+     40,
+     -57.4
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 22865,
+   "sha256": "4cc52e7496fa6c79eb0c0c89efed7cd2b617ebb8c64b696eff1d7ccd6249217e"
+  },
+  {
+   "key": "r_p27",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 126.76,
+    "std": 42.2,
+    "flat": 0.1,
+    "colors": 370
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -68,
+     27,
+     -57.5
+    ],
+    "fov": 55,
+    "target": [
+     -120,
+     26,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 27,
+    "name": "בתוך ההיכל",
+    "tg": [
+     -120,
+     26,
+     -57.5
+    ],
+    "cameraOverride": true,
+    "dataCamera": [
+     -72,
+     28,
+     -45
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 16083,
+   "sha256": "d3679c4d396f12c25e7494c363401ad79314614a99346f6da3400b7d23cc9784"
+  },
+  {
+   "key": "r_p28",
+   "w": 480,
+   "h": 300,
+   "q": 0.78,
+   "stats": {
+    "mean": 104.81,
+    "std": 52.37,
+    "flat": 0.16,
+    "colors": 530
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "persp",
+    "pos": [
+     -110,
+     27,
+     -57.5
+    ],
+    "fov": 55,
+    "target": [
+     -155,
+     25,
+     -57.5
+    ]
+   },
+   "meta": {
+    "kind": "place",
+    "index": 28,
+    "name": "קודש הקדשים",
+    "tg": [
+     -155,
+     25,
+     -57.5
+    ],
+    "cameraOverride": true,
+    "dataCamera": [
+     -120,
+     28,
+     -47
+    ]
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false,
+    "cameraMatchesData": true
+   },
+   "bytes": 17456,
+   "sha256": "09d8c845d3e9870e893cec4349742b4d0b97e004cb1b0a2df6b2d8d3e1c46fa4"
+  },
+  {
+   "key": "r_mount",
+   "w": 440,
+   "h": 440,
+   "q": 0.78,
+   "stats": {
+    "mean": 196.15,
+    "std": 40.92,
+    "flat": 0.19,
+    "colors": 780
+   },
+   "period": 5,
+   "periodName": "רומא והורדוס",
+   "visibleGroups": [
+    "pAnt",
+    "pBeth",
+    "pHas",
+    "pHer",
+    "pLow",
+    "pNew",
+    "pOph",
+    "pPal",
+    "pTyr",
+    "pUp",
+    "pW1",
+    "pW2",
+    "stoa"
+   ],
+   "cut": "",
+   "roofs": true,
+   "camera": {
+    "type": "ortho",
+    "pos": [
+     0,
+     3000,
+     -20
+    ],
+    "halfH": 285,
+    "halfW": 285,
+    "north": "up"
+   },
+   "meta": {
+    "kind": "mount-labeled"
+   },
+   "checks": {
+    "notBlank": true,
+    "notDark": true,
+    "weak": false
+   },
+   "bytes": 33480,
+   "sha256": "fbc1e2f1f921f6c9fd98fcb20e916047826cd093cd9d6fe1918af51c6abda2d0"
+  }
+ ],
+ "checks": [
+  {
+   "id": "period-state-0",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 0,
+   "actual": 0,
+   "pass": true
+  },
+  {
+   "id": "period-state-1",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 1,
+   "actual": 1,
+   "pass": true
+  },
+  {
+   "id": "period-state-2",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 2,
+   "actual": 2,
+   "pass": true
+  },
+  {
+   "id": "period-state-3",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 3,
+   "actual": 3,
+   "pass": true
+  },
+  {
+   "id": "period-state-4",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 4,
+   "actual": 4,
+   "pass": true
+  },
+  {
+   "id": "period-state-5",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 5,
+   "actual": 5,
+   "pass": true
+  },
+  {
+   "id": "period-state-6",
+   "desc": "התקופה החיה בדגם תואמת לתמונה",
+   "expected": 6,
+   "actual": 6,
+   "pass": true
+  },
+  {
+   "id": "altar-height",
+   "desc": "גובה פסגת המזבח מעל רצפת העזרה (מידות ג:א: כ־10 אמות עם הקרנות)",
+   "expected": "8..13 אמות",
+   "actual": 12.06,
+   "pass": true,
+   "note": "נקודת הנתונים: (-26,-43) – מרכז המזבח (ui.js, P)"
+  },
+  {
+   "id": "hekhal-height",
+   "desc": "גובה גג ההיכל מעל רצפת העזרה (מידות ד:ו: 100 אמה; המודל מוסיף כרכוב/מעקה)",
+   "expected": "88..112 אמות",
+   "actual": 93,
+   "pass": true,
+   "note": "(-114,-57.5) מרכז ההיכל"
+  },
+  {
+   "id": "mount-east--150",
+   "desc": "קיר הר הבית המזרחי (חצי מ־500 אמה)",
+   "expected": "250±8 (x)",
+   "actual": 250,
+   "pass": true,
+   "note": "סריקת קרניים לאורך z=-150"
+  },
+  {
+   "id": "mount-west--150",
+   "desc": "קיר הר הבית המערבי",
+   "expected": "-250±8 (x)",
+   "actual": -250,
+   "pass": true,
+   "note": "סריקת קרניים לאורך z=-150"
+  },
+  {
+   "id": "mount-east--120",
+   "desc": "קיר הר הבית המזרחי (חצי מ־500 אמה)",
+   "expected": "250±8 (x)",
+   "actual": 250,
+   "pass": true,
+   "note": "סריקת קרניים לאורך z=-120"
+  },
+  {
+   "id": "mount-west--120",
+   "desc": "קיר הר הבית המערבי",
+   "expected": "-250±8 (x)",
+   "actual": -250,
+   "pass": true,
+   "note": "סריקת קרניים לאורך z=-120"
+  },
+  {
+   "id": "geo-jerusalem-map",
+   "desc": "מפת האזור: ירושלים מול הר הבית (31.778N,35.235E)",
+   "expected": "Δ≤0.06°",
+   "actual": [
+    35.23,
+    31.78
+   ],
+   "pass": true,
+   "note": "geodata CITIES"
+  },
+  {
+   "id": "geo-jerusalem-kids",
+   "desc": "מפת הילדים: ירושלים מול הר הבית",
+   "expected": "Δ≤0.06°",
+   "actual": [
+    35.23,
+    31.78
+   ],
+   "pass": true,
+   "note": "kids KSITES"
+  },
+  {
+   "id": "geo-period-0",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-538..-332",
+   "actual": -500,
+   "pass": true,
+   "note": "פרס – שיבת ציון"
+  },
+  {
+   "id": "geo-emp-0",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "4 מעצמות / 47 ערים",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "geo-period-1",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-332..-301",
+   "actual": -323,
+   "pass": true,
+   "note": "אלכסנדר והדיאדוכים"
+  },
+  {
+   "id": "geo-emp-1",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "4 מעצמות / 47 ערים",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "geo-period-2",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-301..-200",
+   "actual": -270,
+   "pass": true,
+   "note": "שלטון תלמי"
+  },
+  {
+   "id": "geo-emp-2",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "8 מעצמות / 61 ערים",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "geo-period-3",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-200..-167",
+   "actual": -190,
+   "pass": true,
+   "note": "שלטון סלווקי"
+  },
+  {
+   "id": "geo-emp-3",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "11 מעצמות / 61 ערים",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "geo-period-4",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-167..-63",
+   "actual": -80,
+   "pass": true,
+   "note": "החשמונאים"
+  },
+  {
+   "id": "geo-emp-4",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "7 מעצמות / 67 ערים",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "geo-period-5",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-63..-4",
+   "actual": -30,
+   "pass": true,
+   "note": "רומא והורדוס"
+  },
+  {
+   "id": "geo-emp-5",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "5 מעצמות / 67 ערים",
+   "pass": true,
+   "note": ""
+  },
+  {
+   "id": "geo-period-6",
+   "desc": "שנת הייחוס של התקופה בתוך טווח התקופה (PR)",
+   "expected": "-4..70",
+   "actual": 66,
+   "pass": true,
+   "note": "פרוקורטורים והמרד"
+  },
+  {
+   "id": "geo-emp-6",
+   "desc": "יש מעצמות/ערים בנתוני התקופה",
+   "expected": ">0",
+   "actual": "5 מעצמות / 64 ערים",
+   "pass": true,
+   "note": ""
+  }
+ ],
+ "notes": [
+  "mount: 3 labels drawn (big labels only)"
+ ],
+ "summary": {
+  "images": 44,
+  "checks": 29,
+  "failed": [],
+  "weak": [
+   "r_p7"
+  ],
+  "badImages": []
+ }
+}

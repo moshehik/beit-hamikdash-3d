@@ -49,7 +49,11 @@ const KL=[ // שכבות: שם, אימוג'י, צבע, [צבע, צורה, תוו
 {n:'החשמונאים',e:'🕎',c:'#7e57c2',shapes:[['#b39ddb','hasmoMax','המדינה בשיאה (ימי ינאי)'],['#7e57c2','hasmo0','ראשית המדינה']],txt:['מתתיהו ובניו מרדו ביוונים, טיהרו את המקדש (חנוכה) והקימו מדינה עצמאית. בימי אלכסנדר ינאי הגיעה המדינה לשטח גדול: גליל, חוף, גולן ועבר הירדן.']},
 {n:'הורדוס',e:'🏛️',c:'#26a69a',shapes:[['#80cbc4','herod2','ממלכת הורדוס']],txt:['הורדוס היה מלך בחסות רומא (37–4 לפנה״ס). הוא בנה את קיסריה, מצדה והרחיב את בית המקדש. ממלכתו כללה גליל, שומרון, יהודה, עבר הירדן וגולן.']},
 {n:'המחוזות הרומיים',e:'🛡️',c:'#c62828',shapes:[['#ef9a9a','pGalil','הגליל'],['#ce93d8','pShomron','שומרון'],['#fff176','pYehuda','יהודה'],['#ffcc80','pEdom','אדום'],['#90caf9','pPerea','פרעה'],['#a5d6a7','pGolan','גולן']],txt:['אחרי הורדוס חולקה הארץ לאזורים. בשנת 6 לספירה יהודה הפכה למחוז רומי עם נציב (פרוקורטור). בשנת 70 חרב בית המקדש השני.']}];
-const kc=$('kidc'),kx=kc.getContext('2d');const KV={lon:35.3,lat:32,z:150};let kidOpen=false,kLayer=0,kHov=null,kSel=null,kdrag=null,kPoly=[];
+/* ---------- עיצוב מחדש (18.11.2026): כרטיסי שכבה עם איור, מפה גדולה, לוחית קצרה + "עוד", כפתורי סמלים ---------- */
+const KLS=['12 שבטים','גבולות','דוד ושלמה','ישראל ויהודה','שיבת ציון','חשמונאים','הורדוס','רומא'],
+ KLD=['d_tribes','d_borders','d_davidsolomon','d_israeljudah','d_persia','d_hasmonean','d_herod','d_roman'],
+ KLP=[null,null,null,null,0,4,5,6];   /* אינדקס תקופה (ב-PERIODS) לשכבות שיש להן תמונת דגם של ירושלים באותה תקופה */
+const kc=$('kidc'),kx=kc.getContext('2d');const KV={lon:35.3,lat:32,z:150};let kidOpen=false,kLayer=0,kHov=null,kSel=null,kPoly=[];
 const km2s=(lon,lat)=>[(lon-KV.lon)*KV.z*COSL+kc.width/2,(KV.lat-lat)*KV.z+kc.height/2];
 const ks2m=(x,y)=>[(x-kc.width/2)/(KV.z*COSL)+KV.lon,KV.lat-(y-kc.height/2)/KV.z];
 function kPath(ctx,pts){ctx.beginPath();for(let i=0;i<pts.length;i+=2){const p=km2s(pts[i],pts[i+1]);i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])}ctx.closePath()}
@@ -70,7 +74,7 @@ function kDraw(){const W=kc.width,H=kc.height,c=kx,L=KL[kLayer];kPoly=[];
  kPath(c,[35.55,32.9,35.62,32.92,35.66,32.8,35.6,32.7,35.54,32.78]);c.fill();c.stroke();
  c.strokeStyle='#4fc3f7';c.lineWidth=Math.max(2,KV.z/50);c.lineJoin='round';c.beginPath();[[35.58,32.72],[35.56,32.5],[35.55,32.3],[35.53,32.0],[35.55,31.78]].forEach((p,i)=>{const q=km2s(p[0],p[1]);i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1])});c.stroke();
  c.textAlign='center';
- const sz=Math.max(12,Math.min(28,KV.z/8)),put=[],labs=[];
+ const sz=Math.max(13,Math.min(28,KV.z/8)),put=[],labs=[];
  if(L.tribes)TRIBES.forEach(t=>{const p=km2s(t[4][0],t[4][1]);labs.push({k:'t',t,p})});
  else for(const s of L.shapes){if(!s[2])continue;const pts=KZ[s[1]];let a=0,b=0,n=0;for(let i=0;i<pts.length;i+=2){a+=pts[i];b+=pts[i+1];n++}labs.push({k:'r',s,p:km2s(a/n,b/n)})}
  const free=(x,y,w,h)=>{if(put.some(q=>x<q[2]&&x+w>q[0]&&y<q[3]&&y+h>q[1]))return false;put.push([x,y,x+w,y+h]);return true};
@@ -79,18 +83,25 @@ function kDraw(){const W=kc.width,H=kc.height,c=kx,L=KL[kLayer];kPoly=[];
  const ss=KV.z>150;c.font=Math.max(14,sz)+'px "Segoe UI Emoji"';
  KSITES.forEach(s=>{if(!ss&&s[0]!='ירושלים')return;const p=km2s(s[1],s[2]);if(!free(p[0]-10,p[1]-12,20,20))return;c.fillStyle='#000';c.fillText(s[3],p[0],p[1]+6);if(KV.z>230){const fs=Math.max(11,sz*.62),w=s[0].length*fs*.6;if(free(p[0]-w/2,p[1]-fs*2.2,w,fs*1.3))kText(s[0],p[0],p[1]-fs*1.1,fs,'#3e2723','#fff')}});
  if(KV.z>170)KWATER.forEach(w=>{const p=km2s(w[1],w[2]),fs=Math.max(11,sz*.6),ww=w[0].length*fs*.6;if(free(p[0]-ww/2,p[1]-fs,ww,fs*1.3))kText(w[0],p[0],p[1],fs,'#01579b','#e1f5fe')})}
-function kInfo(){const L=KL[kLayer];$('kT').textContent=L.e+' '+L.n;$('kD').innerHTML=L.txt.map(t=>`<p>${t}</p>`).join('');
- const k=kSel;$('kS').innerHTML=!k?'':Array.isArray(k)&&k[1]&&k.length>=6?`<div class="kb" style="background:${k[2]}"><span>${k[1]}</span><b>${k[0]}</b><div>${k[5]}</div></div>`:`<div class="kb" style="background:${k[0]}"><b>${k[2]||''}</b></div>`;
+function kInfo(){const L=KL[kLayer],mp=KLP[kLayer],pic=$('kPic');pic.innerHTML='';
+ if(mp!=null){const im=mapImg('r_jo'+mp,MCOL[mp],'🕍');im.classList.add('mmodel');im.setAttribute('role','img');im.setAttribute('aria-label','ירושלים בדגם');pic.appendChild(im);
+  const cp=document.createElement('div');cp.className='mcap';cp.textContent='🕍 ירושלים בדגם';pic.appendChild(cp);pic.onclick=()=>{openKids(false);setPeriod(mp)};pic.classList.add('go')}
+ else{pic.appendChild(mapImg(KLD[kLayer],L.c,L.e));pic.onclick=null;pic.classList.remove('go')}
+ $('kT').textContent=L.e+' '+L.n;$('kD').textContent=mShort(L.txt[0]);
+ $('kFull').innerHTML=L.txt.map(t=>'<p>'+t+'</p>').join('');$('kMore').style.display=(L.txt.join(' ').length>mShort(L.txt[0]).length+4)?'inline-block':'none';
+ const k=kSel;$('kS').innerHTML=!k?(L.tribes?'<div class="khint">👆 בחרו שבט</div>':''):Array.isArray(k)&&k[1]&&k.length>=6?`<div class="kb" style="background:${k[2]}"><span>${k[1]}</span><b>${k[0]}</b><div>${mShort(k[5])}</div></div>`:`<div class="kb" style="background:${k[0]}"><b>${k[2]||''}</b></div>`;
  $('kList').innerHTML=L.tribes?TRIBES.map((t,i)=>`<button style="background:${t[2]}" data-i="${i}">${t[1]} ${t[0]}</button>`).join(''):(L.shapes||[]).filter(s=>s[2]).map(s=>`<span class="kd"><i style="background:${s[0]}"></i>${s[2]}</span>`).join('');
  document.querySelectorAll('#kList button').forEach(b=>b.onclick=()=>{kSel=TRIBES[+b.dataset.i];kInfo();kDraw()});
- document.querySelectorAll('#kbtns button').forEach((b,i)=>b.classList.toggle('on',i==kLayer))}
-function kSize(){const r=kc.parentElement.getBoundingClientRect();kc.width=Math.max(300,r.width);kc.height=Math.max(260,r.height);kFit();kDraw()}
+ document.querySelectorAll('#kbtns button').forEach((b,i)=>b.classList.toggle('on',i==kLayer));
+ const on=document.querySelector('#kbtns button.on');if(kidOpen&&on&&on.scrollIntoView)try{on.scrollIntoView({inline:'center',block:'nearest'})}catch(e){}}
+function kSize(){const r=kc.parentElement.getBoundingClientRect();kc.width=Math.max(200,Math.round(r.width));kc.height=Math.max(200,Math.round(r.height));kFit();kDraw()}
 function openKids(on){kidOpen=on;$('kidov').style.display=on?'flex':'none';if(on){kSize();kInfo()}}
 function kPick(x,y){const m=ks2m(x,y);for(let i=kPoly.length-1;i>=0;i--)if(inPoly(kPoly[i][0],m[0],m[1]))return kPoly[i][1];return null}
-kc.addEventListener('pointerdown',e=>{kdrag={x:e.offsetX,y:e.offsetY,lon:KV.lon,lat:KV.lat,m:0};kc.setPointerCapture(e.pointerId)});
-kc.addEventListener('pointermove',e=>{if(kdrag){const dx=e.offsetX-kdrag.x,dy=e.offsetY-kdrag.y;if(Math.abs(dx)+Math.abs(dy)>4)kdrag.m=1;KV.lon=kdrag.lon-dx/(KV.z*COSL);KV.lat=kdrag.lat+dy/KV.z;kDraw()}else{const h=kPick(e.offsetX,e.offsetY);if(h!==kHov){kHov=h;kc.style.cursor=h?'pointer':'grab';kDraw()}}});
-kc.addEventListener('pointerup',e=>{if(kdrag&&!kdrag.m){kSel=kPick(e.offsetX,e.offsetY);kInfo();kDraw()}kdrag=null});
-kc.addEventListener('wheel',e=>{e.preventDefault();const b=ks2m(e.offsetX,e.offsetY);KV.z=Math.max(60,Math.min(900,KV.z*(e.deltaY<0?1.2:1/1.2)));const a=ks2m(e.offsetX,e.offsetY);KV.lon+=b[0]-a[0];KV.lat+=b[1]-a[1];kDraw()},{passive:false});
+const KG=mapGest(kc,KV,[60,900],kDraw,(x,y)=>{kSel=kPick(x,y);kInfo();kDraw()},(x,y)=>{const h=kPick(x,y);if(h!==kHov){kHov=h;kc.style.cursor=h?'pointer':'grab';kDraw()}});
 addEventListener('resize',()=>{if(kidOpen)kSize()});
-KL.forEach((l,i)=>{const b=document.createElement('button');b.innerHTML=`<span>${l.e}</span>${l.n}`;b.style.setProperty('--c',l.c);b.onclick=()=>{kLayer=i;kSel=null;kHov=null;kInfo();kDraw()};$('kbtns').appendChild(b)});
+KL.forEach((l,i)=>{const b=document.createElement('button');b.className='mcard';b.style.setProperty('--c',l.c);b.setAttribute('aria-label',l.n);
+ b.appendChild(mapImg(KLD[i],l.c,l.e));const t=document.createElement('b');t.textContent=KLS[i];b.appendChild(t);
+ b.onclick=()=>{kLayer=i;kSel=null;kHov=null;kInfo();kDraw()};$('kbtns').appendChild(b)});
 $('bKids').onclick=()=>openKids(true);$('kidX').onclick=()=>openKids(false);$('kFit').onclick=()=>{kFit();kDraw()};
+$('kzIn').onclick=()=>KG.zoom(1.4);$('kzOut').onclick=()=>KG.zoom(1/1.4);
+$('kMore').onclick=()=>{const o=$('kside').classList.toggle('open');$('kMore').textContent=o?'🔼 פחות':'📖 עוד'};

@@ -46,10 +46,10 @@ const P=[
 ['המזבח והכבשים','בסיס 32×32, ומעליו 30×30, סובב 28×28 וקרנות; המערכה 24×24. הכבש הגדול בדרום: 32 אמה אורך ו־16 רוחב. בשני צידיו כבש קטן מזרחי ומערבי שעולים אל הסובב. בקרן דרומית־מערבית שני נקבים ושני ספלים. עשן המערכה עולה ישר.','משנה, מידות ג:א–ג · זבחים סב ע״א · ערכת המזבח',[15,45,25],[-26,16,-43],[-6,-14,270]],
 ['בית המטבחיים','מצפון למזבח: שמונה אמות עד הטבעות, 24 טבעות (ארבע בשורה), ארבע אמות לשולחנות השיש, שמונה עמודים נמוכים עם קורות ארז וקרסים, ושם התלו והפשיטו.','משנה, מידות ג:ה · ה:ב',[5,40,-70],[-22,16,-105],[-4,-100,270]],
 ['הכיור','דרומית למעלות האולם ומזרחית לאולם (תרשים התפארת ישראל). הבור והמוכני צמודים אליו.','משנה, מידות ג:ו',[-38,30,-8],[-58,18,-30],[-46,-28,270]],
-['לשכות העזרה – צפון','בית המוקד (חציו בפנים וחציו בחוץ) מזרחית לשערי הניצוץ והקרבן; ובקצה המזרחי: לשכות פרהדרין והגזית. לשכות המלח והפרווה בפינות המערביות של העזרה.','משנה, מידות א:ו · ה:ג',[-110,70,-70],[-115,18,-118],[-80,-90,0]],
-['בית הטבילה והמסיבה','בבית המוקד מקווה עגול שקוע ליד המדורה, ובלשכה הצפונית־מערבית (פתוחה לטרקלין) יורדים במעלות מסתלסלות. משם "המסיבה ההולכת תחת הבירה והחיל": מנהרה קמורה ארוכה, נרות דולקים משני צדיה, עד מדרגות היציאה בשער טדי – פתח מחודד מוצר עם דלתות מעוטרות. הדגם מציג את שתי הדעות: בית טבילה בבית המוקד (טרקלין) והמסיבה שיוצאת בטדי (ר׳ אליעזר בן יעקב).','משנה, מידות א:ו, ט · תמיד א:א',[-60,70,-60],[-90,18,-117],[-99,-117,270]],
+['לשכות העזרה – צפון','בית המוקד (חציו בפנים וחציו בחוץ) מזרחית לשערי הניצוץ והקרבן; ובקצה המזרחי: לשכות פרהדרין והגזית. לשכות המלח והפרווה בפינות המערביות של העזרה.','משנה, מידות א:ו · ה:ג',[-30,50,-40],[-115,18,-118],[-80,-90,0]],
+['בית הטבילה והמסיבה','בבית המוקד מקווה עגול שקוע ליד המדורה, ובלשכה הצפונית־מערבית (פתוחה לטרקלין) יורדים במעלות מסתלסלות. משם "המסיבה ההולכת תחת הבירה והחיל": מנהרה קמורה ארוכה, נרות דולקים משני צדיה, עד מדרגות היציאה בשער טדי – פתח מחודד מוצר עם דלתות מעוטרות. הדגם מציג את שתי הדעות: בית טבילה בבית המוקד (טרקלין) והמסיבה שיוצאת בטדי (ר׳ אליעזר בן יעקב).','משנה, מידות א:ו, ט · תמיד א:א',[-30,45,-70],[-100,18,-115],[-99,-117,270]],
 ['המסיבה ושער טדי','המנהרה המוארת מתחת לעזרה ולחיל: קירות לוחות, גג קמור, פמוטי קיר. בקצה הצפוני עולים 20 מעלות אל החצר שבתוך שער טדי, והשער פתוח החוצה (טמא קרי אינו נכנס להר הבית).','משנה, מידות א:ט (ר׳ אליעזר בן יעקב)',[40,45,-170],[-102,0,-190],[-102,-140,0,-10]],
-['לשכות העזרה – דרום','שער העליון, הדלק, הבכורות והמים; לשכות העץ, הגולה (בור וגלגל), אבטינס והמדיחין. לשכת הגזית עברה לצפון־מזרח.','משנה, מידות ה:ג–ד',[-100,60,-40],[-100,18,3],[-98,-15,180]],
+['לשכות העזרה – דרום','שער העליון, הדלק, הבכורות והמים; לשכות העץ, הגולה (בור וגלגל), אבטינס והמדיחין. לשכת הגזית עברה לצפון־מזרח.','משנה, מידות ה:ג–ד',[60,70,-30],[-100,18,3],[-98,-15,180]],
 ['sec','הכהנים'],
 ['כהן וכהן גדול – בגדי כהונה','כהן הדיוט עובד בארבעה בגדי בוץ לבנים: כתונת, מכנסיים, מגבעת ואבנט (שש, תכלת, ארגמן ותולעת שני). הכהן הגדול נוסף עליו בארבעה בגדי זהב: אפוד, חושן (י״ב אבנים), מעיל תכלת עם פעמונים ורימונים, וציץ זהב על המצח. ביום הכיפורים הכהן הגדול עובד בארבעה בגדי לבן בלבד. הכול יחפים.','שמות כח · ויקרא טז:ד · רמב״ם הל׳ כלי המקדש ח · יומא עב',[4,20,-31],[-7.5,18,-31]],
 ['sec','האולם וההיכל'],
@@ -58,8 +58,8 @@ const P=[
 ['חתך – בתוך ההיכל','חתך אורך (הסרת הצפון וגגות): האולם, ההיכל (40×20), האמה של הפרוכת, קודש הקדשים (20×20), ושלוש קומות התאים (5, 6 ו־7 אמות רוחב).','משנה, מידות ד:א–ז',[-112,95,-235],[-112,48,-58],null,{cut:'z',v:ZC,roofs:false}],
 ['חתך – תאי הלשכות (דרום)','חתך דרך שלוש קומות התאים בדרום (5, 6 ו־7 אמות), הגגות מוסתרים: בתחתונה אוצר כלי שרת (קערות, גביעים, צלחות זהב), באמצעית תאי אוצר (תיבות, כדים, שקים, מטילים), ובעליונה מנורות, נרות ו"מגדלורי" זהב.','משנה, מידות ד:ג–ז',[-112,52,-175],[-112,22,ZC+22],null,{cut:'z',v:ZC+16.3,roofs:false}],
 ['חתך – תאי המערב','חתך מזרחי דרך תאי המערב (3 + 3 + 2) עם תכולתם, הגגות מוסתרים.','משנה, מידות ד:ג–ז',[-100,40,ZC+0.1],[-158,16,ZC],null,{cut:'x',v:-153.4,roofs:false}],
-['בתוך ההיכל','מנורה בדרום, שולחן הלחם בצפון ומזבח הזהב באמצע לפני הפרוכת. ההיכל 40 אמה אורך על 20 רוחב; הקירות מצופים זהב.','משנה, מידות ד:ז · תמיד ג:ו',[-72,28,-45],[-110,26,ZC],[-90,ZC,270]],
-['קודש הקדשים','20×20 אמה, נפרד בשתי פרוכות ובאמה ביניהן. בבית שני לא היה ארון, ועמדה "אבן שתיה" בגובה שלושה אצבעות. (לעומת בית ראשון: ארון הברית וכרובי עשר האמות – ראו תיבת הסימון "ארון הברית".)','משנה, מידות ד:ז · יומא ה:ב',[-120,28,-47],[-140,25,ZC],[-130,ZC,270]]
+['בתוך ההיכל','מנורה בדרום, שולחן הלחם בצפון ומזבח הזהב באמצע לפני הפרוכת. ההיכל 40 אמה אורך על 20 רוחב; הקירות מצופים זהב.','משנה, מידות ד:ז · תמיד ג:ו',[-68,27,ZC],[-120,26,ZC],[-90,ZC,270]],
+['קודש הקדשים','20×20 אמה, נפרד בשתי פרוכות ובאמה ביניהן. בבית שני לא היה ארון, ועמדה "אבן שתיה" בגובה שלושה אצבעות. (לעומת בית ראשון: ארון הברית וכרובי עשר האמות – ראו תיבת הסימון "ארון הברית".)','משנה, מידות ד:ז · יומא ה:ב',[-110,27,ZC],[-155,25,ZC],[-130,ZC,270]]
 ];
 const pl=$('places');let curBtn=null;
 P.forEach(p=>{if(p[0]=='sec'){const d=document.createElement('div');d.className='sec';d.textContent=p[1];pl.appendChild(d);return}
@@ -72,7 +72,9 @@ function goto(p){const [name,desc,src,cam,tg,wk,cut]=p;showCard(name,desc,src);
  if(cut){$('cut').value=cut.k||cut.cut;$('cutv').value=cut.v;$('lRoof').checked=cut.roofs;ROOFS.forEach(r=>r.visible=cut.roofs)}
  else{if($('cut').value){$('cut').value='';}if(!$('lRoof').checked){$('lRoof').checked=true;ROOFS.forEach(r=>r.visible=true)}}
  applyCut();
- if(walk){if(wk)teleport(wk[0],wk[1],wk[2],wk[3]);return}
+ if(walk){if(wk)walkTo(wk[0],wk[1],wk[2],wk[3]);
+  else if(tg){const dx=tg[0]-px,dz=tg[2]-pz,d=Math.hypot(dx,dz)||1,s=Math.min(10,d),sx=tg[0]-dx/d*s,sz=tg[2]-dz/d*s,ok=inBounds(sx,sz)&&!blocked(sx,sz,floorY(px,pz,pfl));walkTo(ok?sx:tg[0],ok?sz:tg[2],Math.atan2(dx,-dz)*180/Math.PI)}
+  return}
  fly(cam,tg);pendingWalk=wk}
 let pendingWalk=null;
 function showCard(t,d,s){$('cT').textContent=t;$('cD').textContent=d;$('cS').textContent='מקור: '+s;$('card').style.display='block'}
@@ -82,7 +84,12 @@ $('bAbout').onclick=()=>$('about').style.display='flex';
 /* ---------- טיול ברגל ---------- */
 let walk=false,px=0,pz=0,yaw=0,pitch=0,py=3.4;const EYE=3.4,RAD=1.1,keys={};
 let pfl=0;   // מפלס הרצפה הנוכחי של ההולך (לבחירת שכבה תת־קרקעית ב-floorY)
-function teleport(x,z,yd,fl){px=x;pz=z;yaw=yd*Math.PI/180;pitch=0;pfl=fl===undefined?floorY(x,z):floorY(x,z,fl);py=pfl+EYE}
+let wt=null;   /* הליכה חלקה אל מקום שנבחר (בטיול ברגל): רק אם הדרך פנויה, אחרת קפיצה */
+function pathClear(x1,z1){const n=Math.ceil(Math.hypot(x1-px,z1-pz)/2);let f=floorY(px,pz,pfl);for(let i=1;i<=n;i++){const x=px+(x1-px)*i/n,z=pz+(z1-pz)*i/n;if(!inBounds(x,z)||blocked(x,z,f))return false;const nf=floorY(x,z,f);if(Math.abs(nf-f)>3.5)return false;f=nf}return true}
+function walkTo(x,z,yd,fl){const f1=fl===undefined?floorY(x,z):floorY(x,z,fl),d=Math.hypot(x-px,z-pz);
+ if(d<2||d>260||!pathClear(x,z)){teleport(x,z,yd,fl);return}
+ let da=yd*Math.PI/180-yaw;da=Math.atan2(Math.sin(da),Math.cos(da));wt={t:0,dur:Math.min(3.2,Math.max(.9,d/42)),x0:px,z0:pz,a0:yaw,da,x1:x,z1:z,fl:f1}}
+function teleport(x,z,yd,fl){wt=null;px=x;pz=z;yaw=yd*Math.PI/180;pitch=0;pfl=fl===undefined?floorY(x,z):floorY(x,z,fl);py=pfl+EYE}
 function setWalk(on){walk=on;controls.enabled=!on;$('bWalk').textContent=on?'🛰️ חזרה למבט־על':'🚶 טיול ברגל';$('lookb').style.display=on?'flex':'none';$('hint').style.display=on?'block':'none';
  if(on){$('hint').textContent='W A S D · Shift מהר · גרירה להסתכלות · R/F או גלגלת: מעלה/מטה · Z ישר · Esc ליציאה';
   const w=pendingWalk||(()=>{const t=controls.target;return[t.x,t.z+10,0]})();let[x,z,y,fl]=w;teleport(x,z,y,fl);camera.rotation.order='YXZ'}
@@ -98,7 +105,9 @@ cvs.addEventListener('wheel',e=>{if(walk){e.preventDefault();pitch=Math.max(-1.5
 [['lkU','KeyR'],['lkD','KeyF']].forEach(([i,k])=>{const b=$(i);['pointerdown'].forEach(ev=>b.addEventListener(ev,e=>{keys[k]=1;e.preventDefault()}));['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=0))});
 const blocked=(x,z,f)=>{for(const c of COL)if(!(c[6]&&!c[6].visible)&&f+1<c[5]&&f+4>c[4]&&x>c[0]-RAD&&x<c[1]+RAD&&z>c[2]-RAD&&z<c[3]+RAD)return true;return false};
 const inBounds=(x,z)=>Math.abs(x)<3200&&Math.abs(z)<3200;
-function stepWalk(dt){if(keys.KeyR||keys.PageUp)pitch=Math.min(1.5,pitch+1.5*dt);if(keys.KeyF||keys.PageDown)pitch=Math.max(-1.5,pitch-1.5*dt);if(keys.KeyZ)pitch*=Math.max(0,1-6*dt);const sp=(keys.ShiftLeft||keys.ShiftRight?42:13)*dt,f=floorY(px,pz,pfl);
+function stepWalk(dt){if(wt&&(keys.KeyW||keys.KeyA||keys.KeyS||keys.KeyD||keys.ArrowUp||keys.ArrowDown||keys.ArrowLeft||keys.ArrowRight))wt=null;
+ if(wt){wt.t+=dt;const u=Math.min(1,wt.t/wt.dur),e=u*u*(3-2*u);px=wt.x0+(wt.x1-wt.x0)*e;pz=wt.z0+(wt.z1-wt.z0)*e;yaw=wt.a0+wt.da*e;pfl=floorY(px,pz,pfl);const bob=Math.sin(wt.t*9)*.07*Math.sin(u*Math.PI);py+=(pfl+EYE+bob-py)*Math.min(1,dt*14);camera.position.set(px,py,pz);camera.rotation.set(pitch,-yaw,0);if(u>=1){pfl=wt.fl;wt=null}return}
+ if(keys.KeyR||keys.PageUp)pitch=Math.min(1.5,pitch+1.5*dt);if(keys.KeyF||keys.PageDown)pitch=Math.max(-1.5,pitch-1.5*dt);if(keys.KeyZ)pitch*=Math.max(0,1-6*dt);const sp=(keys.ShiftLeft||keys.ShiftRight?42:13)*dt,f=floorY(px,pz,pfl);
  let fw=(keys.KeyW||keys.ArrowUp?1:0)-(keys.KeyS||keys.ArrowDown?1:0),sd=(keys.KeyD?1:0)-(keys.KeyA?1:0);
  if(keys.ArrowLeft)yaw-=1.6*dt;if(keys.ArrowRight)yaw+=1.6*dt;
  const dx=(Math.sin(yaw)*fw+Math.cos(yaw)*sd)*sp,dz=(-Math.cos(yaw)*fw+Math.sin(yaw)*sd)*sp;

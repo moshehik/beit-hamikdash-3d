@@ -285,7 +285,7 @@ const SV=(()=>{
  /* הקראה בקול: השלב לא מסתיים לפני שההקראה נגמרה (הפעולות והקול רצים יחד); במהירות מעל 2× או כשהקול כבוי – תזמון לפי אורך הטקסט */
  function narrStart(){const key=S.sc.id+'-'+S.idx;S.auDone=true;if(!AUD.narrOn||!AUD.has(key)||S.speed>2){AUD.stop();return}AUD.stop(true);
   S.auDone=false;S.minT=.3;const idx=S.idx,sc=S.sc;AUD.narr(key,S.speed,()=>{if(S&&S.sc===sc&&S.idx===idx)S.auDone=true});if(!S.playing)AUD.pause()}
- function fail(e){console.error(e);S.err=e;S.playing=false;ui.cap&&(ui.capT.textContent='שגיאה בתסריט: '+e.message)}
+ function fail(e){console.error(e);S.err=e;S.playing=false;ui.act&&(ui.act.style.display='none');ui.cap&&(ui.capT.textContent='שגיאה בתסריט: '+e.message)}
  function nextStep(){if(S.idx>=S.sc.steps.length-1){S.playing=false;S.phase='end';uiState();return}S.idx++;startStep(false)}
  /* ---------- מצלמה ---------- */
  function camFrom(c){if(c.pos)return[V3(...c.pos),V3(...c.tgt)];const t=V3(...c.at),az=dirYaw(c.az!=null?c.az:0),d=c.d||30;return[t.clone().add(V3(Math.sin(az)*d,c.h!=null?c.h:d*.4,Math.cos(az)*d)),t]}
@@ -331,7 +331,7 @@ const SV=(()=>{
    else if(S.phase=='hold'){S.hold+=sdt;if(S.hold>=S.holdT)nextStep()}}catch(e){fail(e)}}
   updateActors(sdt);updCam(dt);
   for(const k in S.items){const it=S.items[k];if(it.g.userData.flick)it.g.traverse(o=>{if(o.isSprite&&o.userData.fl){const f=o.userData.fl;const j=1+.14*Math.sin(S.fr*.5+o.id)+.1*Math.cos(S.fr*.83+o.id*2);o.scale.set(f[0]*j,f[1]*(1+.2*Math.sin(S.fr*.7+o.id)),1)}})}
-  S.fr++;if(S.fr%3==0)ui.prog&&uiProg()}
+  S.fr++;if(S.fr%3==0)ui.prog&&uiProg();kAct()}
  /* ================= ממשק ================= */
  function build(){
   const p=document.createElement('div');p.id='svc';p.className='panel';p.style.display='none';
@@ -356,17 +356,78 @@ const SV=(()=>{
   const kidBtn=()=>{const b=$('svKid');b.classList.toggle('off',!KID);b.title=KID?'שפת ילדים (סיפור) – לחצו למעבר ללשון המקורות':'לשון המקורות – לחצו למעבר לשפת ילדים'};kidBtn();
   $('svKid').onclick=()=>{KID=!KID;try{localStorage.setItem('bh_kid',KID?'1':'0')}catch(e){}kidBtn();if(S){const st=S.sc.steps[S.idx];$('svCapT').textContent=stText(st);if(S.phase=='run'&&!AUD.speaking)S.minT=1.4+stText(st).length*.03}};
   document.querySelectorAll('input[name=svcm]').forEach(r=>r.onchange=()=>{if(!S||!r.checked)return;S.camMode=r.value;S.camTw=null;if(r.value=='follow')applyCam(null,false),applyFollowNow();else if(r.value=='script')applyCam(S.sc.steps[S.idx].cam,false)});
-  renderer.domElement.addEventListener('pointerdown',()=>{if(S){S.camTw=null;S.ut=performance.now()}});renderer.domElement.addEventListener('wheel',()=>{if(S)S.ut=performance.now()},{passive:true});window.addEventListener('pointerup',()=>{if(S&&S.ut)S.ut=performance.now()})}
+  renderer.domElement.addEventListener('pointerdown',()=>{if(S){S.camTw=null;S.ut=performance.now()}});renderer.domElement.addEventListener('wheel',()=>{if(S)S.ut=performance.now()},{passive:true});window.addEventListener('pointerup',()=>{if(S&&S.ut)S.ut=performance.now()});kBuild()}
+ /* ================= ממשק ילדים – עיצוב מחדש (18.11.2026): מסך כרטיסי סדרים, סרגל התקדמות (נקודות לחיצות), כפתורי סמל גדולים, סמל הפעולה ליד הכהן וסיכום בסוף.
+   נראה רק ב-body.kid (kidui.js); במצב מבוגרים נשאר הפאנל הישן (#svList/#svPlay). אין טקסט הסברי חדש – רק שמות קצרים וסמלים; תגיות הפעולה (KTAG) מ-kidui.js.
+   נטפרי: אייקון PNG רק דרך blob: (UI_ICONS[מזהה-סדר] ← src/ui_icons.js, אם קיים), גיבוי: אימוג'י. */
+ const KN={'tamid-shachar':['תמיד של שחר','🌅'],'ketoret':['קטורת','🌫️'],'menorah':['הטבת הנרות','🕎'],'olat-behema':['עולה','🐑'],'minchat-solet':['מנחה','🌾'],'olat-haof':['עולת העוף','🕊️']};
+ const kinfo=sc=>KN[sc.id]||[sc.name,'📜'];
+ const ktags=sc=>(window.KTAG&&window.KTAG[sc.id])||[];
+ const kemoji=(sc,i)=>{const t=ktags(sc)[i]||'',j=t.indexOf(' ');return j>0?t.slice(0,j):''};
+ const _bu={};
+ function blobUrl(k){if(k in _bu)return _bu[k];let u=null;try{const I=typeof UI_ICONS!='undefined'?UI_ICONS:null,d=I&&(I[k]||I['svc-'+k]||I['svc_'+k]);
+   if(d){const i=d.indexOf(','),b=atob(d.slice(i+1)),a=new Uint8Array(b.length);for(let j=0;j<b.length;j++)a[j]=b.charCodeAt(j);u=URL.createObjectURL(new Blob([a],{type:'image/png'}))}}catch(e){u=null}return _bu[k]=u}
+ function kIcon(el,key,em){el.textContent=em;const u=blobUrl(key);if(!u)return;const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{el.textContent='';el.classList.add('im');el.appendChild(im)};im.src=u}
+ const kmk=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
+ function kBuild(){const p=ui.panel,B=document.body;B.classList.add('ksvl');
+  /* מסך כרטיסים */
+  const L=kmk('div',null);L.id='svKList';L.innerHTML='<div class="kh"><b>בחרו סדר</b><button id="svKX" class="kx" aria-label="סגירה" title="סגירה">✕</button></div><div class="kgrid" id="svKGrid"></div>';p.appendChild(L);
+  const G=$('svKGrid'),ids=Object.keys(KN),list=ids.map(id=>SERVICES.find(s=>s.id==id)).filter(Boolean).concat(SERVICES.filter(s=>!KN[s.id]));
+  list.forEach(sc=>{const[nm,em]=kinfo(sc),b=kmk('button','kcard');b.dataset.id=sc.id;b.setAttribute('aria-label',nm);
+   b.innerHTML='<span class="kic"></span><b>'+nm+'</b><span class="kdt">'+'<i></i>'.repeat(sc.steps.length)+'</span>';kIcon(b.firstChild,sc.id,em);b.onclick=()=>open(sc.id);G.appendChild(b)});
+  $('svKX').onclick=()=>show(false);
+  /* סרגל בקרה בזמן סיור */
+  const K=kmk('div',null);K.id='svKPlay';K.innerHTML='<div class="kt"><span class="kti"></span><b id="svKT"></b><em id="svKN"></em></div><div id="svDots" role="group" aria-label="שלבים"></div>'+
+   '<div class="kctl"><div class="kg"><div class="kmain"><button id="svKPrev" class="kb big" aria-label="שלב קודם">⏮</button><button id="svKPP" class="kb big pri" aria-label="הפעלה והשהיה">⏸</button><button id="svKNext" class="kb big" aria-label="שלב הבא">⏭</button></div><button id="svKCam" class="kb cam" aria-label="מצלמה"><i>👁️</i><small>עוקב</small></button></div>'+
+   '<div class="kg"><div id="svKSpd" class="kspd" role="group" aria-label="מהירות"><button data-v="0.5" aria-label="לאט">🐢</button><button data-v="1" aria-label="רגיל">🚶</button><button data-v="2" aria-label="מהר">🐇</button></div><button id="svKNar" class="kb" aria-label="הקראה">🔊</button><button id="svKMus" class="kb" aria-label="מוזיקה">🎵</button><button id="svKBack" class="kb" aria-label="חזרה לסדרים">⬅️</button></div></div>';p.appendChild(K);
+  $('svKPrev').onclick=()=>$('svPrev').click();$('svKNext').onclick=()=>$('svNext').click();$('svKPP').onclick=()=>$('svPP').click();$('svKBack').onclick=()=>$('svBack').click();
+  $('svKNar').onclick=()=>{$('svNar').click();kState()};$('svKMus').onclick=()=>{$('svMus').click();kState()};
+  $('svKSpd').onclick=e=>{const b=e.target.closest('button');if(!b||!S)return;const sel=$('svSpd');sel.value=b.dataset.v;sel.onchange({target:sel});kState()};
+  $('svKCam').onclick=()=>{if(!S)return;const v=S.camMode=='follow'?'free':'follow',r=document.querySelector('input[name=svcm][value='+v+']');if(r){r.checked=true;r.dispatchEvent(new Event('change'))}kState()};
+  $('svDots').onclick=e=>{if(!S)return;let bi=0,bd=1e9;[...$('svDots').children].forEach((d,i)=>{const r=d.getBoundingClientRect(),dd=Math.abs(e.clientX-(r.left+r.right)/2);if(dd<bd){bd=dd;bi=i}});S.err=null;goTo(bi);S.playing=true;uiState()};
+  /* מתגי הקראה/מוזיקה: משקפים את מצב הכפתורים הישנים (AUD.btn מעדכן אותם) */
+  ['svNar','svMus'].forEach(id=>new MutationObserver(kState).observe($(id),{attributes:true,attributeFilter:['class']}));
+  /* גובה הסרגל → מיקום הכתובית */
+  if(window.ResizeObserver)new ResizeObserver(()=>{if(p.classList.contains('kplay'))B.style.setProperty('--kstrip',p.offsetHeight+'px')}).observe(p);
+  /* סמל הפעולה ליד הכהן + מסך סיכום */
+  ui.act=kmk('div',null);ui.act.id='svAct';ui.act.style.display='none';B.appendChild(ui.act);
+  ui.end=kmk('div',null);ui.end.id='svEnd';ui.end.style.display='none';ui.end.innerHTML='<div class="ke1">🎉</div><b>סיימנו!</b><div class="ke2" id="svEIc"></div><div class="ke3"><button id="svEAgain" class="kb wide">↻ שוב</button><button id="svEList" class="kb wide">📋 סדרים</button></div>';B.appendChild(ui.end);
+  $('svEAgain').onclick=()=>{if(S){goTo(0);S.playing=true;uiState()}};$('svEList').onclick=()=>$('svBack').click()}
+ function kOpen(){if(!ui.panel||!$('svKList'))return;const sc=S.sc,[nm,em]=kinfo(sc);ui.panel.classList.add('kplay');document.body.classList.remove('ksvl');
+  $('svKT').textContent=nm;const ti=ui.panel.querySelector('.kti');ti.classList.remove('im');ti.textContent='';kIcon(ti,sc.id,em);
+  const D=$('svDots');D.innerHTML='<i></i>'.repeat(sc.steps.length);ui.curDot=null;ui.lastAct=null;
+  requestAnimationFrame(()=>{if(ui.panel.classList.contains('kplay'))document.body.style.setProperty('--kstrip',ui.panel.offsetHeight+'px')})}
+ function kBack(){if(!ui.panel||!$('svKList'))return;ui.panel.classList.remove('kplay');document.body.classList.add('ksvl');ui.act.style.display='none';ui.end.style.display='none';ui.cap.classList.remove('kend');ui.curDot=null}
+ function kStep(){if(!$('svDots')||!S)return;const ds=$('svDots').children,n=ds.length;
+  for(let i=0;i<n;i++){ds[i].className=i<S.idx?'d':i==S.idx?'c':'';ds[i].style.removeProperty('--p')}ui.curDot=ds[S.idx]||null;
+  $('svKN').textContent=(S.idx+1)+' / '+n;
+  const em=kemoji(S.sc,S.idx),A=ui.act;if(A&&em!==ui.lastAct){ui.lastAct=em;A.textContent=em;A.classList.remove('pop');void A.offsetWidth;A.classList.add('pop')}}
+ function kProg(){if(!S||!ui.curDot)return;const f=S.phase=='run'?Math.min(1,S.t/Math.max(.1,S.minT)):1;ui.curDot.style.setProperty('--p',(100*f).toFixed(0)+'%')}
+ function kState(){if(!S||!$('svKPP'))return;const end=S.phase=='end';$('svKPP').textContent=end?'↻':S.playing?'⏸':'▶';
+  document.querySelectorAll('#svKSpd button').forEach(b=>b.classList.toggle('on',+b.dataset.v===S.speed));
+  const c=$('svKCam'),m=S.camMode;c.querySelector('small').textContent=m=='follow'?'עוקב':m=='free'?'חופשי':'תחנות';c.classList.toggle('free',m!='follow');
+  $('svKNar').classList.toggle('off',!AUD.narrOn);$('svKMus').classList.toggle('off',!AUD.music);
+  const E=ui.end;if(E){const show=end&&ui.panel.classList.contains('kplay');E.style.display=show?'block':'none';ui.cap.classList.toggle('kend',end);
+   if(show&&E.dataset.k!=S.sc.id){E.dataset.k=S.sc.id;$('svEIc').innerHTML=S.sc.steps.map((s,i)=>kemoji(S.sc,i)).filter(Boolean).map(e=>'<span>'+e+'</span>').join('')}}}
+ const _pv=V3(0,0,0);
+ function kAct(){const e=ui.act;if(!e)return;if(S.fr%6==0)kProg();
+  const hide=()=>{if(e.style.display!='none')e.style.display='none'};
+  if(!document.body.classList.contains('kid')||S.err||S.phase=='end'||!ui.lastAct||!ui.panel.classList.contains('kplay'))return hide();
+  const A=S.actors[S.follow];if(!A||!A.root.visible)return hide();
+  camera.updateMatrixWorld();_pv.set(A.x,A.y+4.9,A.z).project(camera);
+  const W=innerWidth,H=innerHeight,x=(_pv.x*.5+.5)*W,y=(-_pv.y*.5+.5)*H,lim=H-(parseFloat(document.body.style.getPropertyValue('--kstrip'))||130)-110;
+  if(_pv.z>1||x<30||x>W-30||y<110||y>lim)return hide();
+  if(e.style.display=='none')e.style.display='flex';e.style.transform='translate('+x.toFixed(0)+'px,'+y.toFixed(0)+'px) translate(-50%,-100%)'}
  function applyFollowNow(){const A=S.actors[S.follow];if(!A)return;const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,1.2)}
  let _side=null;
  function show(on){if(!ui.panel)return;ui.panel.style.display=on?'flex':'none';ui.cap.style.display=on&&S?'block':'none';const sd=$('side');if(on){_side=sd.style.display;sd.style.display='none';$('card').style.display='none'}else{sd.style.display=_side||'';if(S)close(true);uiBack();LIFE.tour(null)}}
- function uiOpenScript(){$('svList').style.display='none';$('svPlay').style.display='block';$('svT').textContent=S.sc.name;$('svSrc').textContent=S.sc.src||'';ui.cap.style.display='block';$('svMore').style.display='none';ui.panel.classList.remove('min');$('svMin').textContent='▁';
+ function uiOpenScript(){$('svList').style.display='none';$('svPlay').style.display='block';$('svT').textContent=S.sc.name;$('svSrc').textContent=S.sc.src||'';ui.cap.style.display='block';$('svMore').style.display='none';ui.panel.classList.remove('min');$('svMin').textContent='▁';kOpen();
   const st=$('svSteps');st.innerHTML='';S.sc.steps.forEach((s,i)=>{const b=document.createElement('button');b.className='svst';b.textContent=(i+1)+'. '+(s.title||s.text.slice(0,38)+(s.text.length>38?'…':''));b.onclick=()=>{goTo(i);S.playing=true;uiState()};st.appendChild(b)});
   S.speed=+$('svSpd').value;document.querySelectorAll('input[name=svcm]').forEach(r=>r.checked=r.value==S.camMode);AUD.btn();uiState()}
- function uiBack(){if(!ui.panel)return;$('svList').style.display='block';$('svPlay').style.display='none';ui.cap.style.display='none'}
- function uiState(){if(!S)return;$('svPP').textContent=S.phase=='end'?'↻':S.playing?'⏸':'▶'}
+ function uiBack(){if(!ui.panel)return;$('svList').style.display='block';$('svPlay').style.display='none';ui.cap.style.display='none';kBack()}
+ function uiState(){if(!S)return;$('svPP').textContent=S.phase=='end'?'↻':S.playing?'⏸':'▶';kState()}
  function uiStep(){const st=S.sc.steps[S.idx];if(typeof LIFE!='undefined'&&LIFE.tourStep)LIFE.tourStep(S.sc.id,S.idx);$('svCapN').textContent='שלב '+(S.idx+1)+' מתוך '+S.sc.steps.length;$('svCapT').textContent=stText(st);$('svCapS').textContent=st.src?'מקור: '+st.src:'';
-  document.querySelectorAll('.svst').forEach((b,i)=>b.classList.toggle('on',i==S.idx));const on=document.querySelector('.svst.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});uiState();uiProg()}
- function uiProg(){if(!S)return;const n=S.sc.steps.length;$('svProg').style.width=(100*(S.idx+(S.phase=='run'?Math.min(1,S.t/Math.max(.1,S.minT)):1))/n)+'%'}
+  document.querySelectorAll('.svst').forEach((b,i)=>b.classList.toggle('on',i==S.idx));const on=document.querySelector('.svst.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});uiState();uiProg();kStep()}
+ function uiProg(){if(!S)return;const n=S.sc.steps.length;const f=(S.idx+(S.phase=='run'?Math.min(1,S.t/Math.max(.1,S.minT)):1))/n;$('svProg').style.width=(100*f)+'%';kProg()}
  return{rampY,update,open,close,show,build,get S(){return S},goTo,SVL}
 })();
