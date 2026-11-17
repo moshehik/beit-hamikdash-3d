@@ -2,7 +2,7 @@
 // שרשרת: טקסט פשוט -> מודל טקסט של Gemini (הנחיה מפורשת: ניקוד תקני + מונחי מקדש + רמזי מילון ממשנה/מקרא) -> אימות שהאותיות לא השתנו
 //   (alignMarks: אם המודל סטה באותיות – מעתיקים אליו רק את סימני הניקוד) -> מטמון (audio/niqqud-cache.json) -> תיקוני מילון ידניים
 //   (tools/niqqud-fixes.json) -> fixPrefixShva. רק התוצאה הסופית נשלחת ל-TTS; הטקסט המוצג על המסך נשאר בלי ניקוד.
-const fs=require('fs'),p=require('path'),crypto=require('crypto');
+const fs=require('fs'),p=require('path'),crypto=require('crypto'),cp=require('child_process'),os=require('os');
 const MARKS=/[֑-ֽֿׁׂׄ-ׇ]/g,TAAMIM=/[֑-ֽֿ֯׀׃-׆]/g;
 const strip=s=>String(s).replace(MARKS,'');
 const norm=s=>String(s).replace(/\s+/g,' ').trim();
@@ -73,6 +73,26 @@ STRICT RULES:
 7. Input: several paragraphs, each as <p id="N">text</p>. Output: exactly the same <p id="N"> elements (same ids, same order) with the vocalized text inside. Return ONLY the <p> elements — no explanations, no markdown fences.`;
 const RETRY_NOTE=`\n\nIMPORTANT — a previous attempt was rejected because it changed letters (dropping or adding a י or ו, or changing punctuation) or left some words without niqqud. Copy every letter exactly; only add niqqud marks, and vocalize EVERY word.`;
 
+// --- גיבוי: מנוע Gemini באורקל (print-center/docs/oracle-server/gemini-engine/CONNECT-FROM-OTHER-SITE.md) כשמכסת ה-API נגמרה ---
+// POST <בסיס>/text {prompt, system, model:'flash-lite'}; טוקן מ-NIQQUD_ENGINE_TOKEN או נקרא ב-ssh מהשרת (לא מודפס ולא נשמר); קצב מתון (מכסה: 60 בשעה ל-X-Requester).
+// כיבוי: NIQQUD_ENGINE=0.  קצב: NIQQUD_ENGINE_GAP_S (ברירת מחדל 20 שניות בין בקשות).
+const ENGINE_URL=process.env.GEMINI_ENGINE_URL||'https://nblm.chavarivkalandauhydrotherapy.co.il/gemini';
+let _engTok=null,_engLast=0,_engBad=0;
+function engineToken(){if(process.env.NIQQUD_ENGINE_TOKEN)return process.env.NIQQUD_ENGINE_TOKEN;if(_engTok!==null)return _engTok;
+ try{_engTok=cp.execFileSync('ssh',['-o','BatchMode=yes','-i',p.join(os.homedir(),'.ssh','oracle_new_ed25519'),'opc@92.5.172.95','cat /opt/gemini-engine/token.txt'],{encoding:'utf8',timeout:30000}).trim()}catch(e){_engTok=''}return _engTok}
+function sleepSync(ms){Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,ms)}
+function engineGen(prompt,system){
+ if(process.env.NIQQUD_ENGINE==='0'||_engBad>=3)return null;const tok=engineToken();if(!tok)return null;
+ const gap=(+process.env.NIQQUD_ENGINE_GAP_S||20)*1000,wait=_engLast+gap-Date.now();if(wait>0)sleepSync(wait);
+ const f=p.join(os.tmpdir(),'niqqud-eng-'+process.pid+'.json'),NL=String.fromCharCode(10);
+ fs.writeFileSync(f,JSON.stringify({prompt:String(prompt),system:String(system).split('text-to-speech').join('reader'),model:'flash-lite'}));
+ const r=cp.spawnSync('curl',['-s','-m','175','-w',NL+'%{http_code}','-X','POST','-H','Authorization: Bearer '+tok,'-H','X-Requester: temple-niqqud','-H','Content-Type: application/json','--data-binary','@'+f,ENGINE_URL.replace(/\/$/,'')+'/text'],{encoding:'utf8',maxBuffer:64*1024*1024,env:{...process.env,MSYS2_ARG_CONV_EXCL:'*'}});
+ _engLast=Date.now();try{fs.unlinkSync(f)}catch(e){}
+ const out=(r.stdout||'').split(NL),code=+out.pop();let j=null;try{j=JSON.parse(out.join(NL))}catch(e){}
+ if(j&&j.ok&&j.text)return{text:j.text,model:'engine:'+(j.model||'flash-lite')};
+ if(process.env.NIQQUD_DEBUG)console.log('  [engine]',code,JSON.stringify(j&&(j.error||j.code)||'').slice(0,100));
+ if(code===429){sleepSync(60000)}else _engBad++;return null}
+
 function make({curlJson,keys,cacheFile,fixesFile,corpusFile,models}){
  const MODELS=models||(process.env.NIQQUD_MODELS||'gemini-3.5-flash-lite,gemini-3.8-flash,gemini-2.5-flash,gemini-3.1-flash-lite').split(',');
  let cache={};try{cache=JSON.parse(fs.readFileSync(cacheFile,'utf8'))}catch(e){}
@@ -89,7 +109,7 @@ function make({curlJson,keys,cacheFile,fixesFile,corpusFile,models}){
    if(r.status===429||r.status===402||r.status===403)cool.set(ck,Date.now()+(r.status===429?20*60e3:3600e3));
    else if(r.status===404)cool.set(ck,Date.now()+3600e3);else cool.set(ck,Date.now()+20e3);
    if(process.env.NIQQUD_DEBUG)console.log('  [gen]',model,'key#'+i,r.status,JSON.stringify(r.json&&r.json.error&&r.json.error.message||'').slice(0,100))}}
-  return null}
+  return engineGen(prompt,system)}
  function hintsFor(plains){const seen=new Set(),out=[];
   for(const t of plains)for(const w0 of String(t).split(/[^א-ת]+/)){if(w0.length<3||seen.has(w0))continue;
    const h=corpus[w0];

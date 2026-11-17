@@ -2118,5 +2118,2015 @@
   "text": "וְכָךְ מְסַתיֵּים סֵדֶר הַתָּמִיד! הַכֹּהֲנִים יוֹרְדִים מִן הַמִּזְבֵּחַ דֶּרֶךְ שְׂמֹאל. זֶה סֵדֶר הַתָּמִיד לַעֲבוֹדַת בֵּית אֱלֹוקֵינוּ, כָּל בֹּוקֶר מְחָדָש, וְעוֹד מְעַט מַגִּיעַ הָעֶרֶב וְיֵשׁ תָּמִיד נוֹסָף. וַאֲנַחְנוּ מִתְפַּלְּלִים: “יְהִי רָצוֹן שֶׁיִּבָּנֶה בִּמְהֵרָה בְיָמֵינוּ, אָמֵן!”",
   "model": "gemini-3.5-flash-lite",
   "cov": 0.974
+ },
+ "27f90db98ca19d40": {
+  "text": "עַד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8e847684928fa921": {
+  "text": "שׁוּב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5e113ff735e6a237": {
+  "text": "בָּחֲרוּ שֵׁבֶט",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "eeb1e50f87ed0d0b": {
+  "text": "סְדָרִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "770e88083eb28b7b": {
+  "text": "יְרוּשָׁלַיִם בְּדֶגֶם",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "f9f07420e836fdd6": {
+  "text": "לַדֶּגֶם הַתְּלַת־מִמְּדִי",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "607dfb9d61380d37": {
+  "text": "הַמַּפָּה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "eb1b7ab488de5c5b": {
+  "text": "אֶרֶץ יִשְׂרָאֵל שֶׁלָּנוּ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "872aea96b9e03a2e": {
+  "text": "12 שְׁבָטִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "eacdaf6916686eae": {
+  "text": "אֵזוֹר אַחֵר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "c220eccc35926734": {
+  "text": "אַחַר כָּךְ מַעֲלִים אֶת הָאֵיבָרִים בַּכֶּבֶשׁ עוֹלִים דֶּרֶךְ יָמִין אֶל רֹאשׁ הַמִּזְבֵּחַ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.978
+ },
+ "4953b1add338037b": {
+  "text": "אַלְכְּסַנְדֶּר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b5c1159281a0f87f": {
+  "text": "אַנְטוֹנְיָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "d2689fe52e9c4c16": {
+  "text": "בָּחֲרוּ סֵדֶר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "75a398ff3b51ef2d": {
+  "text": "בֵּית הַטְּבִילָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5b3368cfba7b9e5f": {
+  "text": "בִּפְנִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "277be084ca865cfb": {
+  "text": "גְּבוּלוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "65e2df146f7ddc46": {
+  "text": "הָאֲתָר פָּתוּחַ לַצִּיבּוּר לְהַרְבּוֹת תּוֹרָה וּלְהַאֲדִירָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.969
+ },
+ "f82d836a7e1a54cf": {
+  "text": "הַחוֹמוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1c83d0fe45dac54c": {
+  "text": "הַחֵיל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "62a07201bfd5c241": {
+  "text": "הֲטָבַת הַנֵּרוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "12862f212b952ed0": {
+  "text": "הַפְעָלָה וְהַשְׁהָיָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "d35ecac4fefe8d9a": {
+  "text": "הַקְרָאָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "e90509b39dd91e9f": {
+  "text": "הַקֶּשֶׁת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8d724f18d082e3a0": {
+  "text": "הַרְחֵק",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "85c1be0011b15bef": {
+  "text": "חֲזָרָה לְסָדֲרִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b97e1f847941f155": {
+  "text": "חַשְׁמוֹנָאִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "ddfe53ab31929ed1": {
+  "text": "הַסְּטִיו",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "ea8ab0d60f1ffccd": {
+  "text": "הַסְּטִיו הַמַּלְכוּתִי",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "45f47d3ed0744414": {
+  "text": "וַיִּקְרא א:ג–ט מִשְׁנָה זְבָחִים ה:ד, ו:ג רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ג, ה–ו",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0dd7d753f1de0ed4": {
+  "text": "וַיִּקְרא ב:א–ג מִשְׁנָה זְבָחִים ו:א רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת יג:ה, יב–יד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5514760235b0d46a": {
+  "text": "חָתַךְ תְּאֵי הַלְּשָׁכוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "dcbfd4867f504515": {
+  "text": "חָתַךְ הַהֵיכָל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "65d1e94588dfb286": {
+  "text": "חָתַךְ מִזְרָחִי דֶּרֶךְ תְּאֵי הַמַּעֲרָב (3 3 2) עִם תְּכוּלָתָם, הַגַּגּוֹת מֻוסְתָּרִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.978
+ },
+ "d5b6c5b9f8675bf7": {
+  "text": "יוֹסְפוּס, מִלְחָמוֹת ה:ד מִמְצָאֵי חֲפִירוֹת הָעֹופֶל, עִיר דָּוִד וְהָרֹובַע הַיְּהוּדִי",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.961
+ },
+ "72efabcca944e4a0": {
+  "text": "כָּל הַמְּקוֹמוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5c1c613927891cee": {
+  "text": "לְאַט",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "75b3aae22c7f869e": {
+  "text": "לְאָן נֵלֵךְ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6c3946b5f53f8624": {
+  "text": "לְוִיִּים עַל הַדּוֹכָן שִׁירָה עַל הַקָּרְבָּן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0e6c902c29afaacf": {
+  "text": "לְיְלָדִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "db14017cf06d5cf6": {
+  "text": "לְלֹא",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "29c453685a3cd34a": {
+  "text": "לָלֶכֶת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6656581efb458e04": {
+  "text": "לָלֶכֶת בִּפְנִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3f4d6087e414e724": {
+  "text": "לְמַעְלָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "18ee78a7704d39b5": {
+  "text": "לַמַּרְכֵּז אֶרֶץ יִשְׂרָאֵל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b6c873aa3b7a7387": {
+  "text": "לִפְנֵה״ס",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "07eee3c77c02f1d3": {
+  "text": "לִפְנֵי הַשְּׁלִיחָה הָרִאשׁוֹנָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5166792cf0278af5": {
+  "text": "כֹּהֵן שֶׁמְּדַשֵּׁן עַל רֹאשׁ הַמִּזְבֵּחַ (תָּמִיד ב:א",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6dd7a6db802532d7": {
+  "text": "לָשׁוֹן הַמְּקוֹרוֹת לַחֲצוּ לְמַעֲבָר לְשְׂפַת יְלָדִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8bf6ae9ccce57c26": {
+  "text": "לִשְׁכָּה בְּגַג כֵּהֶה כְּלֵי שִׁיר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "fa7e7be47306e1d7": {
+  "text": "לִשְׁכָּה צְפוֹנִית־מַעֲרָבִית יוֹרְדִים לְבֵית הַטְּבִילָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "34edd6e1f8946eb6": {
+  "text": "לְשָׁכוֹת דָּרוֹם",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "48508542558afbc7": {
+  "text": "לְשָׁכוֹת הָעֲזָרָה דָּרוֹם",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "622ca690348b6c7e": {
+  "text": "לְשָׁכוֹת הָעֲזָרָה צָפוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0f66ad414b15165c": {
+  "text": "לְשָׁכוֹת פִּנְחָס הַמַּלְבִּישׁ וְעוֹשֵׂי הַחֲבִיתִּין",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.963
+ },
+ "8f1b617f098c99de": {
+  "text": "לְשָׁכוֹת צָפוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "29d94226b3ea8636": {
+  "text": "לִשְׁכַּת בֵּית הַמּוֹקֵד כִּיפָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0f2ddf6d61c386ba": {
+  "text": "לִשְׁכַּת הַגּוֹלָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "06023719fda1c921": {
+  "text": "לִשְׁכַּת הַגָּזִית סַנְהֶדְרִין גְּדוֹלָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "077a70276035992c": {
+  "text": "לִשְׁכַּת הַמְדִיחִין",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "88bc751b81328728": {
+  "text": "לִשְׁכַּת הַמֶּלַח",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "510f5b499891156e": {
+  "text": "לִשְׁכַּת הָעֵץ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3ca6214554deb53a": {
+  "text": "לִשְׁכַּת מְצוֹרָעִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "570922a8a3f12b97": {
+  "text": "לִשְׁכַּת נְזִירִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a17d4203cad23efe": {
+  "text": "לִשְׁכַּת עוֹשֵׂי חֲבִיתִּין",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.929
+ },
+ "c1df24d0d258ce27": {
+  "text": "לִשְׁכַּת עֵצִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "ed54022250bad747": {
+  "text": "לִשְׁכַּת פִּנְחָס הַמַּלְבִּישׁ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "432d2da032b1f923": {
+  "text": "לִשְׁכַּת פַּרְהֶדְרִין כֹּהֵן גָּדוֹל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "f3c65bef1df92a20": {
+  "text": "לִשְׁכַּת שֶׁמֶן וְיַיִן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "39509401b7efc14a": {
+  "text": "מַבָּט מֵהַצַּד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "43b7b7d63ffe52b0": {
+  "text": "מַבָּט מִלְמַעְלָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "be338053627e8aeb": {
+  "text": "מַבָּט עַל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "c60f951ab4adae85": {
+  "text": "מַבָּט עַל הַר הַבַּיִת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "061b8d2309b7d3aa": {
+  "text": "מֵבִיא טָלֶה לַתָּמִיד מִלִּשְׁכַּת הַטְּלָאִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "72226dcbc4f48607": {
+  "text": "מֵבִיא קָרְבָּן: סוֹמֵךְ יָדָיו עַל רֹאשׁוֹ וְשׁוֹחֵט בָּעֲזָרָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "19f29909e5b96ac7": {
+  "text": "מִגְדַּל הִיפִּיקוּס",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "25c5733ea8381a7b": {
+  "text": "מִגְדַּל מִרְיָם",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "120b015baa87ca2e": {
+  "text": "מִגְדַּל פָּצָאֵל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "50fc6162de38c65f": {
+  "text": "מְגָרֵף אֶת הַדָּשֶׁן בְּרֹאשׁ הַמִּזְבֵּחַ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "9ba13b3b09aac306": {
+  "text": "מְגָרֵף אֶת הַדָּשֶׁן מִרֹאשׁ הַמִּזְבֵּחַ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "786f978f17f30c07": {
+  "text": "מְדוּרַת בֵּית הַמּוֹקֵד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a92ad3a3fe1d7aed": {
+  "text": "מְדִיחֵי קְרָבִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "91e473a53bbf672a": {
+  "text": "מַדְפֵּי בְּדִים וּמְגִילּוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.933
+ },
+ "8d4f219dbcd5aa28": {
+  "text": "מַדְפֵּי כַּדִּים וְאַרְגַּזֵּי מְנָחוֹת (נְסָכִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "acb294b51cf338ee": {
+  "text": "מַדְרֵגוֹת לְפֶתַח הַמַּעֲרָבִי",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5fbf1e0ce7fa00d2": {
+  "text": "מַה כָּתוּב בַּמִּשְׁנָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a1cf4451d2979b57": {
+  "text": "מַה מַּהֲמִשְׁנָה וּמַה הַשְׁלָמָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3459762f13433837": {
+  "text": "מַהִיר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6d98e1721e51aa6d": {
+  "text": "מְהִירוּת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b1734aa869d787a9": {
+  "text": "מְהַלֵּךְ בָּעֲזָרָה בֵּין עֲבוֹדוֹת הַכֹּהֲנִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1a5850021f71672c": {
+  "text": "מַהֵר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6ee9611489dc3324": {
+  "text": "מוֹדֵל תְּלַת־מְמַדִּי לְפִי מַסֶּכֶת מִידּוֹת בְּחָרוּ מָקוֹם לְעִיּוּן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.973
+ },
+ "5006d563852803bc": {
+  "text": "מוּזִיקָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "d366bcda8d55e154": {
+  "text": "מוּזִיקָה הַפְעֵל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "dde4c97795677d9d": {
+  "text": "מוּזִיקָה כַּבֵּה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5c6079d7d419c61d": {
+  "text": "מַהַמִּשְׁנָה (מִידּוֹת א–ה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.933
+ },
+ "a4b644999fc1cbb7": {
+  "text": "מוּכְנִי הַכִּיּוֹר (גַּלְגַּל וְחֶבֶל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5a0577d5461a0144": {
+  "text": "מוּסַף הַיּוֹם",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8fb794bc7afa7592": {
+  "text": "מוּסַף חֹול הַמּוֹעֵד פֶּסַח: שְׁנֵי פָּרִים, אַיִל וְשִׁבְעָה כְּבָשִׂים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1489250b6b1f4403": {
+  "text": "מוּסַף יֹום הַכִּיפּוּרִים: פָּר, אַיִל, שִׁבְעָה כְּבָשִׂים וְשָׂעִיר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.973
+ },
+ "f9ca20a1e06c77ba": {
+  "text": "מוּסַף רֹאשׁ חֹודֶשׁ: שְׁנֵי פָּרִים, אַיִל, שִׁבְעָה כְּבָשִׂים וְשָׂעִיר חַטָּאת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.976
+ },
+ "e93804e3c3ebc5ac": {
+  "text": "מוּסַף שָׁבוּעוֹת, וּבֹו קָרְבָּן שְׁתֵּי הַלֶּחֶם בִּתְנוּפָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "85c5a70e630060fe": {
+  "text": "מוּסַף שַׁבָּת: שְׁנֵי כְּבָשִׂים בְּנוֹסָף לַתְּמִידִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b139b6b489e9b2e9": {
+  "text": "מוֹשַׁב הַנָּשִׂיא",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a134b0eecfaf6d44": {
+  "text": "מוֹשִׁיט בָּזִיךְ זָהָב לַחֲבֵרוֹ שׁוּרָה שֶׁל זָהָב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "ae6a93e3a12bc60b": {
+  "text": "מוֹשִׁיט בָּזִיךְ כֶּסֶף לַחֲבֵרוֹ שׁוּרָה שֶׁל כֶּסֶף",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "70ba67197b4e2af0": {
+  "text": "מִזְבַּח הַזָּהָב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6bf78063669ad7e4": {
+  "text": "מַזְעֵר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "4449e9c15c34d584": {
+  "text": "מְחַלֵּל בְּחָלִיל לִפְנֵי מְבִיאֵי הַבִּיכּוּרִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.962
+ },
+ "e34a1c7f5e381c75": {
+  "text": "מַחַק הַקְלָטָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "e7a984fee07629f6": {
+  "text": "מִטָּה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3cade991c612f7b5": {
+  "text": "מְכִין קָרְבָּן מוּסָף",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "f0f1af988ac82691": {
+  "text": "מַכְתֵּשׁ וְשֻׁולְחָן זָהָב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.923
+ },
+ "26dc3f802707f925": {
+  "text": "מֶלַח עוֹרוֹת הַקֳּדָשִׁים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0357b8ba5163bad9": {
+  "text": "מַמְלֶכֶת הוֹרְדוֹס",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "86d1e2980089d0c4": {
+  "text": "מַמְלֶכֶת יְהוּדָה (יְרוּשָׁלַיִם",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8d275eb0f28c80d8": {
+  "text": "מַמְלֶכֶת יִשְׂרָאֵל (שׁוֹמְרוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "d3ecb41d53ae799d": {
+  "text": "מַמְלֶכֶת יִשְׂרָאֵל חָרְבָה בִּשְׁנַת 722, וּמַמְלֶכֶת יְהוּדָה בְּ־586 לִפְנֵה״ס",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "9879a2c8962b9a14": {
+  "text": "מֵחֲסִידֵי וְאַנְשֵׁי מַעֲשֶׂה מְרַקְּדִים בְּאֲבוּקוֹת (מִשְׁנָה סֻוכָּה ה:ד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.975
+ },
+ "1d1f41402806c35b": {
+  "text": "מַמְלֶכֶת שְׁלֹמֹה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "4e26cc9dbc46688b": {
+  "text": "מְנַגֵּן וְשָׁר עַל אַחַת מֵחֲמֵשׁ עֶשְׂרֵה הַמַּעֲלוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "382515a381ad6555": {
+  "text": "מְנוֹרָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "10e034330f0961d3": {
+  "text": "מְנוֹרוֹת שִׂמְחַת בֵּית הַשּׁוֹאֵבָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "bf246fe36b37e563": {
+  "text": "מְנוֹרַת שִׂמְחַת בֵּית הַשּׁוֹאֵבָה אַרְבָּעָה גְּבִיעֵי שֶׁמֶן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0695c34c3d54b2f5": {
+  "text": "מִנְחָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "d45b2bfad538b8d5": {
+  "text": "מְנָחוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b74022c65b197ecb": {
+  "text": "מִנְחַת סֹולֶת קְמִיצָה וְהַקְטָרָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.947
+ },
+ "b85a2156bbebc629": {
+  "text": "מְנִיף אֶת הַנֵּתַח בִּתְנוּפָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "df32fa03b9bbadae": {
+  "text": "מְנַשֶּׁה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b84125b109c926a4": {
+  "text": "מְנַשֶּׁה (עֵבֶר הַיַּרְדֵּן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "c2a8b37fb29a8ad0": {
+  "text": "מְסַדֵּר אֵבָרִים וְעֵצִים עַל הַמַּעֲרָכָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a9bc82c6a815fd2e": {
+  "text": "מִסְתּוֹבֵב בְּעֶזְרַת נָשִׁים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "668a34261c7c1feb": {
+  "text": "מִסְתּוֹבְבִים וְרוֹאִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b27bc15874a1e58e": {
+  "text": "מִסְתּוֹבֶבֶת בְּעֶזְרַת נָשִׁים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8286a5634125cc0c": {
+  "text": "מִסְתַּכֶּלֶת מִשִׂמְחַת בֵּית הַשּׁוֹאֵבָה מִן הַגָּזוֹזְטְרָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "ab883d441ae3b4a8": {
+  "text": "מַעֲלָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "17594b9405bc697d": {
+  "text": "מַעֲלֶה אֶת אֵבְרֵי הַתָּמִיד לַכֶּבֶשׁ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b535a67bf39f909a": {
+  "text": "מַעֲלוֹת הַדּוֹכָן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8ee8a27d032e11d9": {
+  "text": "מַעֲלוֹת יְצִיאָה אֶל שַׁעַר טָדִי",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "9c8c40377dce5ddd": {
+  "text": "מַעֲלוֹת מִסְתַּלְסְלוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "e1da12255fbe4995": {
+  "text": "מַעֲלוֹת מִסְתַּלְסְלוֹת (מְסִיבָּה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.947
+ },
+ "5e0960691d3974b5": {
+  "text": "מַעֲלוֹת עִם מַעֲקֶה וְכַדּוּרֵי אֶבֶן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "311762fa36c43241": {
+  "text": "מֵעֲצָמוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "88c1fb281661c6c1": {
+  "text": "מַעֲרָכָה גְּדוֹלָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a111ce6928a236c7": {
+  "text": "מַעֲרָכָה שְׁלִישִׁית קִיּוּם הָאֵשׁ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "2343a93477314793": {
+  "text": "מַפּוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b849afb6ea422ee5": {
+  "text": "מַפְתְּחוֹת הָעֲזָרָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1ef7df1b0f0ab493": {
+  "text": "מַצָּב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3ff71d19979a49bc": {
+  "text": "מְצוּדַת אַנְטוֹנְיָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b04fad606a8a0fc0": {
+  "text": "מַצְלֵמָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1a6819da683d5243": {
+  "text": "מַצְלֵמָה וְרְשִׁימַת שְׁלָבִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "eb289b9667930c99": {
+  "text": "מַצְלֶמֶת הַתַּסְרִיט (קוֹפֶצֶת לְכָל תַּחֲנָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.958
+ },
+ "949a71204051372e": {
+  "text": "מִצְרַיִם וּבָבֶל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "06b83b16a688f471": {
+  "text": "מִקְוֶה טהרָה בֵּית הַטְּבִילָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.941
+ },
+ "b3a48e4af404469f": {
+  "text": "מִקְוֶוה עֲגול בֵּית הַטְּבִילָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.944
+ },
+ "77e49a7ae60162d4": {
+  "text": "מָקוֹר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a74149f1617603bd": {
+  "text": "מְקוֹרוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "96c9258bfab31632": {
+  "text": "מַקִּיף אֶת הַמִּזְבֵּחַ עִם עֲרָבָה: \"אָנָּא ה׳ הוֹשִׁיעָה נָּא",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "87ce135776d6578f": {
+  "text": "מַקְרִיב אֶת תָּמִיד שֶׁל שַׁחַר בְּבִגְדֵי זָהָב (יוֹמָא ג:ד–ו",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "512569a309cc2a5e": {
+  "text": "מְרַקֵּד בַּאֲבוּקוֹת שֶׁל אוֹר וְאוֹמֵר שִׁירוֹת וְתִשְׁבָּחוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "db4860444b1fc920": {
+  "text": "מִקְוֵה טַהֲרָה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "d10912b6d675558d": {
+  "text": "מִשְׁנַה זְבָחִים ו:ג–ו גְּמָרָא זְבָחִים סד–סה רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבֹנוֹת ו:כ–כג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.98
+ },
+ "13a9aac38de4b045": {
+  "text": "מִשְׁנָה סֻוכָּה ד:ה (הַשָּׁעָה מְשׁוּעֶרֶת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.955
+ },
+ "81212a087b39d164": {
+  "text": "מִשְׁנָה פְּסָחִים ה:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "9006b3129fba5764": {
+  "text": "מִשְׁנָה פְּסָחִים ה:ט–י",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "53d5fbdd84f10196": {
+  "text": "מִשְׁנָה רֹאשׁ הַשָּׁנָה ג:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "0be2a0fe2a2cd395": {
+  "text": "מִשְׁנָה תָּמִיד א–ד, ז:ג רַמְבַּ״ם תְּמִידִין וּמוּסָפִין א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.971
+ },
+ "2d379f5c2ac3ef0e": {
+  "text": "מִשְׁנָה תָּמִיד א:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "4fedd8531aa78439": {
+  "text": "מִשְׁנָה תָּמִיד א:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "589ff5a30e46735b": {
+  "text": "מִשְׁנָה תָּמִיד א:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "bc0b112d62b5bca4": {
+  "text": "מִשְׁנָה תָּמִיד ב:א–ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "a8b358e9dad22c66": {
+  "text": "מִשְׁנָה תָּמִיד ג:א–ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "75267db46befc53d": {
+  "text": "מִשְׁנָה תָּמִיד ג:ט, ו:א רַמְבַּ״ם תְּמִידִין וּמוּסָפִין ג:י–יז",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.974
+ },
+ "70af4c1b8fbb6cb5": {
+  "text": "מִשְׁנָה תָּמִיד ה:ב–ז:ב רַמְבַּ״ם תְּמִידִין וּמוּסָפִין ג:א–ט",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "5b14b042bb1896a8": {
+  "text": "מִשְׁנָה תָּמִיד ז:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "be1f3fbc580ba0d7": {
+  "text": "מִשְׁנָה תַּעֲנִית ד:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "1629497b1bfbe10d": {
+  "text": "מִשְׁנָה, זְבָחִים ה:ד רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ה:ו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.969
+ },
+ "9784d4379baa79a2": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ג גְּמָרָא, זְבָחִים סד ע״ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.929
+ },
+ "e7cdb19f61966d9f": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ג וִיקְרָא א:ד רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ו:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.95
+ },
+ "209b6ddde021675a": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ה גְּמָרָא, זְבָחִים סד ע״א רַמְבַּ״ם, בֵּית הַבְּחִירָה ב:יד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.936
+ },
+ "1e9444bd72ff9641": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ה רַמְבַּ״ם ו:כא",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.955
+ },
+ "1790f8b32b09d339": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ה רַמְבַּ״ם ו:כב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "b6bc26eadfa40fc0": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ה–ו רַמְבַּ״ם ו:כ",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "997b040d6bf481a8": {
+  "text": "מִשְׁנָה, מִיּדוֹת א:ג ב:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "35cb4491378d61cf": {
+  "text": "מִשְׁנָה, מִיּדוֹת א:ג ב:ג–ד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "96e76bcd7f063839": {
+  "text": "מִשְׁנָה, מִיּדוֹת א:ג פָּרָה ג:ו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "ae55cde85265e731": {
+  "text": "מִשְׁנָה, מִיּדוֹת א:ו ה:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "e8fdff6651fe47a1": {
+  "text": "מִשְׁנָה, מִיּדוֹת א:ו, ט תָּמִיד א:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "1af9a91c9508c367": {
+  "text": "מִשְׁנָה, מִיּדוֹת א:ט (ר׳ אֱלִיעֶזֶר בֶּן יַעֲקֹב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "abff4fdf847362d1": {
+  "text": "מִשְׁנָה, מִיּדוֹת ב:א מִיּדוֹת א:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "3bb7534e85759b38": {
+  "text": "מִשְׁנָה, מִיּדוֹת ב:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "e7e15279c61dcef6": {
+  "text": "מִשְׁנָה, מִיּדוֹת ב:ג, ה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "391bbf7278621a03": {
+  "text": "מִשְׁנָה, מִיּדוֹת ב:ה סֻוכָּה ה:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.95
+ },
+ "e85469a5abff3781": {
+  "text": "מִשְׁנָה, מִיּדוֹת ב:ו ה:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "f1cf6975b7b33958": {
+  "text": "מִשְׁנָה, מִיּדוֹת ג:א–ג זְבָחִים סב ע״א עֲרֶכֶת הַמִּזְבֵּחַ",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "cd434aa666999910": {
+  "text": "מִשְׁנָה, מִיּדוֹת ג:ה ה:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "fc915c88f411681c": {
+  "text": "מִשְׁנָה, מִיּדוֹת ג:ו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "ba718cec2d5d0bac": {
+  "text": "מִשְׁנָה, מִיּדוֹת ג:ז–ח ד:ז",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "674d1034cbbfd695": {
+  "text": "מִשְׁנָה, מִיּדוֹת ד:א–ז",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "4207f0ddf3beccb7": {
+  "text": "מִשְׁנָה, מִיּדוֹת ד:ג–ז",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "090f26b5f46b7680": {
+  "text": "מִשְׁנָה, מִיּדוֹת ד:ו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "7aa2a4f48c7c7cf0": {
+  "text": "מִשְׁנָה, מִיּדוֹת ד:ז יוֹמָא ה:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "0f955b9099c37f5b": {
+  "text": "מִשְׁנָה, מִיּדוֹת ד:ז תָּמִיד ג:ו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "a8610ecdf12fca97": {
+  "text": "מִשְׁנָה, מִיּדוֹת ה:ג–ד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "bcec902ed6147322": {
+  "text": "מִשְׁנָה, תָּמִיד א:א–ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "c4e9922eb2c309e0": {
+  "text": "מִשְׁנָה, תָּמִיד א:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "61a1c228041dbfbc": {
+  "text": "לֵוִי שׁוֹמֵר מִשְׁמַר הַשְּׁעָרִים וְהַפִּינּוֹת (מִשְׁנָה מִידּוֹת א:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.946
+ },
+ "7090d17052764fb8": {
+  "text": "לַחֲצוּ עַל שֵׁבֶט כְּדֵי לִשְׁמֹועַ עָלָיו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.952
+ },
+ "b88795d017372bfb": {
+  "text": "לְמַרְכֵּז",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "ef5e72f446101d20": {
+  "text": "מְסִיבָּה מְנָהָרָה מְוארֶת בְּנֵרוֹת תַּחַת הַחֵיל",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.926
+ },
+ "f4c37edad62d2dcd": {
+  "text": "מִשְׁנָה בִּיכּוּרִים ג:ג–ו",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.938
+ },
+ "8f97b91ba078080a": {
+  "text": "מִשְׁנָה יוֹמָא ו:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "f70eba239a82f793": {
+  "text": "מִשְׁנָה יוֹמָא ז:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "b83b4fd68e01ce9f": {
+  "text": "מִשְׁנָה, זְבָחִים ו:ה רַמְבַּ״ם ו:כ, כג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "fe0af83876fd530a": {
+  "text": "מִשְׁנָה, תָּמִיד א:ד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "89392687a77d81e1": {
+  "text": "מִשְׁנָה, תָּמִיד א:ד מִשְׁנָה, יוֹמָא ג:י",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "fdef3a14defab01f": {
+  "text": "מִשְׁנָה, תָּמִיד ב:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "7beebd3f9637f222": {
+  "text": "מִשְׁנָה, תָּמִיד ב:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "f6498d975e222919": {
+  "text": "מִשְׁנָה, תָּמִיד ב:ג–ד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "d9f8831f6d013de0": {
+  "text": "מִשְׁנָה, תָּמִיד ב:ה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "2ad71be4af81fb8c": {
+  "text": "מִשְׁנָה, תָּמִיד ב:ה ג:א",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "68f882cccea06fbb": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ב רַמְבַּ״ם תְּמִידִין א:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "d5af70763d374585": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ג–ד רַמְבַּ״ם תְּמִידִין א:ט",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "c76c67de627c47ce": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ה מִידּוֹת ג:ה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.95
+ },
+ "b64924ea3486440d": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ז מִידּוֹת ד:ב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.95
+ },
+ "f9aa7318cbf45a58": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ז–ח שְׁקָלִים ה:א",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "af4acc38174ca382": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ז, ד:א רַמְבַּ״ם תְּמִידִין א:י–יא",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a32ba90ca0df84b6": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ח",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5c1125daa9041fdb": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ט רַמְבַּ״ם ג:יא–יד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "bbd5272ec5c26b07": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ט רַמְבַּ״ם ג:יז",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "95707ebc26e46ded": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ט רַמְבַּ״ם תְּמִידִין ג:יא–יז",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.967
+ },
+ "c067eba733eba83e": {
+  "text": "מִשְׁנָה, תָּמִיד ג:ט, ו:א רַמְבַּ״ם תְּמִידִין ג:ד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.967
+ },
+ "41a5916a1a9d259f": {
+  "text": "מִשְׁנָה, תָּמִיד ד:א",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "bbf3067b13e2e839": {
+  "text": "מִשְׁנָה, תָּמִיד ד:א רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ד:ח, תְּמִידִין א:י",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.976
+ },
+ "480731b469967800": {
+  "text": "מִשְׁנָה, תָּמִיד ד:ב מִידּוֹת ג:ה רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ו:ה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.974
+ },
+ "01d92ceb164e82ea": {
+  "text": "מִשְׁנָה, תָּמִיד ד:ב רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ו:ה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "f89c700dd0a9b415": {
+  "text": "מִשְׁנָה, תָּמִיד ד:ב–ג",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "4781cc46b3bfe17c": {
+  "text": "מִשְׁנָה, תָּמִיד ד:ב–ג רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבֹנות ו:ה–ט, י–יז",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.95
+ },
+ "a48dbaba855e0bdb": {
+  "text": "מִשְׁנָה, תָּמִיד ד:ג",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "e3cecfdecbc83c61": {
+  "text": "מִשְׁנָה, תָּמִיד ד:ג, ה:א",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6065950ae09f2d46": {
+  "text": "מִשְׁנָה, תָּמִיד ה:א–ב, ז:ג",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0ec41fc2e968a9eb": {
+  "text": "מִשְׁנָה, תָּמִיד ה:ב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a97b67310b4009bd": {
+  "text": "מִשְׁנָה, תָּמִיד ה:ב יוֹמָא ב:ד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "cb016c449eb1f7a3": {
+  "text": "מִשְׁנָה, תָּמִיד ה:ד–ה רַמְבַּ״ם ג:ד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "8d577fb8c512789b": {
+  "text": "מִשְׁנָה, תָּמִיד ה:ה רַמְבַּ״ם ג:ה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "c2cc8c8d8dc27ec2": {
+  "text": "מִשְׁנָה, תָּמִיד ה:ו",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "4fdb2c709916f555": {
+  "text": "מִשְׁנָה, תָּמִיד ו:א רַמְבַּ״ם ג:ד, ז",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "2f8523ca26261e49": {
+  "text": "מִשְׁנָה, תָּמִיד ו:א רַמְבַּ״ם ג:יא, יג",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "dc09ac9a10174f1c": {
+  "text": "מִשְׁנָה, תָּמִיד ו:א רַמְבַּ״ם ג:יז",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "52c6729fdc8fc127": {
+  "text": "מִשְׁנָה, תָּמִיד ו:א–ג רַמְבַּ״ם ג:ז, ט",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "2afca0b5e0d0f78f": {
+  "text": "מִשְׁנָה, תָּמִיד ו:ב רַמְבַּ״ם ג:ז",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "f5b593441b244fb9": {
+  "text": "מִשְׁנָה, תָּמִיד ו:ג רַמְבַּ״ם ג:ג, ט",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "704e951b0b3d4dd9": {
+  "text": "מִתּוֹךְ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "e3ae9b2573e28a9d": {
+  "text": "מִתּוֹךְ הַסֶּרֶט \"הַמַּסָּע אֶל הַמִּקְדָּשׁ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "e6326d65275bc82a": {
+  "text": "מְתַקְּנֵי עֵץ מְסוִידִים (נִבְדְּקוּ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "703c9aca438d8971": {
+  "text": "מִשְׁנָה, תָּמִיד ו:ג רַמְבַּ״ם ג:ח",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3724c433b1b2cbe6": {
+  "text": "מִשְׁנָה, תָּמִיד ז:ב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "6e6bbbe8c4c86293": {
+  "text": "מִשְׁנָה, תָּמִיד ז:ב כְּרִיתוֹת ו. רַמְבַּ״ם ג:ב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "c623d4dfda2e6f62": {
+  "text": "מִשְׁנָה, תָּמִיד ז:ג זְבָחִים ו:ג",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "887179e55d26914a": {
+  "text": "מִשְׁנָה, תָּמִיד ז:ג רַמְבַּ״ם תְּמִידִין א",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "97d235f966dd3ded": {
+  "text": "נוֹשֵׂא גִּזְרֵי עֵץ מִלִּשְׁכַּת הָעֵצִים אֶל הַמַּעֲרָכָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "12defad9b806f0fe": {
+  "text": "נָזִיר מְבַשֵּׁל אֶת שְׁלָמָיו וּמְגַלֵּחַ אֶת שְׂעָרוֹ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "67cea0f8df563fa2": {
+  "text": "נָזִיר בְּלִשְׁכַּת הַנְּזִירִים (פִּינָּה דְּרוֹמִית־מִזְרָחִית שֶׁל עֶזְרַת נָשִׁים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.977
+ },
+ "d3bf1086c554349b": {
+  "text": "נַחַל קִדְרוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a4908aa593701ca6": {
+  "text": "נַחֲלָתוֹ נִמְצְאָה בְּתוֹךְ נַחֲלַת יְהוּדָה בַּנֶּגֶב, סָבִיב בְּאֵר שֶׁבַע",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "34ccf9e6f163ca10": {
+  "text": "נִכְנַס לָעֲזָרָה עִם פִּסְחוֹ (שַׁעַר הַדֶּלֶק",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b999038540a189c3": {
+  "text": "נַפְתָּלִי",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "72c5a9859c0b3041": {
+  "text": "נְשִׂיא הַסַּנְהֶדְרִין יוֹשֵׁב בַּמַּרְכֵּז חֲצִי הַגֹּורֶן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.966
+ },
+ "9ca2d007ba438074": {
+  "text": "סָגוּר",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "111d62cb1e89682f": {
+  "text": "סָגוּר (הַדְּמוּת מַמְשִׁיכָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "d1f03f0416ddf2fe": {
+  "text": "סְגִירָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5c686a6f2599b868": {
+  "text": "סֻוכּוֹת נִיסוּךְ הַמַּיִם וְשִׂמְחַת בֵּית הַשּׁוֹאֵבָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.929
+ },
+ "71ee16d7dc985808": {
+  "text": "סוֹפֵר הַדַּיָּינִים כּוֹתֵב אֶת דִּבְרֵי הַמְזַכִּים וְהַמְחַיְּיבִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.944
+ },
+ "9ca40169bd729c36": {
+  "text": "סוֹפֵר הַדַּיָּינִים (אֶחָד מִיָּמִין וְאֶחָד מִשְּׂמֹאל מִשְׁנַה סַנְהֶדְרִין ד:ג",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.953
+ },
+ "bce426f9ea3e286b": {
+  "text": "סֻוכּוֹת חוֹל הַמּוֹעֵד",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.923
+ },
+ "9fb0edcde09f721f": {
+  "text": "סוֹרֵג עֲמוּדֵי אֶבֶן וְסִבְכַּת עֵץ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "7f813223df3ae973": {
+  "text": "סְטִיו שְׁלֹמָה (מִזְרָח",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "78e0b3dea87fee06": {
+  "text": "סִיּוּר רָצִיף עוֹקֶבֶת אַחֲרֵי הַכֹּהֵן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "539c6133069ce43e": {
+  "text": "סִיּוּרִים",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "fec7bcced270260b": {
+  "text": "סִיּוּרִים עִם הַכֹּהֵן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "a76542b4b1c22661": {
+  "text": "סֶלֶוְוקִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "31412f539d8b915e": {
+  "text": "סַפְסָל עָגוֹל",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "c4fb04b64f81f62a": {
+  "text": "סַפְסְלֵי הַמְּצֹורָעִים",
+  "model": "gemini-2.5-flash",
+  "cov": 0.923
+ },
+ "4d0b55af58b84af6": {
+  "text": "סַפְסְלֵי הַנְּזִירִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "062ef2d589826323": {
+  "text": "סְקִירָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "7463d13ef0c9e208": {
+  "text": "עֲבוֹדַת הַגָּן עֲרוּגוֹת פְּרָחִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "7b7b1e4f99d5e6cc": {
+  "text": "עֵבֶר הַיַּרְדֵּן",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "0ff402dd558bba0c": {
+  "text": "עוֹבֵד בְּקָרְבְּנוֹת יְחִידִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "fbebb105a24bdbe4": {
+  "text": "עוֹבֵד עֲבוֹדַת יוֹם הַכִּיפּוּרִים בְּבִגְדֵי לָבָן",
+  "model": "gemini-2.5-flash",
+  "cov": 0.964
+ },
+ "f2e86838bfd81e6b": {
+  "text": "עוֹלֶה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "726c14c2c0b01f79": {
+  "text": "עוֹלֶה בַּכֶּבֶשׁ הָאוּלָם לְהַקְטִיר אֶת הַקְּטֹורֶת",
+  "model": "gemini-2.5-flash",
+  "cov": 0.963
+ },
+ "6b7624ad8c71b986": {
+  "text": "עוֹלֶה בַּכֶּבֶשׁ הָאוּלָם עִם הַטֶּנִי וְהַכּוּז לְדַשֵּׁן אֶת מִזְבֵּחַ הַפְּנִימִי וְאֵת הַמְּנוֹרָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "fa8381d351f6d8f6": {
+  "text": "עוֹלֶה בַּכֶּבֶשׁ וְנוֹשֵׂא סַל מִנְחָה אֶל הַמִּזְבֵּחַ",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "ecf0e875f0704f03": {
+  "text": "עוֹלֶה בְּמַעֲלוֹת שַׁעַר נִיקָנוֹר אֶל עֶזְרַת יִשְׂרָאֵל",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "e31173295c5038ca": {
+  "text": "עוֹלֶה לָרֶגֶל בְּהַר הַבַּיִת",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "20356614399c5dc6": {
+  "text": "עוֹלֶה לָרֶגֶל בְּהַר הַבַּיִת מַמְתִּין לְהִיכָּנֵס",
+  "model": "gemini-2.5-flash",
+  "cov": 0.962
+ },
+ "e18f232da94fc8d2": {
+  "text": "עוֹלֶה לָרֶגֶל בַּחֲצַר הַר הַבַּיִת",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "4e5b2b9c32fe09f3": {
+  "text": "עוֹלֶה עִם צְלוֹחִית שֶׁל זָהָב מִמִּי הַשִּׁלּוּחַ לְנַסֵּוךְ עַל הַמִּזְבֵּחַ",
+  "model": "gemini-2.5-flash",
+  "cov": 0.973
+ },
+ "6d426b4550cca6a7": {
+  "text": "עוֹלַת בְּהֵמָה (קָרְבָּן יָחִיד",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "e765dc64a1f8c274": {
+  "text": "עוֹלַת הָעוֹף",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "7a62d81f3986b4fb": {
+  "text": "עוֹלַת הָעוֹף מְלִיקָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "32923d42d0e41b70": {
+  "text": "עוֹמֵד בְּמִשְׁמָר עַל שַׁעַר/פִּינַּת הַר הַבַּיִת",
+  "model": "gemini-2.5-flash",
+  "cov": 0.96
+ },
+ "07eb300e376a014c": {
+  "text": "עוֹמֵד בְּמִשְׁמָר עַל שַׁעֲרֵי הָעֲזָרָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "a47655b373244b08": {
+  "text": "עוֹמֵד בַּעֲזָרַת יִשְׂרָאֵל וְצוֹפֶה בָּעֲבוֹדָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "4a098022c0524801": {
+  "text": "עוֹמֵד בְּשַׁעַר הָעֶלְיוֹן (נִיקָנוֹר) וְתוֹקֵעַ בַּחֲצוֹצְרָה כְּשֶׁקָּרָא הַגֶּבֶר",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "65e317ddbf265eea": {
+  "text": "עוֹמֵד עַל הַדּוּכָן וְשָׁר עַל הַקָּרְבָּן (בַּנְּסָכִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "d39ddc6b9c5d954b": {
+  "text": "עוֹמֵד עַל הַמִּזְבֵּחַ בִּשְׁעַת הַנְּסָכִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "75e33c335b356f3f": {
+  "text": "עוֹמֵד עַל הַקָּרְבָּן (אִישׁ מַעֲמָד) וּמִשְׁתַּחֲוֶוה בְּכָל תְּקִיעָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "04a3e9b34d7467c6": {
+  "text": "עוֹקֵב",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "c0fcee2fafad4d6f": {
+  "text": "עַזָּה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "fdfd29e7d75437d8": {
+  "text": "עֲזָרוֹת וּלְשָׁכוֹת",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "2a8dfbaa8b3199e5": {
+  "text": "עֶזְרַת יִשְׂרָאֵל",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "fb493bdc74dc7852": {
+  "text": "עֶזְרַת יִשְׂרָאֵל 11 אַמָּה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "e3b5c64566f143fe": {
+  "text": "עֶזְרַת יִשְׂרָאֵל וּכֹהֲנִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "1b236c6a07d74f85": {
+  "text": "עֶזְרַת כֹּהֲנִים 11 אַמָּה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "796affe9545ab7d4": {
+  "text": "עֶזְרַת נָשִׁים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "4f89a7b8c32ad73e": {
+  "text": "עֶזְרַת נָשִׁים 135×135",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "dea2f99378d9462d": {
+  "text": "עִיר דָוִד",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "64a0e87da0e499f6": {
+  "text": "עִיר דָוִד וּבִרְכַּת הַשִּׁילּוֹחַ",
+  "model": "gemini-2.5-flash",
+  "cov": 0.941
+ },
+ "0e2d30945877b4f1": {
+  "text": "עַל הַדֶּגֶם",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "fad80d5f4cc2df6b": {
+  "text": "עַל הַמּוֹדֶל",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "3fa87870a228031c": {
+  "text": "עַמּוֹן",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "2711a3c696428701": {
+  "text": "עֶרֶב פֶּסַח שְׁחִיטַת הַפְּסָחִים בִּשְׁלֹושׁ כִתּוֹת",
+  "model": "gemini-2.5-flash",
+  "cov": 0.962
+ },
+ "4658acdc9e31dcb1": {
+  "text": "עָרִים",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "77fb51c4eab8d36d": {
+  "text": "עֲרֵימוֹת גִּזְעֵי עֲצֵי הַמַּעֲרָכָה",
+  "model": "gemini-2.5-flash",
+  "cov": 0.947
+ },
+ "6553bf1d1d7af13e": {
+  "text": "עֲרֵמַת מֶלַח",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "82aa19463d707d43": {
+  "text": "פֶּסַח חוֹל הַמּוֹעֵד",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "94c0b7e776adff22": {
+  "text": "עֶרֶב פֶּסַח (י״ד בְּנִיסָן",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "d3616092beb14c18": {
+  "text": "פְּעוּלָה לֹא מוּכֶּרֶת",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "86240c880b170227": {
+  "text": "פְּרָס",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "f520575cad0aa725": {
+  "text": "פַּרְעֹה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "41f081a2cc8cda9f": {
+  "text": "פֶּתַח הַהֵיכָל 20×10",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "b74da3a08d1b2072": {
+  "text": "פֶּתַח לִמְסִיבָּה יוֹרְדִים לְבֵית הַטְּבִילָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "f9fc12e01db95fab": {
+  "text": "פֶּתַח לָעֲזָרָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "8d6f84a4a76407b7": {
+  "text": "צַעַד אַחַר צַעַד",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "63f9aa60545d0690": {
+  "text": "צְפִיפוּת הַקָּהָל",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "7902ebbb33c91255": {
+  "text": "קֶבֶר בְּנֵי חָזִיר",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "cee904a5e48da535": {
+  "text": "קֶבֶר זְכַרְיָה",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "a0b7daece17019a7": {
+  "text": "קְדֵרַת שַׁלְמֵי נָזִיר עַל הָאֵשׁ",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "e0f37cebffd5c9d6": {
+  "text": "קֶדֶשׁ (עִיר מִקְלָט",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "daf8edda2ab5f7b7": {
+  "text": "קָהָל מוּעָט",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "e8304cd73b1e67f9": {
+  "text": "קָהָל מָלֵא",
+  "model": "gemini-2.5-flash",
+  "cov": 1
+ },
+ "255ca1e6a26798bd": {
+  "text": "קָהָל רָגִיל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "4b5eefc56276f9de": {
+  "text": "קֹודֶשׁ הַקֳּדָשִׁים 20×20",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 0.933
+ },
+ "0d145012ffc593f6": {
+  "text": "קָרֵב",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "66701cedc95adbb0": {
+  "text": "ק״מ",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1245b3691ad883f5": {
+  "text": "קוֹרֵא בַּתּוֹרָה בַּעֲמִידָה בָּעֲזָרָה (יוֹמָא ז:א",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "0863c2213e7a8c78": {
+  "text": "קָרְבָּנוֹת",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "276f48513f252629": {
+  "text": "קֶשֶׁת וִילְסוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "ebbbfd1938de2943": {
+  "text": "קֶשֶׁת וִילְסוֹן וְרוּבִּינְסוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "30b617627eb8063c": {
+  "text": "קֶשֶׁת רוּבִּינְסוֹן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "1cea959d028de523": {
+  "text": "רְאוּבֵן",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "b444512d7f2ad32a": {
+  "text": "רֹאשׁ הַשָּׁנָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "48fe3a299c3ac502": {
+  "text": "רִאשׁוֹנָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "2b97da059963030b": {
+  "text": "רֵאשִׁית הַמְּדִינָה",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "5bc9027139e3076f": {
+  "text": "רָגִיל",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "3f530f666050ea60": {
+  "text": "רוֹמָא",
+  "model": "gemini-3.5-flash-lite",
+  "cov": 1
+ },
+ "f0f377bd4ed1a217": {
+  "text": "רַמְבַּ״ם ג:טז–יז מִשְׁנָה, תָּמִיד ג:ט",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "8dc4b6d7d016e50c": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ו:ד מִשְׁנָה, זְבָחִים ו:ג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "575c0ef590c0d77e": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת ו:ד מִשְׁנָה, תָּמִיד ד:ג וַיִּקְרָא ב:יג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "57c09f629a755b59": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבָנוֹת יג:ה, יב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "b53f7aa1a6458b8a": {
+  "text": "רַק הַכּוֹתָרוֹת הָרָאשִיּוֹת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "37aede91a2e1d515": {
+  "text": "רַק כְּשֶׁאַתֶּם לֹוחֲצִים ״שְׁלַח",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.941
+ },
+ "15a15735ff6d8ec6": {
+  "text": "שְׁאֵלָה לְדְמוּת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "57323456860444f9": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבֹנוֹת יג:ה, יד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "bd76fafe26eae2b7": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבֹנוֹת יג:יב וַיִּקְרָא ב:ב, יג",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "f6006f57d74c1f65": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבֹנוֹת יג:יב מִשְׁנָה, זְבָחִים ו:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "66a2ddd330cdec14": {
+  "text": "רַמְבַּ״ם מַעֲשֵׂה הַקְּרָבֹנוֹת יג:יב–יד וַיִּקְרָא ב:ב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "9242c713308d347c": {
+  "text": "רַמְבַּ״ם, מַעֲשֵׂה הַקְּרָבֹנוֹת ג:ז",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "d32638b65f87705c": {
+  "text": "שָׁבוּעוֹת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "f430d8f14e828d27": {
+  "text": "שְׁבָטִים",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "1c4d07bc91438b07": {
+  "text": "שַׁבָּת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "ecc49d217eca6196": {
+  "text": "שׁוֹאֲבִים מַיִם לְכָל הָעֲזָרָה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "f98d93be5d56d4e3": {
+  "text": "שׁוֹחֵט אֶת פִּסְחוֹ בָּעֲזָרָה וּמְקַבֵּל הַכֹּהֵן אֶת דָּמוֹ",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "39da419587f5ad20": {
+  "text": "שׁוֹחֵט/מְקַבֵּל/זוֹרֵק אֶת דַּם הַתָּמִיד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "cf04171e9cd8ad12": {
+  "text": "שֻׁולְחָן בְּדִיקַת תּוֹלָעִים",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.938
+ },
+ "2f7c9834b30fe714": {
+  "text": "שׁוֹמֵר בְּבֵית אַבְטִינָס בְּבֵית הַנִּיצוֹץ בְּבֵית הַמּוֹקֵד",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "ee393aebe02732bc": {
+  "text": "שׁוֹמְרוֹן",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "ad1eb6563f4f466d": {
+  "text": "שַׂחְקָן לֹא מוֻכָּר",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "62eeb4ac37dc2752": {
+  "text": "שִׁיבַת צִיּוֹן",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "19b2b70b038a9073": {
+  "text": "שִׁיבַת צִיּוֹן (פְּרָס",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "59446dc23841f13c": {
+  "text": "שִׂיחָה עִם דְּמוּת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "e5c822c064ac5af5": {
+  "text": "שִׁילֹה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "b67925c96f04ed95": {
+  "text": "שְׁכָבוֹת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "fbed984541a7a900": {
+  "text": "שְׁכֶם",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "6c47b2285dc91bcb": {
+  "text": "שֶׁל הַפֶּסַח נִכְנְסוּ וְנִתְמַלְאָה הָעֲזָרָה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "bcffc96b8960061c": {
+  "text": "שָׁלָב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "c0a61ae29f93ed46": {
+  "text": "שָׁלָב הַבָּא",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "4032ab429cf64eb7": {
+  "text": "שָׁלָב קוֹדֵם",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "a017bd092ff0b33e": {
+  "text": "שְׁלַבִּים",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "a1b8147ba3c332df": {
+  "text": "שְׁלַח",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "9b2257857ec34f48": {
+  "text": "שְׁלִיטָה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "27823ae7e3e74b0c": {
+  "text": "שְׁלִישִׁית",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "de55e9e30757461d": {
+  "text": "שְׁמוֹת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "7cf5b05f4306886c": {
+  "text": "שְׁמוֹת כח וַיִּקְרָא טז:ד רַמְבַּ״ם הִל׳ כְּלֵי הַמִּקְדָּשׁ ח יוֹמָא עב",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "eedcdf743c439b24": {
+  "text": "שָׂמֵחַ בְּשִׂמְחַת בֵּית הַשּׁוֹאֵבָה",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "d67d67ef662bfa2c": {
+  "text": "שִׁמְעוֹן",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "e9377581deacf7ac": {
+  "text": "שְׁנֵי נְקָבִים",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "5e14c45e863279d0": {
+  "text": "שְׁנֵי נְקָבִים לְשְׁפִיכַת שְׁיָירֵי הַדָּם",
+  "model": "engine:gemini-flash-lite",
+  "cov": 0.955
+ },
+ "f7dc1417b74adf14": {
+  "text": "שָׁעָה בַּיּוֹם",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "1c42a15e653cfc9a": {
+  "text": "שַׁעַר הָאוּלָם 40×20",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
+ },
+ "464aec4abcdcc19d": {
+  "text": "שַׁעַר הַבְּכוֹרוֹת",
+  "model": "engine:gemini-flash-lite",
+  "cov": 1
  }
 }

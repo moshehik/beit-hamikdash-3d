@@ -2,7 +2,7 @@
    ברירת מחדל: מצב ילדים. הכפתור ⚙️ מחזיר את כל הפאנלים (מצב מבוגרים). נטען אחרי ui.js. */
 (()=>{
 const $=id=>document.getElementById(id),LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-let adult=LS.get('bh_adult','0')==='1';
+let adult=false;LS.set('bh_adult','0');   /* מצב מבוגרים הוסר לגמרי (18.11.2026, בקשת משה): תמיד ממשק ילדים; הפאנלים הישנים (#side,#ctl,#mini...) נשארים בדף מוסתרים כי הקוד תלוי בהם */
 const body=document.body;
 
 /* ---------- תגית פעולה לכל שלב בסדרי העבודה: סמל + עד 3 מילים ---------- */
@@ -33,7 +33,13 @@ mk('walk','🚶','ללכת',()=>$('bWalk').click(),'kWalk');
 mk('map','🗺️','מפות',()=>$('bMap').click());
 mk('kids','🧒','שבטים',()=>$('bKids').click());
 mk('music','🎵','מוזיקה',()=>$('bMus').click(),'kMus');
-mk('adult','⚙️','למבוגרים',()=>setAdult(!adult),'kAdult');
+/* ---------- איזה יום? (בחירת סוג היום לפעילות בעזרה; בא במקום הבורר מהפאנל הישן) ---------- */
+const DAYS=[['chol','🗓️','יום חול'],['shabbat','🕯️','שבת'],['rc','🌙','ראש חודש'],['erev-pesach','🐑','ערב פסח'],['pesach','🍞','פסח'],['shavuot','🌾','שבועות'],['rh','📯','ראש השנה'],['yk','🤍','יום כיפור'],['sukkot','🌿','סוכות']];
+const dayPop=document.createElement('div');dayPop.id='kdays';
+DAYS.forEach(([v,e,l])=>{const b=document.createElement('button');b.dataset.v=v;const i=document.createElement('i');i.textContent=e;const s=document.createElement('span');s.textContent=l;b.appendChild(i);b.appendChild(s);
+ b.onclick=()=>{const d=$('dayType');if(d){d.value=v;d.dispatchEvent(new Event('change'))}dayPop.classList.remove('on');const kb=$('kDay');if(kb){kb.querySelector('i').textContent=e;kb.querySelector('span').textContent=l}};dayPop.appendChild(b)});
+body.appendChild(dayPop);
+const dayBtn=mk('','🗓️','יום',()=>dayPop.classList.toggle('on'),'kDay');
 body.appendChild(top);
 
 /* ---------- שעון היום: שמש ← → ירח ---------- */

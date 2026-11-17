@@ -121,6 +121,20 @@ body.kid #ktime{display:flex;top:12px;left:12px;align-items:center;gap:8px;paddi
 #kplaces .kpg button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 6px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(160deg,rgba(60,52,120,.85),rgba(28,26,66,.9));color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer;min-height:112px;transition:transform .15s}
 #kplaces .kpg button:hover{transform:translateY(-3px);border-color:#ffd66b}
 #kplaces .kpg button i{font-style:normal;font-size:44px;line-height:1}#kplaces .kpg button i.pic img{display:block;width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 3px 4px rgba(0,0,0,.4))}
+/* ===== איקונים מונפשים בכל הדפים: ציפה עדינה בהפרש זמנים + הגדלה בעמידה ===== */
+@keyframes kfloat{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-4px) rotate(-2deg)}70%{transform:translateY(-1px) rotate(1.5deg)}}
+#ktop button i.pic img,#kdock button i.pic img,#kplaces .kpg button i.pic img,#svKList img{animation:kfloat 3.8s ease-in-out infinite;will-change:transform;transition:transform .25s}
+#ktop button:nth-child(2n) i.pic img,#kdock button:nth-child(2n) i.pic img,#kplaces .kpg button:nth-child(2n) i.pic img{animation-delay:-.9s;animation-duration:4.4s}
+#ktop button:nth-child(3n) i.pic img,#kdock button:nth-child(3n) i.pic img,#kplaces .kpg button:nth-child(3n) i.pic img{animation-delay:-1.8s;animation-duration:3.4s}
+#ktop button:nth-child(5n) i.pic img,#kdock button:nth-child(5n) i.pic img,#kplaces .kpg button:nth-child(5n) i.pic img{animation-delay:-2.6s}
+#ktop button:hover i.pic img,#kdock button:hover i.pic img,#kplaces .kpg button:hover i.pic img,#svKList button:hover img{animation-play-state:paused;transform:scale(1.18) rotate(-4deg)}
+#kdock button.on i.pic img{animation-duration:1.9s}
+@media(prefers-reduced-motion:reduce){#ktop button i.pic img,#kdock button i.pic img,#kplaces .kpg button i.pic img,#svKList img{animation:none}}
+#kdays{display:none;position:fixed;top:84px;right:10px;z-index:9;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;background:rgba(18,16,46,.92);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:22px;max-width:calc(100% - 20px)}
+#kdays.on{display:grid}body.kbusy #kdays,body:not(.kid) #kdays{display:none!important}
+#kdays button{display:flex;flex-direction:column;align-items:center;gap:2px;width:84px;padding:8px 4px;border:1px solid var(--line);border-radius:16px;background:rgba(40,36,90,.85);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+#kdays button i{font-style:normal;font-size:28px}#kdays button:hover{border-color:#ffd66b}
+@media(max-width:460px){#kdays button{width:74px}}
 body.kbusy #ktop,body.kbusy #kdock,body.kbusy #ktime,body.ksv #kdock{display:none!important}
 body.kid #card{bottom:104px;width:min(560px,calc(100% - 24px));min-width:0;padding:10px 14px}
 body.kid #card h2{font-size:18px}body.kid #card p{font-size:16px;line-height:1.5}
@@ -267,7 +281,7 @@ body.kid #svCap.kend{display:none!important}
 @media(prefers-reduced-motion:reduce){.mcard,#mtoast{transition:none}}
 </style>
 </head>
-<body>
+<body class="kid">
 <canvas id="c"></canvas>
 <div id="load">טוען את בית המקדש…</div>
 <div id="side" class="panel"><h1>בית המקדש השני</h1><div class="sub">מודל תלת־ממדי לפי מסכת מידות · בחרו מקום לעיון</div><div id="places"></div></div>
