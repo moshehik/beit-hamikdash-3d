@@ -279,6 +279,19 @@ body.kid #svCap.kend{display:none!important}
 }
 @media(max-width:420px){.mhd h2{font-size:17px}.mib{width:44px;height:44px;min-width:44px;font-size:20px}.mtg{gap:4px}.mcards{padding:2px 8px 8px}}
 @media(prefers-reduced-motion:reduce){.mcard,#mtoast{transition:none}}
+/* ===== ארץ ישראל לילדים – ערים לפי תקופה, אנימציה (18.11.2026) ===== */
+#kcrow{display:flex;align-items:center;gap:6px;padding:0 12px 6px;flex:0 0 auto;min-width:0}
+#kctag{flex:0 0 auto;font-size:15px;font-weight:800;color:#d4570f;white-space:nowrap}#kctag small{font-size:11px;font-weight:700;color:#7a6a58;background:#fff;border-radius:8px;padding:1px 6px;margin-right:2px}
+#kcities{padding:2px 4px 4px;gap:6px;min-width:0;flex:1}
+.kcc{flex:0 0 auto;display:flex;align-items:center;gap:6px;height:48px;min-width:44px;padding:0 12px 0 4px;border:0;border-radius:24px;background:#fff;box-shadow:0 3px 0 rgba(0,0,0,.18);font:inherit;font-size:15px;font-weight:800;color:#3b2a14;cursor:pointer;touch-action:manipulation;transition:transform .15s,box-shadow .15s}
+.kcc .mpic{width:38px;height:38px;border-radius:50%;font-size:22px;flex:0 0 auto}
+.kcc b{white-space:nowrap}
+.kcc:active{transform:translateY(2px)}.kcc.on{background:#ffe3a3;outline:3px solid #ff9800;transform:translateY(-2px)}
+.ksrc{font-size:13px;color:#7a6a58}
+#kBack{display:none;background:#e1f5fe;color:#01579b}
+@media(max-width:900px){#kcrow{padding:0 8px 4px}#kctag{font-size:13px}.kcc{height:46px;font-size:14px}.kcc .mpic{width:34px;height:34px}#kside{max-height:32%}}
+@media(max-width:420px){#kctag small{display:none}.kcc{padding:0 10px 0 4px}}
+@media(prefers-reduced-motion:reduce){.kcc{transition:none}}
 </style>
 </head>
 <body class="kid">
@@ -319,7 +332,7 @@ body.kid #svCap.kend{display:none!important}
  <div id="mapbody"><div id="mapwrap"><canvas id="mapc"></canvas><div class="mzb"><button class="mib" id="zIn" aria-label="קרב" title="קרב">➕</button><button class="mib" id="zOut" aria-label="הרחק" title="הרחק">➖</button><button class="mib" id="zIl" aria-label="למרכז – ארץ ישראל" title="למרכז">🎯</button><button class="mib" id="zFind" aria-label="אזור אחר" title="אזור אחר">🔍</button></div><div id="mtoast"></div></div>
  <div id="mapside"><div class="mpw" id="mpPic"></div><h3 id="mpT"></h3><div class="j" id="mpJ"></div><div id="mpD"></div><button class="mmore" id="mpMore">📖 עוד</button><div id="mpFull"></div><div id="mpL"></div><div id="mpC"></div><button class="mgo" id="mapTo3d">🕍 לדגם התלת־ממדי</button><div id="mpPl"></div></div></div></div>
 <div id="kidov" role="dialog" aria-label="ארץ ישראל"><header class="mhd"><h2>🧒 ארץ ישראל שלנו</h2><button class="mib" id="kFit" aria-label="למרכז" title="למרכז">🎯</button><button class="mib mx" id="kidX" aria-label="סגור" title="סגור">✕</button></header>
- <div id="kbtns" class="mcards"></div><div id="kbody"><div id="kwrap"><canvas id="kidc"></canvas><div class="mzb"><button class="mib" id="kzIn" aria-label="קרב" title="קרב">➕</button><button class="mib" id="kzOut" aria-label="הרחק" title="הרחק">➖</button></div></div><div id="kside"><div class="mpw" id="kPic"></div><h3 id="kT"></h3><div id="kD"></div><button class="mmore" id="kMore">📖 עוד</button><div id="kFull"></div><div id="kS"></div><div id="kList"></div></div></div></div>
+ <div id="kbtns" class="mcards"></div><div id="kcrow"><span id="kctag">🏙️ ערים <small>משוער</small></span><div id="kcities" class="mcards"></div></div><div id="kbody"><div id="kwrap"><canvas id="kidc"></canvas><div class="mzb"><button class="mib" id="kzIn" aria-label="קרב" title="קרב">➕</button><button class="mib" id="kzOut" aria-label="הרחק" title="הרחק">➖</button></div></div><div id="kside"><div class="mpw" id="kPic"></div><h3 id="kT"></h3><div id="kD"></div><button class="mmore" id="kMore">📖 עוד</button> <button class="mmore" id="kBack">🔙 כל הארץ</button><div id="kFull"></div><div id="kS"></div><div id="kList"></div></div></div></div>
 <div id="hint" class="panel"></div>
 <div id="lookb"><button id="lkU" aria-label="מעלה">⬆️</button><button id="lkD" aria-label="מטה">⬇️</button></div>
 <div id="about"><div><h3 style="margin-top:0">על המודל</h3>
