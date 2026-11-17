@@ -365,7 +365,7 @@ const SV=(()=>{
   S.speed=+$('svSpd').value;document.querySelectorAll('input[name=svcm]').forEach(r=>r.checked=r.value==S.camMode);AUD.btn();uiState()}
  function uiBack(){if(!ui.panel)return;$('svList').style.display='block';$('svPlay').style.display='none';ui.cap.style.display='none'}
  function uiState(){if(!S)return;$('svPP').textContent=S.phase=='end'?'↻':S.playing?'⏸':'▶'}
- function uiStep(){const st=S.sc.steps[S.idx];$('svCapN').textContent='שלב '+(S.idx+1)+' מתוך '+S.sc.steps.length;$('svCapT').textContent=stText(st);$('svCapS').textContent=st.src?'מקור: '+st.src:'';
+ function uiStep(){const st=S.sc.steps[S.idx];if(typeof LIFE!='undefined'&&LIFE.tourStep)LIFE.tourStep(S.sc.id,S.idx);$('svCapN').textContent='שלב '+(S.idx+1)+' מתוך '+S.sc.steps.length;$('svCapT').textContent=stText(st);$('svCapS').textContent=st.src?'מקור: '+st.src:'';
   document.querySelectorAll('.svst').forEach((b,i)=>b.classList.toggle('on',i==S.idx));const on=document.querySelector('.svst.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});uiState();uiProg()}
  function uiProg(){if(!S)return;const n=S.sc.steps.length;$('svProg').style.width=(100*(S.idx+(S.phase=='run'?Math.min(1,S.t/Math.max(.1,S.minT)):1))/n)+'%'}
  return{rampY,update,open,close,show,build,get S(){return S},goTo,SVL}

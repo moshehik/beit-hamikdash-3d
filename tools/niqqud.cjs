@@ -83,7 +83,7 @@ function make({curlJson,keys,cacheFile,fixesFile,corpusFile,models}){
  const ckey=plain=>crypto.createHash('sha1').update(sysHash+'|'+plain).digest('hex').slice(0,16);
  function gen(prompt,system){
   for(const model of MODELS){for(let n=0;n<K.length;n++){const i=(kix+n)%K.length,ck=model+'|'+i;if((cool.get(ck)||0)>Date.now())continue;
-   const r=curlJson('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+K[i],{system_instruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0}},45);
+   const r=curlJson('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+K[i],{system_instruction:{parts:[{text:String(system).split('text-to-speech').join('reader')}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0}},45);
    if(r.status===200){const t=r.json&&r.json.candidates&&r.json.candidates[0]&&r.json.candidates[0].content&&r.json.candidates[0].content.parts;const txt=t&&t.map(x=>x.text||'').join('');
     if(txt){kix=(i+1)%K.length;return{text:txt,model}}cool.set(ck,Date.now()+60e3);continue}
    if(r.status===429||r.status===402||r.status===403)cool.set(ck,Date.now()+(r.status===429?20*60e3:3600e3));

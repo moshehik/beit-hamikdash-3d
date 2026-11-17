@@ -129,7 +129,7 @@ function stairs(g,sx,sz,dir,w,n,rise,tread,y0,m=M.stone){const dx=dir[0],dz=dir[
 function floorY(x,z,r){let y=(x>250||x<-250||z>250||z<-250)?terrH(x,z):0,U=null;for(const q of ZN){if(q.c){const dx=x-q.c[0],dz=z-q.c[1],rr=Math.hypot(dx,dz);if(dx>=0&&rr<=q.R)y=q.ya+(q.yb-q.ya)*Math.min(1,Math.max(0,(q.R-rr)/(q.R-q.rt)));continue}const k=q.r;if(x>=k[0]&&x<=k[1]&&z>=k[2]&&z<=k[3]){let v;if(q.ax){const p=q.ax=='x'?x:z,t=Math.min(1,Math.max(0,(p-q.a)/(q.b-q.a)));v=q.ya+(q.yb-q.ya)*t}else v=q.y;if(q.u){if(r!==undefined)(U||(U=[])).push(v)}else y=v}}
  if(U){let b=null,d=1e9;for(const c of [y].concat(U)){if(c<=r+3.6){const e=Math.abs(c-r);if(e<d){d=e;b=c}}}y=b===null?Math.min(y,...U):b}   // שכבות תת־קרקעיות (ZN עם u:1) נבחרות רק כשמעבירים את מפלס ההולך r; בלי r – רק פני השטח
  return y}
-function lbl(t,x,y,z,g,r=250,big){if(!t)return;const el=document.createElement('div');el.className='lbl'+(big?' big':'');el.textContent=t;document.body.appendChild(el);const e={el,x,y,z,g,r,big:big?1:0};LBL.push(e);return e}
+function lbl(t,x,y,z,g,r=250,big){if(!t)return;const el=document.createElement('div');el.className='lbl'+(big?' big':'');el.textContent=typeof nq=='function'?nq(t):t;document.body.appendChild(el);const e={el,x,y,z,g,r,big:big?1:0};LBL.push(e);return e}
 const rep=(n,f)=>{for(let i=0;i<n;i++)f(i)};
 const cyl=(g,x,y,z,r,h,m,seg=16)=>{const me=new T.Mesh(new T.CylinderGeometry(r,r,h,seg),m);me.position.set(x,y+h/2,z);me.castShadow=me.receiveShadow=true;g.add(me);return me};
 const sph=(g,x,y,z,r,m)=>{const me=new T.Mesh(new T.SphereGeometry(r,12,8),m);me.position.set(x,y,z);g.add(me);return me};
