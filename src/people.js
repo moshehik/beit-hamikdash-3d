@@ -20,9 +20,21 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
  const mV=mk(0xffffff,{vertexColors:true,roughness:.92,side:T.DoubleSide}),mBeltM=mk(0xffffff,{map:tBelt,roughness:.85,side:T.DoubleSide}),mBeltL=mk(0xf3eede,{roughness:.9,side:T.DoubleSide}),
   mLionM=mk(0xffffff,{map:tLion,roughness:.9}),mHosM=mk(0xffffff,{map:tHoshen,roughness:.35,metalness:.4,emissive:0x2a2010}),mGld=M.gold,
   mSlv=mk(0xdde1e6,{metalness:.7,roughness:.28,emissive:0x23262a});
- /* --- טקסטורות הכהן מתמונות Gemini (PTEX מ-people_tex.js, אם קיים): רקמת פשתן כמכפיל + אבנט רקום; אחרת נשארים וקטוריים --- */
- const _pt=(u,rx,ry)=>{if(typeof PTEX=='undefined'||!u)return null;const t=new T.TextureLoader().load(u);t.wrapS=t.wrapT=T.MirroredRepeatWrapping;t.repeat.set(rx,ry);t.encoding=T.sRGBEncoding;t.anisotropy=4;return t};
- const _tLin=typeof PTEX!='undefined'?_pt(PTEX.linen,2,2):null,_tBlt=typeof PTEX!='undefined'?_pt(PTEX.belt,2,1):null;
+ /* --- טקסטורות הכהן (17.11): מצוירות בקנבס בקוד – פשתן כמכפיל + אבנט רקום; בלי תמונות raster ובלי data-URI (נטפרי) --- */
+ const _ctex=(w,h,f,rx,ry)=>{const t=cv(w,h,f);t.wrapS=t.wrapT=T.MirroredRepeatWrapping;t.repeat.set(rx,ry);return t};
+ let _sd=7;const _rn=()=>{_sd=(_sd*16807)%2147483647;return _sd/2147483647};
+ const _tLin=_ctex(128,128,(g,w,h)=>{g.fillStyle='#f6f3ec';g.fillRect(0,0,w,h);
+  for(let y=0;y<h;y+=2){g.fillStyle='rgba(120,105,80,'+(.05+_rn()*.07)+')';g.fillRect(0,y,w,1)}
+  for(let x=0;x<w;x+=2){g.fillStyle='rgba(120,105,80,'+(.04+_rn()*.06)+')';g.fillRect(x,0,1,h)}
+  for(let i=0;i<60;i++){g.fillStyle='rgba(255,255,255,.35)';g.fillRect(_rn()*w,_rn()*h,2+_rn()*6,1)}},2,2);
+ const _tBlt=_ctex(256,128,(g,w,h)=>{g.fillStyle='#e9e0cb';g.fillRect(0,0,w,h);
+  for(let y=0;y<h;y+=2){g.fillStyle='rgba(110,95,70,.07)';g.fillRect(0,y,w,1)}
+  const y0=22,y1=106;g.fillStyle='#b3261e';g.fillRect(0,y0,w,y1-y0);                       // תולעת שני
+  g.fillStyle='#d9b45a';g.fillRect(0,y0,w,3);g.fillRect(0,y1-3,w,3);                      // חוטי זהב בשוליים
+  for(let x=0;x<w;x+=32){                                                                  // מעויינים: תכלת וארגמן
+   g.fillStyle='#2f5fa8';g.beginPath();g.moveTo(x+16,y0+8);g.lineTo(x+30,64);g.lineTo(x+16,y1-8);g.lineTo(x+2,64);g.closePath();g.fill();
+   g.fillStyle='#6a3a8a';g.beginPath();g.moveTo(x+16,y0+22);g.lineTo(x+23,64);g.lineTo(x+16,y1-22);g.lineTo(x+9,64);g.closePath();g.fill();
+   g.fillStyle='#e9e0cb';g.fillRect(x+14,60,4,8)}},2,1);
  const mP=mk(0xffffff,Object.assign({vertexColors:true,roughness:.93,side:T.DoubleSide},_tLin?{map:_tLin}:{})),
   mBeltP=_tBlt?mk(0xffffff,{map:_tBlt,roughness:.88,side:T.DoubleSide}):mBeltM,mFrg=mk(0xece6d6,{roughness:.95,side:T.DoubleSide});
  /* --- כהן: kind = k הדיוט (ארבעה בגדי לבן), g כהן גדול (שמונה בגדים), y כהן גדול ביום הכיפורים (ארבעה בגדי לבן); pose = idle|tray|basket|rake|wave|trumpet --- */
@@ -104,39 +116,49 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
   [-1,1].forEach(s=>B.add(new T.SphereGeometry(.026,6,5),0x1a1410,s*.08,2.97,.185));
   B.add(new T.TorusGeometry(.22,.09,8,20),0xe8dcc0,0,3.1,0,1,1,1,Math.PI/2,0,0);B.add(new T.SphereGeometry(.15,12,8),0x8a2a22,0,3.15,0,1,.8,1);
   return B.geo()}
- const LEV=[],WALK=[],TRUMP=[];
- const mkL=(hair,pl)=>{const im=new T.InstancedMesh(levite(hair),mV,pl.length);pl.forEach((p,i)=>{_o.position.set(p[0],p[1],p[2]);_o.rotation.set(0,p[3],0);_o.scale.setScalar(1);_o.updateMatrix();im.setMatrixAt(i,_o.matrix)});im.castShadow=true;im.frustumCulled=false;gA.add(im);LEV.push({im,pl})};
+ const LEV=[],WALK=[],TRUMP=[];let SHOFAR=null;
+ const mkL=(hair,pl)=>{const im=new T.InstancedMesh(levite(hair),mV,pl.length);pl.forEach((p,i)=>{_o.position.set(p[0],p[1],p[2]);_o.rotation.set(0,p[3],0);_o.scale.setScalar(1);_o.updateMatrix();im.setMatrixAt(i,_o.matrix)});im.castShadow=true;im.frustumCulled=false;gA.add(im);const ent={im,pl,fr:new Set()};LEV.push(ent);
+  if(typeof NPCS!='undefined')[1,Math.min(5,pl.length-1)].forEach(i=>{const n={id:'levi-dukhan-'+LEV.length+'-'+i,kind:'levi',who:'לוי על מעלות הדוכן – משורר בשעת הנסכים (משנה תמיד ז:ג; ערכין ב:ו)',active:false,job:()=>'עומד על הדוכן ושר על הקרבן (בנסכים)',getPos:()=>new T.Vector3(pl[i][0],pl[i][1],pl[i][2]),pick:{inst:im,index:i},freeze:on=>{on?ent.fr.add(i):ent.fr.delete(i)},face:v=>{pl[i][3]=Math.atan2(v.x-pl[i][0],v.z-pl[i][2])},extra:{instance:{index:i}}};(ent.ns||(ent.ns=[])).push(n);NPCS.register(n)})};
  {const a=[],b=[];[[-1.5,15.0],[-2.5,15.5]].forEach(([x,y],r)=>{for(let z=-118+r*2.1,i=0;z<4;z+=4.2,i++){if(Math.abs(z-ZC)<7)continue;(i%2?a:b).push([x,y,z,-Math.PI/2])}});   // שתי שורות לויים על מעלות הדוכן, פניהם למערב
   mkL(0x3a2a1e,a);mkL(0xcfcfcd,b);lbl('לויים על הדוכן – שירה על הקרבן',-2,YA+5.5,ZC-40,'azarah',120)}
  /* --- הצבת הכהנים --- */
+ const walkJob=w=>{const C=typeof CROWD!='undefined'?CROWD.S:null,d=C?C.day:'chol';
+  if(w.k=='y')return w.holding?'קורא בתורה בעמידה בעזרה (יומא ז:א)':'עובד עבודת יום הכיפורים בבגדי לבן';
+  if(w.k=='g')return d=='yk'?'מקריב את תמיד של שחר בבגדי זהב (יומא ג:ד–ו)':'כהן גדול בבגדי זהב – עולה בכבש ומקריב (תמיד ז:ג)';
+  return 'מהלך בעזרה בין עבודות הכהנים'};
  /* כהנים מהלכים בעזרה (לא עומדים במקום): כהן הדיוט, כהן גדול בשמונה בגדים, וכהן גדול ביום הכיפורים – מופיעים רק בזמנים המתאימים (ambUpdate) */
- [['k','כהן הדיוט – ארבעה בגדי לבן',0,3.1],['g','כהן גדול – שמונה בגדים',.34,2.8],['y','כהן גדול ביום הכיפורים – ארבעה בגדי לבן',.67,2.9]].forEach(([k,t,f,sp])=>{const p=priest(k);gA.add(p);const lb=lbl(t,0,YA+5,0,'azarah',70);WALK.push({p,k,lb,f,sp,yaw:0})});
+ [['k','כהן הדיוט – ארבעה בגדי לבן',0,3.1],['g','כהן גדול – שמונה בגדים',.34,2.8],['y','כהן גדול ביום הכיפורים – ארבעה בגדי לבן',.67,2.9]].forEach(([k,t,f,sp])=>{const p=priest(k);gA.add(p);const lb=lbl(t,0,YA+5,0,'azarah',70),w={p,k,lb,f,sp,yaw:0};WALK.push(w);
+  if(typeof NPCS!='undefined')w.npc=NPCS.register({id:'walk-'+k,kind:k=='k'?'kohen':'kohen-gadol',who:t,active:false,job:()=>walkJob(w),getPos:()=>p.position.clone(),pick:{obj:p},freeze:on=>{w.frozen=!!on},face:v=>{w.yaw=Math.atan2(v.x-p.position.x,v.z-p.position.z);p.rotation.y=w.yaw},extra:{gold:k=='g',white:k=='y'}})});
  // כהנים בפעולה: נושא מנחה בכבש, מגרף דשן על המזבח, מניף נתח, שני מחצצרים על הדוכן
- {const rampH=z=>9*(1-(z+46)/30.7);
-  let p=priest('k','basket',0x2b2018);p.position.set(-26,YA+rampH(-33),-33);p.rotation.y=Math.PI;gA.add(p);lbl('כהן עולה בכבש ונושא סל מנחה',-26,YA+rampH(-33)+5,-33,'azarah',80);
-  p=priest('k','rake',0x4a3426);p.position.set(-26.5,YA+9,-65.5);p.rotation.y=0;gA.add(p);lbl('כהן מדשן את המזבח',-26.5,YA+14,-65.5,'azarah',80);
-  p=priest('k','wave',0x7a3b22);p.position.set(-8.2,YA,-52);p.rotation.y=-Math.PI/2.4;gA.add(p);lbl('כהן מניף',-8.2,YA+5.2,-52,'azarah',70);
-  [-3.4,3.4].forEach((o,i)=>{p=priest('k','trumpet',i?0xb4b4b2:0x3a2a1e);p.position.set(-2.5,YA-.5,ZC+o);p.rotation.y=-Math.PI/2;gA.add(p);TRUMP.push(p)});lbl('כהנים מחצצרים',-2.5,YA+5,ZC,'azarah',80)}
+ {const rampY=z=>YA+9*(2.7-z)/30.7;   // כבש 16 רחב, מ-z=2.7 (גובה הרצפה) עד z=-28 (גובה ראש המזבח, 9 אמות)
+  const reg1=(p,id,k,who,job)=>{if(typeof NPCS!='undefined')NPCS.register({id,kind:k,who,active:true,job:()=>job,getPos:()=>p.position.clone(),pick:{obj:p},freeze:on=>{p.userData.frozen=!!on},face:v=>{p.rotation.y=Math.atan2(v.x-p.position.x,v.z-p.position.z)},extra:{}})};
+  let p=priest('k','basket',0x2b2018);p.position.set(-29,rampY(-12),-12);p.rotation.y=Math.PI;gA.add(p);lbl('כהן עולה בכבש ונושא סל מנחה',-29,rampY(-12)+5,-12,'azarah',80);reg1(p,'fixed-basket','kohen','כהן שעולה בכבש עם סל מנחה','עולה בכבש ונושא סל מנחה אל המזבח');
+  p=priest('k','rake',0x4a3426);p.position.set(-28,YA+9,-34);p.rotation.y=Math.PI;gA.add(p);lbl('כהן מדשן את המזבח',-28,YA+14,-34,'azarah',80);reg1(p,'fixed-rake','kohen','כהן שמדשן על ראש המזבח (תמיד ב:א)','מגרף את הדשן מראש המזבח');   // הוזז מ-z=-65.5 (שם צף באוויר מצפון למזבח) אל ראש המזבח
+  p=priest('k','wave',0x7a3b22);p.position.set(-8.2,YA,-52);p.rotation.y=-Math.PI/2.4;gA.add(p);lbl('כהן מניף',-8.2,YA+5.2,-52,'azarah',70);reg1(p,'fixed-wave','kohen','כהן שמניף נתח (תנופה)','מניף את הנתח בתנופה');
+  [-3.4,3.4].forEach((o,i)=>{p=priest('k','trumpet',i?0xb4b4b2:0x3a2a1e);p.position.set(-2.5,YA-.5,ZC+o);p.rotation.y=-Math.PI/2;gA.add(p);TRUMP.push(p);
+   if(typeof NPCS!='undefined'){const n=NPCS.register({id:'trump-'+i,kind:'kohen',who:'כהן מחצצר על הדוכן (שתי חצוצרות של כסף – תמיד ז:ג)',active:false,job:()=>'תוקע בחצוצרה בשעת הנסכים',getPos:()=>p.position.clone(),pick:{obj:p},freeze:on=>{p.userData.frozen=!!on},face:v=>{p.rotation.y=Math.atan2(v.x-p.position.x,v.z-p.position.z)},extra:{}});p.userData.npc=n}});lbl('כהנים מחצצרים',-2.5,YA+5,ZC,'azarah',80);
+  {const sh=priest('k','hold',0x6a4a30);sh.position.set(-2.5,YA-.5,ZC);sh.rotation.y=-Math.PI/2;sh.visible=false;gA.add(sh);   // ראש השנה: שופר של יעל (פשוט, פיו מצופה זהב) בין שתי החצוצרות – משנה ראש השנה ג:ג
+   const hm=new T.Mesh(new T.CylinderGeometry(.06,.1,2.4,7),new T.MeshStandardMaterial({color:0xcfc4a8,roughness:.6}));hm.rotation.x=Math.PI/2;hm.position.set(0,2.95,1.35);sh.add(hm);const gm=new T.Mesh(new T.CylinderGeometry(.075,.075,.3,7),M.gold);gm.rotation.x=Math.PI/2;gm.position.set(0,2.95,.18);sh.add(gm);SHOFAR=sh}}
 
  /* ---- חיים בעזרה: לויים ומחצצרים רק בזמן השירה והנסכים; כהנים מהלכים בהקפה; הכל בתנועה ---- */
- const LOOP=[[-7,-24],[-7,-62],[-46,-63],[-50,-40],[-50,6.5],[-8,6.5]];   // הקפה בעזרה עוקפת את המזבח והכבש (עם כיוון השעון)
+ const LOOP=[[-7,-24],[-7,-62],[-46,-63],[-46,-40],[-46,5.5],[-8,5.5]];   // הקפה בעזרה עוקפת את המזבח והכבש (עם כיוון השעון)
  const SEG=[];let LL=0;LOOP.forEach((a,i)=>{const b=LOOP[(i+1)%LOOP.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);SEG.push({a,b,l,s:LL});LL+=l});
  const at=s=>{s=((s%LL)+LL)%LL;for(const g of SEG)if(s<=g.s+g.l){const u=(s-g.s)/g.l;return[g.a[0]+(g.b[0]-g.a[0])*u,g.a[1]+(g.b[1]-g.a[1])*u,Math.atan2(g.b[0]-g.a[0],g.b[1]-g.a[1])]}return[LOOP[0][0],LOOP[0][1],0]};
  const angd=(a,b)=>((b-a+Math.PI)%(Math.PI*2)+Math.PI*2)%(Math.PI*2)-Math.PI;
- let _key='';
+ const HOLD_S=33.5;   // נקודת (-7,-57.5) על ההקפה – מקום קריאת כהן גדול בתורה (יומא ז:א)
  ambUpdate=(t,dt)=>{
-  const el=document.getElementById('dayType'),tm=document.getElementById('tm'),day=el?+el.value:0,h=tm?+tm.value:11;
-  const song=(h>=7.5&&h<9.5)||(h>=15&&h<17)||(day>0&&h>=9.5&&h<11.5);   // נסכים ושירת הלויים: אחרי תמיד של שחר, תמיד של בין הערבים, ובשבת/מועד גם במוסף
-  const vis={k:h>=5&&h<19,g:(day==1&&h>=7.5&&h<11.5)||(day==2&&h>=6&&h<8),y:day==2&&h>=8&&h<16.5};
-  LEV.forEach(({im,pl})=>{im.visible=song;if(!song)return;
-   for(let i=0;i<pl.length;i++){const q=pl[i],ph=i*1.7+q[2]*.3;
+  const C=typeof CROWD!='undefined'?CROWD.S:null,song=!!(C&&C.song),vis=C?C.vis:{k:false,g:false,y:false};   // התכנון (מי איפה ומתי) נמצא ב-crowd.js
+  LEV.forEach(ent=>{const{im,pl,fr}=ent;im.visible=song;if(ent.ns)ent.ns.forEach(n=>n.active=song);if(!song)return;
+   for(let i=0;i<pl.length;i++){if(fr.has(i))continue;const q=pl[i],ph=i*1.7+q[2]*.3;
     _o.position.set(q[0],q[1]+Math.abs(Math.sin(t*2.3+ph))*.07,q[2]);_o.rotation.set(0,q[3]+Math.sin(t*.9+ph)*.16,Math.sin(t*1.6+ph)*.04);_o.scale.setScalar(1);_o.updateMatrix();im.setMatrixAt(i,_o.matrix)}
    im.instanceMatrix.needsUpdate=true});
-  TRUMP.forEach((p,i)=>{p.visible=song;if(song){p.position.y=YA-.5+Math.abs(Math.sin(t*2+i*2))*.04;p.rotation.z=Math.sin(t*3.1+i)*.03}});
-  WALK.forEach(w=>{const on=vis[w.k];w.p.visible=on;if(w.lb)w.lb.r=on?70:.001;if(!on)return;
-   w.s=(w.s==null?w.f*LL:w.s)+w.sp*dt;const[x,z,yw]=at(w.s);w.yaw+=angd(w.yaw,yw)*Math.min(1,dt*3.5);
-   const ph=w.s*1.15;w.p.position.set(x,YA+Math.abs(Math.sin(ph))*.08,z);w.p.rotation.set(0,w.yaw,Math.sin(ph)*.035);
-   if(w.lb){w.lb.x=x;w.lb.y=YA+5;w.lb.z=z}});
-  const key=(song?'S':'-')+day+(vis.k?'k':'')+(vis.g?'g':'')+(vis.y?'y':'');
-  if(key!==_key){_key=key;const c=document.getElementById('ambChip');if(c)c.textContent=(song?'🎶 הלויים על הדוכן בשירה והכהנים מחצצרים (נסכים)':'הלויים אינם על הדוכן עכשיו – שירה: בוקר 7:30–9:30, מנחה 15:00–17:00, ובשבת/מועד גם מוסף')+' · '+(vis.y?'כהן גדול ביום הכיפורים בבגדי לבן':vis.g?'כהן גדול בבגדי זהב':'כהן גדול לא עובד עכשיו (חול: רק כשרצה; שבת/מועד: בוקר; יום הכיפורים: כל היום)')}}
+  TRUMP.forEach((p,i)=>{p.visible=song;if(p.userData.npc)p.userData.npc.active=song;if(song&&!p.userData.frozen){p.position.y=YA-.5+Math.abs(Math.sin(t*2+i*2))*.04;p.rotation.z=Math.sin(t*3.1+i)*.03}});
+  if(SHOFAR){SHOFAR.visible=!!(C&&C.shofar)}
+  WALK.forEach(w=>{const on=!!vis[w.k];w.p.visible=on;if(w.npc)w.npc.active=on;if(w.lb)w.lb.r=on?70:.001;if(!on)return;
+   if(w.frozen)return;
+   w.s=(w.s==null?w.f*LL:w.s);let adv=w.sp*dt;w.holding=false;
+   if(w.k=='y'&&C&&C.walkHold){const cur=((w.s%LL)+LL)%LL;let dd=HOLD_S-cur;if(dd<0)dd=dd<-.05?dd+LL:0;if(dd<=adv){w.s+=dd;adv=0}if(dd<.05||adv==0){w.holding=true;adv=0}}
+   w.s+=adv;const[x,z,yw0]=at(w.s),yw=w.holding?Math.PI/2:yw0;w.yaw+=angd(w.yaw,yw)*Math.min(1,dt*3.5);
+   const ph=w.s*1.15,bob=w.holding?0:Math.abs(Math.sin(ph))*.08;w.p.position.set(x,YA+bob,z);w.p.rotation.set(0,w.yaw,w.holding?0:Math.sin(ph)*.035);
+   if(w.lb){w.lb.x=x;w.lb.y=YA+5;w.lb.z=z}})}
 }

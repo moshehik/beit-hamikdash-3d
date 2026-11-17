@@ -52,5 +52,5 @@ const LIFE=(()=>{
    const dxa=-Math.sin(ang)*u.w,dza=Math.cos(ang)*u.w;g.rotation.y=Math.atan2(dxa,dza);g.rotation.z=(u.w>0?-.18:.18);
    const fl=Math.sin(t*(7+i%3)+u.fp)*.75,gl=Math.sin(t*.35+u.fp)>.55?.12:1;u.pl.rotation.z=-fl*gl;u.pr.rotation.z=fl*gl});
  }
- return{update,tour(id){hold=!!id;if(id){H=TOUR_H[id]||10.5;if(tm)tm.value=H;setTime(H)}},get hour(){return H}}
+ return{update,tour(id){hold=!!id;if(id){H=TOUR_H[id]||10.5;if(tm)tm.value=H;setTime(H)}},get hour(){return H},get held(){return hold}}
 })();

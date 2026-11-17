@@ -138,7 +138,7 @@
  <div class="row"><div class="t">מצב</div><button id="bHome" class="alt">🏠 דף הבית</button><button id="bWalk">🚶 טיול ברגל</button><button id="bMap">🗺️ מפת האזור לפי תקופות</button><button id="bKids" style="background:linear-gradient(90deg,#ff9800,#ec407a);color:#fff">🧒 ארץ ישראל לילדים – שבטים וגבולות</button><button id="bMus" class="alt">🎵 מוזיקה: פועלת</button><button id="bSvc" style="background:linear-gradient(90deg,#b8863a,#e8c068);color:#241a05">🕎 סדרי העבודה</button><button id="bAbout" class="alt">ℹ️ על המודל והמקורות</button></div>
  <div class="row"><div class="t">תקופה (משפיע על ירושלים והמפה)</div><select id="per"></select></div>
  <div class="row"><div class="t">שעה ביום</div><input id="tm" type="range" min="0" max="24" step="0.1" value="11"></div>
- <div class="row"><div class="t">יום</div><select id="dayType"><option value="0">יום חול</option><option value="1">שבת / ראש חודש / מועד</option><option value="2">יום הכיפורים</option></select><div id="ambChip" style="margin-top:4px;font-size:12px;color:var(--mut)"></div></div>
+ <div class="row"><div class="t">יום / תאריך</div><select id="dayType"><option value="chol">יום חול</option><option value="shabbat">שבת</option><option value="rc">ראש חודש</option><option value="erev-pesach">ערב פסח – שחיטת הפסחים בשלוש כתות</option><option value="pesach">פסח – חול המועד</option><option value="shavuot">שבועות</option><option value="rh">ראש השנה</option><option value="yk">יום הכיפורים</option><option value="sukkot">סוכות – ניסוך המים ושמחת בית השואבה</option></select> <select id="crowdQ" title="צפיפות הקהל"><option value="0.35">קהל מועט</option><option value="0.7" selected>קהל רגיל</option><option value="1">קהל מלא</option></select><div id="ambChip" style="margin-top:4px;font-size:12px;color:var(--mut);max-height:170px;overflow:auto;line-height:1.35"></div></div>
  <div class="row"><label><input type="checkbox" id="autoDay" checked> זמן רץ – יום ולילה בתנועה <span id="clk" style="margin-right:auto;color:var(--gold)"></span></label><select id="dayRate"><option value="0.05">איטי</option><option value="0.1" selected>רגיל</option><option value="0.3">מהיר</option></select></div>
  <div class="row"><div class="t">חתך</div><select id="cut"><option value="">ללא</option><option value="z">חתך אורך (הסרת הצפון)</option><option value="x">חתך רוחב (הסרת המזרח)</option></select><input id="cutv" type="range" min="-250" max="250" step="1" value="-57"></div>
  <div class="t">שכבות</div>
@@ -226,6 +226,57 @@
   </div>
   <div id="ldfoot"><button id="ldMus">🎵 מוזיקה</button></div>
  </div>
+</div>
+<!-- ===== שיחה עם הדמויות (src/npc_chat.js) ===== -->
+<style>
+#ncHint{position:fixed;top:54px;left:50%;transform:translateX(-50%);z-index:4;padding:5px 14px;font-size:13px;color:var(--gold);pointer-events:none;opacity:0;transition:opacity .6s;white-space:nowrap}
+#ncHint.on{opacity:.95}
+#ncw{display:none;bottom:12px;left:50%;transform:translateX(-50%);width:min(540px,calc(100% - 24px));max-height:min(78vh,640px);z-index:9;flex-direction:column;overflow:hidden;font-size:14px;background:rgba(14,22,38,.94)!important}
+#ncw .nch{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--line)}
+#ncAv{font-size:26px;line-height:1}
+#ncw .nct{flex:1;min-width:0}#ncw .nct b{display:block;color:var(--gold);font-size:16px}#ncw .nct small{display:block;color:var(--mut);font-size:12px;line-height:1.4;max-height:3.6em;overflow:auto}
+#ncw .nch button{background:transparent;border:0;color:var(--mut);font-size:19px;cursor:pointer;padding:2px 6px}#ncw .nch button:hover{color:var(--gold)}
+#ncLog{flex:1;min-height:90px;overflow:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.ncm{max-width:92%;padding:7px 11px;border-radius:12px;line-height:1.55;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.ncm.me{align-self:flex-start;background:rgba(232,192,104,.16);border:1px solid var(--line)}
+.ncm.npc{align-self:flex-end;background:#16233b;border:1px solid var(--line)}
+.ncm.sys{align-self:center;background:transparent;color:var(--mut);font-size:12.5px;text-align:center}
+.ncm.err{align-self:center;background:rgba(200,60,60,.18);border:1px solid rgba(255,120,120,.4);color:#ffd0d0;font-size:13px}
+.ncm small{display:block;color:var(--mut);font-size:11.5px;margin-top:3px}
+.ncm .sp{background:transparent;border:0;color:var(--gold);cursor:pointer;font-size:15px;padding:0 4px;float:left}
+.ncm.typ{opacity:.8}.ncm.typ i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin:0 2px;animation:ncdot 1s infinite}.ncm.typ i:nth-child(2){animation-delay:.2s}.ncm.typ i:nth-child(3){animation-delay:.4s}
+@keyframes ncdot{0%,100%{opacity:.25}50%{opacity:1}}
+#ncAck,#ncSet{padding:9px 12px;border-top:1px solid var(--line);font-size:13px;line-height:1.55;background:rgba(232,192,104,.08)}
+#ncAck b,#ncSet b{color:var(--gold)}
+#ncw .row2{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+#ncw .row2 button,#ncw .ncgo{background:#16233b;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font:inherit;font-size:13px;cursor:pointer}
+#ncw .row2 button.pri,#ncw .ncgo{background:var(--gold);color:#241a05;font-weight:700;border:0}
+#ncw input[type=password],#ncw input[type=text]{width:100%;background:#0e1626;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font:inherit;margin-top:6px}
+#ncw a{color:var(--gold)}
+#ncRecBar{display:none;align-items:center;gap:8px;padding:6px 12px;border-top:1px solid var(--line);font-size:13px}
+#ncRecBar audio{flex:1;min-width:0;height:34px}
+#ncRecBar .rdot{width:10px;height:10px;border-radius:50%;background:#e33;animation:ncdot .8s infinite}
+#ncRecBar button{background:transparent;border:0;color:var(--mut);cursor:pointer;font-size:17px}
+.ncf{display:flex;gap:6px;align-items:center;padding:8px 12px 4px;border-top:1px solid var(--line)}
+.ncf input{flex:1;min-width:0;margin:0!important}
+#ncMic{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#16233b;color:var(--txt);font-size:20px;cursor:pointer;touch-action:none;flex:0 0 42px}
+#ncMic.rec{background:#c0392b;border-color:#ff8a80;animation:ncpulse 1s infinite}
+@keyframes ncpulse{0%,100%{box-shadow:0 0 0 0 rgba(255,80,80,.5)}50%{box-shadow:0 0 0 9px rgba(255,80,80,0)}}
+#ncSend{background:var(--gold);color:#241a05;font-weight:700;border:0;border-radius:10px;padding:9px 14px;font:inherit;font-weight:700;cursor:pointer}
+#ncSend:disabled{opacity:.5;cursor:wait}
+.ncf2{display:flex;gap:8px;align-items:center;padding:2px 12px 9px;font-size:12px;color:var(--mut)}
+.ncf2 label{display:flex;align-items:center;gap:5px;cursor:pointer}.ncf2 span{flex:1}
+@media(max-width:900px){#ncw{bottom:6px;width:calc(100% - 12px);max-height:80vh}#ncHint{top:48px;font-size:12px}}
+</style>
+<div id="ncHint">💬 לחצו על כהן, לוי או כל דמות כדי לעצור אותה ולשוחח איתה</div>
+<div id="ncw" class="panel" dir="rtl" role="dialog" aria-label="שיחה עם דמות">
+ <div class="nch"><span id="ncAv">🙂</span><div class="nct"><b id="ncName"></b><small id="ncJob"></small></div><button id="ncX" title="סגור (הדמות ממשיכה)" aria-label="סגור">✕</button></div>
+ <div id="ncLog" aria-live="polite"></div>
+ <div id="ncAck" style="display:none"><b>לפני השליחה הראשונה:</b> ההקלטה (או הטקסט) נשלחים לשרת האתר ומשם לשירות Gemini של גוגל <b>רק כשאתם לוחצים ״שלח״</b> – לא לפני כן ולא ברקע. לא נדרש מפתח או הרשמה.
+  <div class="row2"><button id="ncAckOk" class="pri">הבנתי, שלח</button><button id="ncAckNo">ביטול</button></div></div>
+ <div id="ncRecBar"><span class="rdot"></span><span id="ncTime">0:00</span><audio id="ncPrev" controls></audio><button id="ncDelRec" title="מחק הקלטה" aria-label="מחק הקלטה">🗑️</button></div>
+ <div class="ncf"><button id="ncMic" title="הקלטה: לחצו להתחלה ולחצו שוב לעצירה (או החזיקו ושחררו)" aria-label="הקלטה">🎤</button><input type="text" id="ncTxt" placeholder="הקלידו שאלה, או הקליטו…" maxlength="500" autocomplete="off" aria-label="שאלה לדמות"><button id="ncSend">שלח</button></div>
+ <div class="ncf2"><label><input type="checkbox" id="ncTts"> הקראת התשובה בקול</label><span>ההקלטה נשלחת לשרת האתר ולגוגל רק ב״שלח״</span><button id="ncGo" class="ncgo">▶ המשך</button></div>
 </div>
 <script>{{THREE}}</script>
 <script>{{ORBIT}}</script>

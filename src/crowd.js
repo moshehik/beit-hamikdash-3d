@@ -1,0 +1,359 @@
+// src/crowd.js – פעילות ודמויות בעזרה לפי שעה ותאריך (סוכן הפעילות)
+/* ================= כהנים, לויים, ישראלים וסנהדרין בתנועה לפי השעה והיום =================
+ הבורר #dayType (יום חול / שבת / ראש חודש / ערב פסח / פסח / שבועות / ר״ה / יוה״כ / סוכות) + סליידר השעה #tm קובעים מי נמצא איפה ומה הוא עושה.
+ כל הפעילויות מבוססות על מקורות (משנה, תלמוד, רמב״ם, יוספוס) – ליד כל סצנה בקוד הערת מקור; שורת הסבר ב-#ambChip.
+ מימוש: מופעים (THREE.InstancedMesh: גוף + ראש) לקהל ולדמויות רחוקות; דמויות בודדות מפורטות (priest()) לכהנים עובדים ובודדים נבחרים.
+ הליכה: מסלולים (routes) מאומתים מול COL; עומדים/משוטטים נדגמים מחוץ ל-COL (רשת מרחבית); רישום לסוכן הצ'אט: NPCS.register({...}) (src/npcs.js).
+ ביצועים: ~כ-40 רשתות בסך הכל (בריכות מופעים), עד כ-2500 דמויות בערב פסח (מכפיל צפיפות #crowdQ). */
+const CROWD=(()=>{
+ const $=id=>document.getElementById(id),PI=Math.PI,TAU=PI*2;
+ let _r=987654321;const R=()=>(_r=_r*16807%2147483647)/2147483647,rr=(a,b)=>a+(b-a)*R(),pick=a=>a[R()*a.length|0];
+ const sm01=x=>{x=Math.min(1,Math.max(0,x));return x*x*(3-2*x)};
+ const inW=(h,a,b)=>a<=b?(h>=a&&h<b):(h>=a||h<b);                       // חלון שעות (גם חוצה חצות)
+ const hhmm=h=>{const hh=Math.floor(h),mm=Math.floor((h-hh)*60);return(hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm};
+ /* ---------------- א. לוח השנה: ימים וסוגיהם ---------------- */
+ // mus: יש מוסף; yt: יום טוב/שבת (הסנהדרין יושבת בחיל – סנהדרין פח ע״ב); gold: כהן גדול מקריב בבוקר (נוהג בשבתות ובימים טובים)
+ const DAYS={
+  chol:{n:'יום חול',mus:0,gold:0,yt:0,cr:[16,36,45,0]},
+  shabbat:{n:'שבת',mus:1,gold:1,yt:1,cr:[30,80,100,0]},
+  rc:{n:'ראש חודש',mus:1,gold:1,yt:0,cr:[34,95,130,0]},
+  'erev-pesach':{n:'ערב פסח (י״ד בניסן)',mus:0,gold:0,yt:0,cr:[90,680,860,0]},
+  pesach:{n:'פסח – חול המועד',mus:1,gold:1,yt:0,cr:[110,420,520,0]},
+  shavuot:{n:'שבועות',mus:1,gold:1,yt:1,cr:[100,470,600,0]},
+  rh:{n:'ראש השנה',mus:1,gold:1,yt:1,cr:[80,330,400,0]},
+  yk:{n:'יום הכיפורים',mus:1,gold:0,yt:1,cr:[150,260,110,230]},
+  sukkot:{n:'סוכות – חול המועד',mus:1,gold:1,yt:0,cr:[100,440,540,0]}};
+ const DLIST=['chol','shabbat','rc','erev-pesach','pesach','shavuot','rh','yk','sukkot'];
+ let Qv=.7;                                                              // מכפיל צפיפות (בורר #crowdQ)
+ /* ---------------- ב. התנגשויות: רשת מרחבית על COL + לבדוק הליכה ---------------- */
+ let GRID=null;const GC=16,GO=300;
+ const gkey=(x,z)=>Math.floor((x+GO)/GC)*64+Math.floor((z+GO)/GC);
+ function buildGrid(){GRID=new Map();COL.forEach(c=>{if(c[1]<-290||c[0]>290||c[3]<-290||c[2]>290)return;const x0=Math.floor((c[0]-1.4+GO)/GC),x1=Math.floor((c[1]+1.4+GO)/GC),z0=Math.floor((c[2]-1.4+GO)/GC),z1=Math.floor((c[3]+1.4+GO)/GC);
+  for(let a=x0;a<=x1;a++)for(let b=z0;b<=z1;b++){const k=a*64+b;let l=GRID.get(k);if(!l)GRID.set(k,l=[]);l.push(c)}})}
+ const blocked=(x,z,f,r=.8)=>{const l=GRID.get(gkey(x,z));if(!l)return false;for(const c of l){if(c[6]&&!c[6].visible)continue;if(f+1<c[5]&&f+4>c[4]&&x>c[0]-r&&x<c[1]+r&&z>c[2]-r&&z<c[3]+r)return true}return false};
+ const segClear=(x0,z0,x1,z1,f,r=.8)=>{const L=Math.hypot(x1-x0,z1-z0),n=Math.max(1,Math.ceil(L/.7));for(let i=0;i<=n;i++){const u=i/n,x=x0+(x1-x0)*u,z=z0+(z1-z0)*u;if(blocked(x,z,levelY(x,z),r))return false}return true};
+ // גובה הרצפה: floorY של הדגם + משטח ראש המזבח (y=25) שאין לו ZN
+ const levelY=(x,z)=>(x>-40&&x<-12&&z>-57&&z<-28)?YA+9:floorY(x,z);
+ // אזורים שאסור לעמוד בהם (נוסף על COL): מזבח וכבש, כבש האולם, שולחני הטבחים, בסיסי מנורות שמחת בית השואבה
+ const EX=[[-44,-8,-61,5.5],[-66,-50,-71,-44]];[-39,-30,-21,-12].forEach(x=>EX.push([x-2.5,x+2.5,-101.6,-93.4]));[[62,-79],[62,-36],[108,-79],[108,-36]].forEach(([x,z])=>EX.push([x-3.6,x+3.6,z-3.6,z+3.6]));EX.push([16,33.5,-73.5,-41.5]);
+ const inEx=(x,z,l)=>{for(const e of EX)if(x>e[0]&&x<e[1]&&z>e[2]&&z<e[3])return true;if(l)for(const e of l)if(x>e[0]&&x<e[1]&&z>e[2]&&z<e[3])return true;return false};
+ const OCC=new Set(),okey=(x,z,y)=>Math.round(x/1.15)*8192+Math.round(z/1.15)+(y>40?7e7:0);
+ function sample(rect,o){o=o||{};for(let t=0;t<40;t++){const x=rr(rect[0],rect[1]),z=rr(rect[2],rect[3]),y=o.y!=null?o.y:levelY(x,z);
+   if(blocked(x,z,y,1))continue;if(inEx(x,z,o.ex))continue;const k=okey(x,z,y);if(!o.free&&OCC.has(k))continue;return{x,z,y,k}}return null}
+ /* ---------------- ג. גיאומטריה של דמויות פשוטות (מופעים) ---------------- */
+ const _o=new T.Object3D();
+ function GB(){const P=[],N=[],C=[];return{add(geo,col,x=0,y=0,z=0,sx=1,sy=1,sz=1,rx=0,ry=0,rz=0){_o.position.set(x,y,z);_o.rotation.set(rx,ry,rz);_o.scale.set(sx,sy,sz);_o.updateMatrix();
+   const g=geo.index?geo.toNonIndexed():geo.clone();g.applyMatrix4(_o.matrix);const p=g.attributes.position,n=g.attributes.normal,c=new T.Color(col);
+   for(let i=0;i<p.count;i++){P.push(p.getX(i),p.getY(i),p.getZ(i));N.push(n.getX(i),n.getY(i),n.getZ(i));C.push(c.r,c.g,c.b)}},
+  limb(a,b,r1,r2,col,seg=6){const d=new T.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]),L=d.length();_o.position.set((a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);_o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.normalize());_o.scale.set(1,1,1);_o.updateMatrix();
+   const g=new T.CylinderGeometry(r2,r1,L,seg).toNonIndexed();g.applyMatrix4(_o.matrix);const p=g.attributes.position,n=g.attributes.normal,c=new T.Color(col);for(let i=0;i<p.count;i++){P.push(p.getX(i),p.getY(i),p.getZ(i));N.push(n.getX(i),n.getY(i),n.getZ(i));C.push(c.r,c.g,c.b)}},
+  geo(){const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(P,3));g.setAttribute('normal',new T.Float32BufferAttribute(N,3));g.setAttribute('color',new T.Float32BufferAttribute(C,3));return g}}}
+ const lathe=(pts,seg)=>new T.LatheGeometry(pts.map(p=>new T.Vector2(p[0],p[1])),seg);
+ const SKIN=0xc99673,HAIR=[0x2c1f17,0x3a2a1e,0x4a3426,0x6a5a4a,0x8a8a88,0xc8c8c4];
+ // דמות עומדת: robe (נצבע בצבע המופע) + head (ראש, ידיים, רגליים, כיסוי ראש)
+ function fig(o){const Rb=GB(),Hd=GB();const hm=o.hem||.14,w0=o.w0||.46,col=o.col!=null?o.col:0xffffff;
+  Rb.add(lathe(o.prof||[[w0,hm],[w0*.96,.9],[.37,1.8],[.42,2.42],[.2,2.66]],o.seg||9),col);
+  [-1,1].forEach(s=>Rb.limb([s*.36,2.55,0],[s*(.5+(o.sw||0)),1.95,.2],.12,o.sl||.1,col,6));
+  if(o.belt!=null)Rb.add(new T.CylinderGeometry(.395,.395,o.bw||.14,9,1,true),o.belt,0,1.8,0);
+  if(o.robeX)o.robeX(Rb);
+  [-1,1].forEach(s=>{Hd.add(new T.SphereGeometry(.08,5,4),SKIN,s*(.5+(o.sw||0)),1.9,.22);Hd.add(new T.BoxGeometry(.16,.07,.34),SKIN,s*.14,.04,.06)});
+  Hd.add(new T.CylinderGeometry(.08,.09,.2,6),SKIN,0,2.72,0);Hd.add(new T.SphereGeometry(.2,7,6),SKIN,0,2.93,.01,1,1.1,1);
+  if(o.headX)o.headX(Hd);return{robe:Rb.geo(),head:Hd.geo()}}
+ const hairC=()=>pick(HAIR);
+ const beardX=(Hd,c,big)=>{Hd.add(new T.SphereGeometry(.14,6,5),c,0,2.72,.11,1.05,big?2.4:1.3,.8);Hd.add(new T.SphereGeometry(.2,6,5),c,0,3.0,-.05,1,.75,.9)};
+ const FIG={
+  man:()=>fig({belt:0x6b5a45,headX:H=>{beardX(H,0x3a2a1e);H.add(new T.TorusGeometry(.2,.07,5,8),0xe8dfc8,0,3.07,0,1,1,1,PI/2,0,0);H.add(new T.SphereGeometry(.16,6,4),0xe8dfc8,0,3.11,0,1,.6,1)}}),
+  woman:()=>fig({w0:.52,prof:[[.52,.05],[.48,.9],[.36,1.75],[.4,2.4],[.2,2.66]],belt:0x8a6a48,bw:.1,sl:.095,headX:H=>{H.add(new T.SphereGeometry(.23,7,6),0xdcd0b4,0,2.95,-.01,1,1.08,1.02);H.add(new T.SphereGeometry(.12,6,5),0xdcd0b4,0,2.65,-.15,1.3,1.4,.8)}}),
+  kohen:()=>fig({belt:0x8a4a4f,bw:.2,w0:.44,sw:.04,headX:H=>{beardX(H,0x3a2a1e);H.add(new T.ConeGeometry(.23,.58,8),0xf1ece0,0,3.35,0)}}),
+  levi:()=>fig({col:0xb8966a,belt:0x7a2a22,bw:.2,headX:H=>{beardX(H,0x3a2a1e);H.add(new T.TorusGeometry(.21,.08,5,8),0xe8dcc0,0,3.07,0,1,1,1,PI/2,0,0);H.add(new T.SphereGeometry(.15,6,4),0x8a2a22,0,3.12,0,1,.8,1)}}),
+  sage:()=>fig({w0:.5,sw:.08,sl:.14,belt:0x5a4a38,headX:H=>{beardX(H,0xe0ddd6,1);H.add(new T.TorusGeometry(.22,.1,5,8),0xf0ecdf,0,3.08,0,1,1,1,PI/2,0,0);H.add(new T.SphereGeometry(.17,6,4),0xf0ecdf,0,3.14,0,1,.7,1)}}),
+  // חכם יושב (הראשית = משטח הכיסא; הפנים +z; הרגליים יורדות 1.1 אל הרצפה)
+  sit:()=>{const Rb=GB(),Hd=GB();Rb.add(lathe([[.42,.05],[.4,.6],[.37,1.3],[.42,1.75],[.2,1.97]],9),0xffffff);Rb.add(new T.BoxGeometry(.8,.3,1),0xffffff,0,.2,.52);
+   [-1,1].forEach(s=>{Rb.add(new T.BoxGeometry(.26,1.15,.3),0xffffff,s*.22,-.52,1.0);Rb.limb([s*.38,1.8,0],[s*.3,.5,.8],.12,.1,0xffffff,6);Hd.add(new T.BoxGeometry(.2,.08,.4),SKIN,s*.22,-1.08,1.12);Hd.add(new T.SphereGeometry(.08,5,4),SKIN,s*.3,.5,.85)});
+   Rb.add(new T.CylinderGeometry(.41,.41,.12,9,1,true),0x5a4a38,0,1.0,0);
+   Hd.add(new T.CylinderGeometry(.08,.09,.2,6),SKIN,0,2.0,0);Hd.add(new T.SphereGeometry(.2,7,6),SKIN,0,2.2,.01,1,1.1,1);beardX(Hd,0xe0ddd6,1);Hd.add(new T.TorusGeometry(.22,.1,5,8),0xf0ecdf,0,2.34,0,1,1,1,PI/2,0,0);Hd.add(new T.SphereGeometry(.17,6,4),0xf0ecdf,0,2.4,0,1,.7,1);
+   return{robe:Rb.geo(),head:Hd.geo()}}};
+ const PAL={Y:[0xe8dcc0,0xd8c8a0,0xb89868,0x9a7a52,0xc9bfa8,0x8a6a4a,0xe9e4d4,0x7a8a98,0xa85a48,0x6a7a52],W:[0xc8584a,0xd8a040,0x4a7a9a,0x6a9a5a,0xb0608a,0xe0d0b0,0x8a6aa0,0xc98a6a,0xa04a3a],
+  K:[0xffffff,0xf6f3ea,0xeeeadf],L:[0xffffff,0xf2ede2],S:[0xf0ece2,0x3b4a6b,0x6a2a38,0x4a4a52,0xd8d0b8],Q:[0xf0ece2,0x3b4a6b,0x6a2a38,0x4a4a52,0xd8d0b8,0xe4dcc4]};
+let STOOL=null;
+ function setStools(L){if(!STOOL){const m=new T.InstancedMesh(new T.BoxGeometry(1.1,1.1,1.1),new T.MeshLambertMaterial({color:0x8a8478}),80);m.instanceMatrix.array.fill(0);m.frustumCulled=false;gC.add(m);STOOL=m}
+  const a=STOOL.instanceMatrix.array;a.fill(0);if(L)L.forEach((s,i)=>{if(i<80)wm(a,i*16,s[0]-Math.sin(s[2])*.05,.55,s[1]-Math.cos(s[2])*.05,s[2],0,0,1,1,1)});STOOL.instanceMatrix.needsUpdate=true}
+ const POPFIG={Y:'man',W:'woman',K:'kohen',L:'levi',S:'sage',Q:'sit'};
+ const CAP={'Y@A':900,'Y@N':1200,'W@N':800,'Y@M':900,'W@M':400,'K@A':170,'K@N':16,'L@A':60,'L@N':130,'L@M':40,'S@A':8,'S@C':8,'Q@A':90,'Q@C':90};
+ /* ---- חפצים (props) ---- */
+ const PROP={
+  lamb:{o:[0,2.95,.05,0,0,1],g:()=>{const g=GB();g.add(new T.SphereGeometry(1,7,5),0xf1ece0,0,0,0,.62,.3,.34);g.add(new T.SphereGeometry(1,6,5),0xe4dccb,.7,.14,0,.2,.2,.17);[[-.3,.14],[.3,.14],[-.3,-.14],[.3,-.14]].forEach(([a,b])=>g.add(new T.CylinderGeometry(.04,.04,.3,4),0x6a5a48,a,-.3,b));return g.geo()}},
+  torch:{o:[.42,2.0,.55,0,-.2,1],basic:1,g:()=>{const g=GB();g.add(new T.CylinderGeometry(.04,.05,1.3,5),0x4a3220,0,.45,0);g.add(new T.ConeGeometry(.17,.55,6),0xff8a1c,0,1.2,0);g.add(new T.ConeGeometry(.09,.38,5),0xffe27a,0,1.14,0);return g.geo()}},
+  branch:{o:[.4,2.3,.4,0,.25,1],g:()=>{const g=GB();g.add(new T.CylinderGeometry(.025,.04,1.5,4),0x5a4a2a,0,.6,0);g.add(new T.ConeGeometry(.28,1.3,5),0x3d7a34,0,1.5,0);g.add(new T.ConeGeometry(.2,.9,5),0x4e8e3e,0,1.1,0,1,1,1,.3,0,.3);return g.geo()}},
+  log:{o:[.28,2.78,0,0,0,1],g:()=>{const g=GB();g.add(new T.CylinderGeometry(.2,.2,2.3,6),0x4a3626,0,0,0,1,1,1,PI/2,0,0);g.add(new T.CircleGeometry(.19,6),0xa88050,0,0,1.16);return g.geo()}},
+  trumpet:{o:[0,2.85,.3,0,0,1],g:()=>{const g=GB();g.add(new T.CylinderGeometry(.04,.04,2,6),0xdde1e6,0,0,1,1,1,1,PI/2,0,0);g.add(new T.ConeGeometry(.2,.5,8),0xdde1e6,0,0,2.1,1,1,1,PI/2,0,0);return g.geo()}},
+  harp:{o:[.3,2.3,.5,0,.2,1],g:()=>{const g=GB();g.add(new T.BoxGeometry(.5,.08,.14),0xd8a838,0,.38,0);g.add(new T.BoxGeometry(.08,.8,.14),0xd8a838,-.22,0,0);g.add(new T.BoxGeometry(.08,.8,.14),0xd8a838,.22,0,0);[-.1,0,.1].forEach(x=>g.add(new T.BoxGeometry(.015,.7,.015),0xf2e8c8,x,0,0));return g.geo()}},
+  bowl:{o:[0,2.3,.58,0,0,1],g:()=>{const g=GB();g.add(new T.CylinderGeometry(.25,.14,.14,8),0xffffff,0,0,0);return g.geo()},tint:1},
+  basket:{o:[0,3.0,.18,0,0,1],g:()=>{const g=GB();g.add(new T.SphereGeometry(.42,8,5,0,TAU,0,PI/2),0xb98a4a,0,-.12,0,1,.7,1);[0xc0392b,0x7a3a9a,0xe8a838,0x58b868,0xc0392b].forEach((c,i)=>g.add(new T.SphereGeometry(.1,5,4),c,Math.cos(i*1.26)*.2,.15,Math.sin(i*1.26)*.2));return g.geo()}},
+  flute:{o:[0,2.8,.35,0,0,1],g:()=>{const g=GB();g.add(new T.CylinderGeometry(.035,.035,1.1,5),0xb88a50,0,0,.4,1,1,1,PI/2,0,0);return g.geo()}},
+  jar:{o:[0,2.15,.42,0,0,1],g:()=>{const g=GB();g.add(new T.SphereGeometry(.25,6,5),0x9a5a34,0,0,0,1,1.3,1);g.add(new T.CylinderGeometry(.08,.12,.2,6),0x9a5a34,0,.38,0);return g.geo()}}};
+ const GRPS={A:()=>gA,N:()=>gN,M:()=>gM,C:()=>gC};
+ const mLam=new T.MeshLambertMaterial({vertexColors:true,side:T.DoubleSide}),mLamC=new T.MeshLambertMaterial({vertexColors:true,side:T.DoubleSide}),mBas=new T.MeshBasicMaterial({vertexColors:true,side:T.DoubleSide});
+ const _geoCache={};const getFig=k=>_geoCache[k]||(_geoCache[k]=FIG[k]());const getProp=k=>PROP[k]._g||(PROP[k]._g=PROP[k].g());
+ /* ---------------- ד. בריכות מופעים ---------------- */
+ const POOLS={};
+ function pool(pop,grp){const key=pop+'@'+grp;if(POOLS[key])return POOLS[key];const cap=CAP[key]||60,f=getFig(POPFIG[pop]);
+  const mk=g=>{const m=new T.InstancedMesh(g,mLamC,cap);m.instanceMatrix.array.fill(0);m.frustumCulled=false;m.castShadow=false;(GRPS[grp]()).add(m);return m};
+  const P={key,pop,grp,cap,robe:mk(f.robe),head:mk(f.head),props:{},agents:new Array(cap).fill(null),free:[],hi:0};
+  for(let i=cap-1;i>=0;i--)P.free.push(i);
+  const pal=PAL[pop]||PAL.Y,c=new T.Color();for(let i=0;i<cap;i++){P.robe.setColorAt(i,c.setHex(pick(pal)));const s=.8+R()*.22;P.head.setColorAt(i,c.setRGB(s,s*.97,s*.94))}
+  P.robe.instanceColor.needsUpdate=P.head.instanceColor.needsUpdate=true;P.robe.count=P.head.count=0;   // count רק אחרי setColorAt (three מקצה את instanceColor לפי count)
+  
+  P.getProp=k=>{if(P.props[k])return P.props[k];const d=PROP[k],m=new T.InstancedMesh(getProp(k),d.tint?mLamC:(d.basic?mBas:mLam),cap);m.instanceMatrix.array.fill(0);m.frustumCulled=false;m.castShadow=false;
+    if(d.tint){const cc=new T.Color();for(let i=0;i<cap;i++)m.setColorAt(i,cc.setHex(i%2?0xe8c060:0xdde1e6));m.instanceColor.needsUpdate=true}m.count=P.hi;(GRPS[grp]()).add(m);return P.props[k]=m};
+  return POOLS[key]=P}
+ const M16=new Float32Array(16);
+ // מטריצה: Ry(yaw)·Rx(pitch)·Rz(roll)·scale  (פנים = +z)
+ function wm(arr,o,x,y,z,yaw,pit,roll,sx,sy,sz){const c=Math.cos(yaw),s=Math.sin(yaw),cx=Math.cos(pit),sxn=Math.sin(pit),cz=Math.cos(roll),sz2=Math.sin(roll);
+  const c0x=cz,c0y=cx*sz2,c0z=sxn*sz2,c1x=-sz2,c1y=cx*cz,c1z=sxn*cz,c2x=0,c2y=-sxn,c2z=cx;
+  arr[o]=(c*c0x+s*c0z)*sx;arr[o+1]=c0y*sx;arr[o+2]=(-s*c0x+c*c0z)*sx;arr[o+3]=0;
+  arr[o+4]=(c*c1x+s*c1z)*sy;arr[o+5]=c1y*sy;arr[o+6]=(-s*c1x+c*c1z)*sy;arr[o+7]=0;
+  arr[o+8]=(c*c2x+s*c2z)*sz;arr[o+9]=c2y*sz;arr[o+10]=(-s*c2x+c*c2z)*sz;arr[o+11]=0;arr[o+12]=x;arr[o+13]=y;arr[o+14]=z;arr[o+15]=1}
+ const DIRTY=new Set();
+ function setCount(P,i){if(i!=null&&i+1>P.hi)P.hi=i+1;let h=P.hi;while(h>0&&!P.agents[h-1])h--;P.hi=h;P.robe.count=P.head.count=h;for(const k in P.props)P.props[k].count=h}
+ /* ---------------- ה. סוכנים (דמות אחת): מקום, תנועה, חפץ ---------------- */
+ const DYN=new Set(),STAT=[],BOW=[],SPECS=new Map();let _tid=0;
+ let bowAmt=0,bowMode='';
+ function writeAgent(a,t){
+  const y=a.y+(a.dy||0),sc=(a.s||1)*(a.grow==null?1:a.grow);
+  if(a.obj){a.obj.position.set(a.x,y,a.z);a.obj.rotation.set(0,a.yaw,a.roll||0);a.obj.visible=a.vis!==false;return}
+  const P=a.pool,o=a.i*16;wm(P.robe.instanceMatrix.array,o,a.x,y,a.z,a.yaw,a.pit||0,a.roll||0,sc,sc,sc);wm(P.head.instanceMatrix.array,o,a.x,y,a.z,a.yaw,a.pit||0,a.roll||0,sc,sc,sc);DIRTY.add(P);
+  if(a.prop){const d=PROP[a.prop],m=P.getProp(a.prop),cy=Math.cos(a.yaw),sy=Math.sin(a.yaw),ox=d.o[0]*sc,oz=d.o[2]*sc;let fl=1;if(a.prop=='torch')fl=.85+.3*Math.sin(t*14+a.i*1.7);
+   wm(m.instanceMatrix.array,o,a.x+ox*cy+oz*sy,y+d.o[1]*sc,a.z-ox*sy+oz*cy,a.yaw+d.o[3],(a.pit||0)+d.o[4],a.roll||0,sc*d.o[5],sc*d.o[5]*fl,sc*d.o[5]);DIRTY.add(m)}}
+ function hideAgent(a){if(a.obj){a.obj.visible=false;return}const P=a.pool,o=a.i*16;for(let k=0;k<16;k++){P.robe.instanceMatrix.array[o+k]=0;P.head.instanceMatrix.array[o+k]=0;for(const q in P.props)P.props[q].instanceMatrix.array[o+k]=0}DIRTY.add(P);for(const q in P.props)DIRTY.add(P.props[q])}
+ function release(a){if(!a.on)return;a.on=false;DYN.delete(a);if(a.okey!=null)OCC.delete(a.okey);hideAgent(a);if(a.npc){const l=NPCS.list,i=l.indexOf(a.npc);if(i>=0)l.splice(i,1);a.npc.active=false;a.npc=null}
+  if(a.pool){a.pool.agents[a.i]=null;a.pool.free.push(a.i);setCount(a.pool)}}
+ // מסלולים: נקודות [x,z], אורכים מצטברים
+ const ROUTES={};
+ function defRoute(id,pts,flat){const L=[0];for(let i=1;i<pts.length;i++)L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));ROUTES[id]={id,pts,L,len:L[L.length-1],flat}}
+ const routePos=(r,d,seg)=>{let i=Math.max(0,Math.min(seg||0,r.pts.length-2));while(i>0&&d<r.L[i])i--;while(i<r.pts.length-2&&d>r.L[i+1])i++;const a=r.pts[i],b=r.pts[i+1],u=(d-r.L[i])/Math.max(.001,r.L[i+1]-r.L[i]);return[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u,Math.atan2(b[0]-a[0],b[1]-a[1]),i]};
+ const ZCr=-57.5;
+ defRoute('wood',[[-97,3.5],[-97,-1.2],[-97,-4.6],[-46,-4.6],[-46,5],[-29.5,5],[-29.5,-29.5],[-28,-31.5],[-28,-34]]);                                 // לשכת העצים → כבש → ראש המזבח (תמיד ב:ב–ג; מידות ה:ד)
+ defRoute('limbs',[[-34.5,-64],[-46,-64],[-46,5],[-29.5,5],[-29.5,-29.5],[-27,-32]]);                                                               // בית המטבחיים → מערב המזבח → כבש (תמיד ג:א)
+ defRoute('lamb',[[-52,-113],[-52,-100],[-46,-92],[-40,-80],[-34.5,-68]]);                                                                      // הבאת טלה לשחיטה (תמיד ג:ג)
+ defRoute('ulam',[[-48,-57.5],[-64,-57.5]]);                                                                                                      // כבש האולם
+ defRoute('water',[[-11,44],[-11,6.5],[-24,6.5],[-24,-29.5],[-29,-30]]);                                                                         // שער המים → כבש (סוכה ד:ט)
+ defRoute('sovev',[[-8,-26],[-8,-63],[-46,-63],[-46,5.5],[-8,5.5],[-8,-26]]);                                                                    // הקפת המזבח (סוכה ד:ה)
+ defRoute('insE',[[-56,-117],[-52,-109],[-8,-109],[-8,-34]]);defRoute('insW',[[-56,-117],[-52,-112],[-52,-70],[-46,-62],[-46,2],[-8,5],[-8,-30]]);                      // שתי כתות בודקות את העזרה (תמיד א:ג)
+  defRoute('bikk',[[238,ZCr],[160,ZCr],[110,ZCr],[40,ZCr],[19,ZCr],[8,ZCr],[-6,ZCr],[-8,-52]]);                                                    // ביכורים: שער שושן → עזרת נשים → עזרת ישראל → המזבח (ביכורים ג:ג–ו)
+ (()=>{const c=[];for(let i=0;i<=16;i++){const a=i/16*TAU;c.push([85+Math.cos(a)*14,ZCr+Math.sin(a)*12])}defRoute('simcha',c)})();                      // מחול האבוקות בעזרת נשים (סוכה ה:ד)
+ defRoute('nicanor',[[44,ZCr],[19,ZCr],[7,ZCr]]);                                                                                                  // שער ניקנור וט״ו המעלות
+ defRoute('azIn',[[-43,44],[-43,9],[-46,2],[-46,-64],[-40,-90]]);                                                                                 // כניסת ישראל משער הדלק אל חצר הצפון
+ /* אימות מסלולים מול COL (נקרא מבחוץ לבדיקות) */
+ function validate(){if(!GRID)buildGrid();const bad=[];for(const id in ROUTES){const r=ROUTES[id];for(let d=0;d<=r.len;d+=.6){const p=routePos(r,d);const y=levelY(p[0],p[1]);if(blocked(p[0],p[1],y,.5))bad.push(id+'@'+p[0].toFixed(1)+','+p[1].toFixed(1)+' y'+y.toFixed(1))}}return bad}
+ /* ---------------- ו. הצבת סוכן לפי מפרט (spec) ---------------- */
+ const yawTo=(x,z,tx,tz)=>Math.atan2(tx-x,tz-z);
+ function faceOf(sp,x,z){const f=sp.face;if(f==null)return rr(0,TAU);if(typeof f=='number')return f;if(f=='altar')return yawTo(x,z,-26,-43);if(f=='east')return PI/2;if(f=='west')return -PI/2;if(f=='north')return PI;if(f=='south')return 0;if(f=='center')return yawTo(x,z,sp.cx!=null?sp.cx:-26,sp.cz!=null?sp.cz:-43);if(f=='out')return yawTo(sp.cx,sp.cz,x,z);if(f=='rand')return rr(0,TAU);return 0}
+ function initAgent(a,sp,k){
+  a.sp=sp;a.k=k;a.frozen=false;a.dy=0;a.pit=0;a.roll=0;a.s=sp.sc||1;a.ph=R()*TAU;a.prop=null;a.grow=sp.noGrow?1:0;a.wait=0;a.vis=true;a.d=0;a.dir=1;a.seg=0;a.okey=null;
+  if(sp.prop&&(sp.propP==null||R()<sp.propP))a.prop=sp.prop;
+  if(sp.t=='stand'){let p=null;if(sp.pts){const q=sp.pts[k%sp.pts.length];p={x:q[0],z:q[1],y:q[3]!=null?q[3]:(sp.y!=null?sp.y:levelY(q[0],q[1])),yaw:q[2]}}else p=sample(sp.rect,{ex:sp.ex,y:sp.y});
+   if(!p){a.fail=true;return}a.x=p.x;a.z=p.z;a.y=p.y;if(p.k!=null&&!sp.pts){a.okey=p.k;OCC.add(p.k)}a.yaw=p.yaw!=null?p.yaw:faceOf(sp,a.x,a.z);a.base=a.yaw}
+  else if(sp.t=='wander'){const p=sample(sp.rect,{ex:sp.ex,y:sp.y,free:1});if(!p){a.fail=true;return}a.x=p.x;a.z=p.z;a.y=p.y;a.yaw=rr(0,TAU);a.tx=a.x;a.tz=a.z;a.wait=rr(0,5)}
+  else if(sp.t=='route'){const r=ROUTES[sp.route];a.r=r;a.d=sp.loop?(k/Math.max(1,sp.n))*r.len:(sp.spread?rr(0,r.len):(sp.start!=null?sp.start:0));a.lane=(sp.lane||0)*(k%2?1:-1)+rr(-.25,.25);a.spd=(sp.spd||2.2)*rr(.9,1.1);a.dir=sp.dir||1;
+   const p=routePos(r,a.d,0);a.seg=p[3];a.x=p[0];a.z=p[1];a.y=r.flat!=null?r.flat:levelY(a.x,a.z);a.yaw=p[2]+(a.dir<0?PI:0)}
+  if(sp.bow)BOW.push(a);if(sp.t!='stand'||sp.anim)DYN.add(a);else STAT.push(a);
+  if(a.pool){a.pool.agents[a.i]=a;setCount(a.pool,a.i)}
+  if(sp.reg&&k<sp.reg&&typeof NPCS!='undefined')register(a,sp,k);
+  writeAgent(a,0)}
+ function register(a,sp,k){const n={id:sp.id+'#'+k,kind:sp.kind||'yisrael',who:sp.who||'',job:()=>typeof sp.job=='function'?sp.job(a):(sp.job||''),active:true,
+   getPos:()=>new T.Vector3(a.x,a.y+(a.dy||0),a.z),pick:a.obj?{obj:a.obj}:{inst:a.pool.robe,index:a.i,head:a.pool.head},freeze:on=>{a.frozen=!!on},
+   face:v=>{a.yaw=Math.atan2(v.x-a.x,v.z-a.z);a.base=a.yaw;if(a.obj||a.frozen)writeAgent(a,0)},extra:Object.assign({spec:sp.id,female:sp.pop=='W',instance:a.obj?null:{pool:a.pool.key,index:a.i}},sp.extra||{})};
+  a.npc=n;NPCS.register(n)}
+ /* דמות בודדת מפורטת (Group): כהן (priest) או חכם (שתי רשתות) */
+ const SINGLES={};
+ function mkSingle(sp){let g;
+  if(sp.make=='priest'){g=mkPriest?mkPriest(sp.pk||'k',sp.pose||'idle',sp.beard):new T.Group()}
+  else{const f=getFig(sp.make||'sit');g=new T.Group();const c=new T.Color(pick(PAL.Q)),s=.85+R()*.15;const m1=new T.Mesh(f.robe,new T.MeshLambertMaterial({vertexColors:true,color:c,side:T.DoubleSide})),m2=new T.Mesh(f.head,new T.MeshLambertMaterial({vertexColors:true,side:T.DoubleSide,color:new T.Color(s,s*.97,s*.94)}));g.add(m1,m2)}
+  if(sp.attach)sp.attach(g);(GRPS[sp.grp||'A']()).add(g);g.visible=false;return g}
+ function allocAgent(sp,k){
+  if(sp.obj){const key=sp.id;const a={on:true,obj:SINGLES[key]||(SINGLES[key]=mkSingle(sp))};a.i=-1;return a}
+  const P=pool(sp.pop,sp.grp);if(!P.free.length)return null;const i=P.free.pop();const a={on:true,pool:P,i};return a}
+ function applySpecs(list){
+  const want=new Map();list.forEach(s=>want.set(s.id,s));
+  for(const[id,rec]of SPECS){if(!want.has(id)){rec.agents.forEach(release);SPECS.delete(id)}}
+  for(const sp of list){let rec=SPECS.get(sp.id);const n=sp.n|0;
+   if(!rec){rec={sp,agents:[]};SPECS.set(sp.id,rec)}else{rec.sp=sp;rec.agents.forEach(a=>{a.sp=sp})}
+   while(rec.agents.length>n){release(rec.agents.pop())}
+   while(rec.agents.length<n){const k=rec.agents.length,a=allocAgent(sp,k);if(!a)break;initAgent(a,sp,k);if(a.fail){release(a);break}rec.agents.push(a)}}}
+ /* ---------------- ז. תכנון: מי איפה ומה עושה לפי יום ושעה ---------------- */
+ const SLAUGH=[-40,-11,-92,-62],AZE=[-62,-5,-124,8],ISR=[1.8,11.4,-127,12.5],NASH=[19,155,-122,7],PLZ=[173,207,-128,16],PLZ2=[60,200,48,160];
+ const SAN_GAZIT=()=>{const L=[];[[5.2,15],[7.9,23],[10.5,33]].forEach(([Rr,n],ri)=>{for(let i=0;i<n;i++){const ph=PI*(.06+.88*i/(n-1));L.push([-25.5-Rr*Math.cos(ph),-134+Rr*Math.sin(ph),ph-PI/2+PI,YA+1.18,ri==2&&i==16])}});return L};   // 71 כיסאות (lishkhot.js, אחרי סיבוב 180°)
+ const SAN_CHEL=()=>{const L=[];[[5.2,15],[7.9,23],[10.5,33]].forEach(([Rr,n],ri)=>{for(let i=0;i<n;i++){const ph=PI*(.06+.88*i/(n-1));L.push([-80-Rr*Math.cos(ph),22+Rr*Math.sin(ph),ph-PI/2+PI,1.18,ri==2&&i==16])}});return L};   // חצי גורן בחיל הדרומי (z 22..33), פניהם למרכז
+ function plan(dayId,h){
+  const D=DAYS[dayId]||DAYS.chol,S={day:dayId,D,h,specs:[],caps:[],song:false,vis:{k:false,g:false,y:false},bow:'',walkHold:null};
+  const add=s=>{S.specs.push(s);return s},cap=(id,t,src,prio)=>S.caps.push({id,t,src,prio:prio||5});
+  const q=n=>Math.max(n>0?1:0,Math.round(n*Qv)),yk=dayId=='yk',erev=dayId=='erev-pesach',kitot=erev&&h>=14.75&&h<17.3;
+  const night=h>=19.5||h<3.5;
+  const tamidEnd=erev?13.5:14.5;                 // שחיטת התמיד של בין הערבים: ח׳ וחצי; בערב פסח ז׳ וחצי (פסחים ה:א) – שעת שחר בדגם ≈ 6:00
+  const offered=erev?14.5:15.5;                  // הקרבתו: ט׳ וחצי; בערב פסח ח׳ וחצי
+  S.song=inW(h,7.5,9.5)||(D.mus&&inW(h,9.5,11.5))||(erev?inW(h,14.5,17.4):inW(h,15,17));
+  S.vis.k=h>=5&&h<19;S.vis.g=D.gold&&inW(h,7.5,11.5);if(yk){S.vis.g=inW(h,6,8);S.vis.y=inW(h,8,16.5)}
+  // שמירות – תמיד (מידות א:א)
+  {const mount=[[-102,-239.5],[10,239.5],[40,239.5],[-239.5,-100],[239.5,ZCr],[-239.5,-239.5],[239.5,-239.5],[239.5,237.5],[-239.5,237.5]];
+   add({id:'g-mount',t:'stand',pop:'L',grp:'M',kind:'shoer',n:9,pts:mount.map(p=>[p[0],p[1],yawTo(p[0],p[1],-60,-57)]),noGrow:1,reg:2,job:'עומד במשמר על שער/פינת הר הבית',who:'לוי שומר – אחד מעשרים ואחד משמרות הלויים (משנה מידות א:א)',extra:{post:'הר הבית'}});
+   add({id:'g-azarah',t:'stand',pop:'L',grp:'A',kind:'shoer',n:12,noGrow:1,reg:2,job:'עומד במשמר על שערי העזרה',who:'לוי שומר – משמר השערים והפינות (משנה מידות א:א)',
+    pts:[[9.5,-52.5],[-43,8.2],[-27,8.2],[-11,8.2],[-121,-122.6],[13.5,-132],[-182,-132],[13.5,17.5],[-182,17.5],[-118,-121],[-57,-40],[-169.5,-57.5]].map((p,i)=>[p[0],p[1],yawTo(p[0],p[1],-60,-57),i>=5&&i<=8?0:undefined])});
+   cap('guards','הלויים שומרים בעשרים ואחד מקומות: חמישה על שערי הר הבית, ארבעה בפינותיו, חמישה על שערי העזרה, ארבעה בפינותיה מבחוץ ועוד שלושה (מקומותיהם המדויקים מוערכים)','משנה מידות א:א',8);
+   add({id:'g-kohen',t:'stand',pop:'K',grp:'A',kind:'shoer',n:3,pts:[[-77,-5,0],[-151,-122,PI],[-54.5,-116,-PI/2]],noGrow:1,reg:3,job:'שומר בבית אבטינס / בבית הניצוץ / בבית המוקד',who:'כהן שומר – שלושה מקומות שבהם הכהנים שומרים (משנה מידות א:א; תמיד א:א)'});
+   cap('gk','הכהנים שומרים בשלושה מקומות: בית אבטינס, בית הניצוץ ובית המוקד','משנה מידות א:א; תמיד א:א',8)}
+  if(night&&!S.song){add({id:'night',t:'route',obj:1,make:'priest',pk:'k',beard:0x4a3426,kind:'ish-har-habayit',grp:'A',n:1,route:'sovev',loop:1,spd:2.8,anim:'walk',flat:YA,reg:1,noGrow:1,
+    attach:g=>{const t=new T.Mesh(getProp('torch'),mBas);t.position.set(.55,2.2,.7);t.scale.setScalar(1.3);g.add(t)},job:'מחזר על המשמרות עם אבוקה; מי שישן – מכים אותו ושורפים את בגדיו',who:'איש הר הבית – הממונה על משמרות הלויים (משנה מידות א:ב)'});
+   cap('night','איש הר הבית מחזר בלילה על כל משמר ואבוקות דולקות לפניו; לוי שישן על משמרו – חובטים אותו ושורפים את בגדיו','משנה מידות א:ב',2)}
+  if(h<3.6)cap('sleep','זקני בית אב ישנים בבית המוקד ומפתחות העזרה בידם; פרחי כהונה ישנים על הארץ בלי בגדי קודש','משנה תמיד א:א',4);
+  // לפני עלות השחר (תמיד א:ב–ג, ב:א–ג)
+  if(inW(h,3.5,4.3)){add({id:'pais',t:'stand',pop:'K',grp:'A',kind:'kohen',n:9,rect:[-56,-40,-123,-112],face:'rand',anim:'sway',prop:'torch',propP:.25,reg:1,job:'טובל ומפיס על תרומת הדשן',who:'כהן בית אב – מתכנסים להפיס (פייס) לפני בוא הממונה'});
+   cap('pais','כהנים שטבלו מפיסים לתרומת הדשן; הממונה בא ודופק עליהם סמוך לקריאת הגבר','משנה תמיד א:ב',2)}
+  if(inW(h,4.3,4.8)){['E','W'].forEach(s=>add({id:'ins'+s,t:'route',pop:'K',grp:'A',kind:'kohen',n:4,route:'ins'+s,spd:2.4,lane:.5,anim:'walk',prop:'torch',propP:.5,reg:s=='E'?1:0,loop:0,start:0,job:'בודק את העזרה באבוקה בכת '+(s=='E'?'המזרחית':'המערבית'),who:'כהן בודק את העזרה – שתי כתות, מזרח ומערב'}));
+   cap('ins','שתי כתות נכנסות מבית המוקד עם אבוקות ובודקות את העזרה – אלו באכסדרה מזרח ואלו מערב – עד בית עושי החביתין','משנה תמיד א:ג',2)}
+  if(inW(h,4.6,5.4)){const alt=[[-28,-34],[-32.5,-41,0],[-32.5,-44.5,0],[-26,-47.5,PI],[-20,-45,PI],[-27,-31.5,PI]];
+   add({id:'dashen',t:'stand',pop:'K',grp:'A',kind:'kohen',n:5,pts:alt.map(p=>[p[0],p[1],p[2]!=null?p[2]:PI,YA+9]),anim:'sway',reg:2,job:'מגרף את הדשן בראש המזבח',who:'כהן – אחי התורם: לוקחים מגרפות וצינורות ועולים לראש המזבח'});
+   add({id:'wood',t:'route',pop:'K',grp:'A',kind:'kohen',n:3,route:'wood',spd:2.3,lane:.4,anim:'walk',prop:'log',spread:1,reg:1,job:a=>a.dir>0?'נושא גזרי עץ מלשכת העצים אל המערכה':'חוזר ללשכת העצים',who:'כהן – מעלה עצים למערכה (כל העצים כשרים חוץ מזית וגפן)'});
+   cap('dashen','אחיו של תורם הדשן ממהרים, מקדשים ידיים ורגליים, עולים עם המגרפות; מעלים באפר על התפוח ואחר כך גזרי עץ לסדר אש המערכה','משנה תמיד ב:א–ג',2)}
+  if(inW(h,5.0,5.9)){add({id:'lamb',t:'route',pop:'K',grp:'A',kind:'kohen',n:3,route:'lamb',spd:2,lane:.5,anim:'walk',prop:'lamb',reg:1,loop:0,start:0,job:'מביא טלה לתמיד מלשכת הטלאים',who:'כהן – מביא את טלה התמיד (תמיד ג:ג)'});
+   cap('lots','הממונה: באו והפיסו – מי שוחט, מי זורק, מי מדשן מזבח הפנימי והמנורה, מי מעלה אברים לכבש; ואז: צאו וראו אם הגיע זמן השחיטה (ברקאי / האיר המזרח)','משנה תמיד ג:א–ג',2)}
+  // תמיד של שחר: שוחטים ומעלים אברים (תמיד ג:א)
+  if(inW(h,5.2,7.0)){add({id:'tm-sl',t:'stand',pop:'K',grp:'A',kind:'kohen',n:7,rect:[-39,-24,-86,-66],face:'altar',anim:'sway',reg:2,job:'שוחט/מקבל/זורק את דם התמיד',who:'כהן בעבודת התמיד של שחר – שחיטה וקבלת הדם'});
+   add({id:'tm-limb',t:'route',pop:'K',grp:'A',kind:'kohen',n:5,route:'limbs',spd:2.2,lane:.5,anim:'walk',prop:'lamb',reg:1,spread:1,job:a=>a.dir>0?'מעלה את אברי התמיד לכבש':'יורד מן הכבש',who:'כהן – מעלה אברים לכבש',});
+   add({id:'tm-alt',t:'stand',pop:'K',grp:'A',kind:'kohen',n:4,pts:[[-28,-34,PI],[-23,-30.5,PI],[-18,-30.5,PI],[-26,-47.5,PI]].map(p=>[p[0],p[1],p[2],YA+9]),anim:'sway',reg:1,job:'מסדר אברים ועצים על המערכה',who:'כהן על ראש המזבח'});
+   cap('tamid','תמיד של שחר: שוחטים בצפון, זורקים את הדם, ומעלים את האברים בכבש למערכה','משנה תמיד ג:א; ד:א',2)}
+  if(inW(h,5.1,5.8)||inW(h,6.2,7.0)){const first=h<6;add({id:'ulam'+(first?'1':'2'),t:'route',pop:'K',grp:'A',kind:'kohen',n:first?3:4,route:'ulam',spd:1.6,lane:1.2,anim:'walk',loop:0,start:0,reg:1,job:first?'עולה בכבש האולם עם הטני והכוז לדשן את מזבח הפנימי ואת המנורה':'עולה בכבש האולם להקטיר את הקטורת',who:'כהן – עולה אל ההיכל (לפי הפייס)'});
+   cap('ulam',first?'מי שזכה בדשון מזבח הפנימי והמנורה נכנס להיכל עם הטני והכוז ושני מפתחות, ופותח את השער הגדול – ורק כששמעו את קולו שחט השוחט':'לקטורת: "חדשים לקטרת באו והפיסו" – הזוכים בפייס עולים בכבש האולם להקטיר','משנה תמיד ג:ו–ט; ה:ב',3)}
+  // נסכים ושירה (תמיד ז:ג)
+  if(S.song&&!kitot){S.bow='cycle';add({id:'ns-alt',t:'stand',pop:'K',grp:'A',kind:'kohen',n:3,pts:[[-28,-34,PI],[-23,-30.5,PI],[-18,-30.5,PI]].map(p=>[p[0],p[1],p[2],YA+9]),anim:'sway',job:'עומד על המזבח בשעת הנסכים',who:'כהן בנסכים'});
+   cap('song','נסכים ושירה: הסגן מניף בסודרין, בן ארזא מקיש בצלצל, הלויים אומרים שירה, החצוצרות תוקעות – והעם משתחווה על כל פרק ופרק','משנה תמיד ז:ג',1);
+   add({id:'maamad',t:'stand',pop:'Y',grp:'A',kind:'yisrael',n:q(8),rect:[2,10.5,-110,-6],face:'west',anim:'sway',bow:1,reg:2,job:'עומד על הקרבן (איש מעמד) ומשתחווה בכל תקיעה',who:'איש מעמד – נציג ישראל שעומד על קרבן הציבור (משנה תענית ד:ב)',extra:{role:'maamad'}});
+   cap('maamad','אנשי מעמד: על כל משמר כהנים עמד מעמד של כהנים, לוויים וישראלים – כדי שקרבן הציבור יהיה "עומד על גביו"','משנה תענית ד:ב',4)}
+  // מוסף
+  if(D.mus&&inW(h,9.5,11.5)){const t=dayId=='shabbat'?['מוסף שבת: שני כבשים בנוסף לתמידים','במדבר כח:ט–י']:dayId=='rc'?['מוסף ראש חודש: שני פרים, איל, שבעה כבשים ושעיר חטאת','במדבר כח:יא–טו']:yk?['מוסף יום הכיפורים: פר, איל, שבעה כבשים ושעיר','במדבר כט:ז–י']:dayId=='rh'?['מוסף ראש השנה; התקיעות במקדש: שופר מאריך (קרן יעל פשוטה, פיה מצופה זהב) וחצוצרות מקצרות משני צדדיו','משנה ראש השנה ג:ג']:dayId=='shavuot'?['מוסף שבועות, ובו קרבן שתי הלחם בתנופה','במדבר כח:כו–לא; ויקרא כג:יז–כ']:dayId=='sukkot'?['מוסף סוכות: פרי החג – שלושה עשר פרים ביום הראשון ובכל יום פר אחד פחות','במדבר כט:יב–לב']:dayId=='pesach'?['מוסף חול המועד פסח: שני פרים, איל ושבעה כבשים','במדבר כח:יט–כד']:['מוסף היום','במדבר כח–כט'];
+   cap('mus',t[0],t[1],2);add({id:'mus-k',t:'stand',pop:'K',grp:'A',kind:'kohen',n:8,rect:[-40,-12,-90,-62],face:'altar',anim:'sway',reg:1,job:'מכין קרבן מוסף',who:'כהן בעבודת קרבן המוסף'})}
+  if(dayId=='rh'&&inW(h,9.5,11.5))S.shofar=1;
+  // בין התמידים: קרבנות יחידים ונדבות
+  if(h>=7&&h<17.5&&!kitot){const nb=Math.round(({chol:6,shabbat:4,rc:8,pesach:12,erev:16,shavuot:12,rh:10,yk:0,sukkot:12})[dayId=='erev-pesach'?'erev':dayId]*Qv+1);
+   if(nb>1){add({id:'baalei',t:'stand',pop:'Y',grp:'A',kind:'yisrael',n:nb,rect:[-40,-12,-92,-66],face:'rand',anim:'sway',prop:'lamb',propP:.5,reg:2,job:'מביא קרבן: סומך ידיו על ראשו ושוחט בעזרה',who:'ישראל בעל קרבן בעזרה'});
+    cap('baalei','בעלי קרבנות סומכים ידיהם ושוחטים בעזרה; הכהנים מקבלים את הדם וזורקים','ויקרא א:ד–ה',5)}
+   add({id:'tk-sl',t:'stand',pop:'K',grp:'A',kind:'kohen',n:Math.max(3,Math.round(nb/2)),rect:[-40,-12,-90,-64],face:'rand',anim:'sway',job:'עובד בקרבנות יחידים',who:'כהן בעבודת יום'})}
+  if(dayId=='erev-pesach'&&inW(h,tamidEnd,offered))cap('pes-t','בערב פסח התמיד נשחט בשבע וחצי ומוקרב בשמונה וחצי (ואחריו הפסח); בשאר הימים – בשמונה וחצי ובתשע וחצי','משנה פסחים ה:א',2);
+  if(h>=tamidEnd&&h<tamidEnd+.7)cap('pm','תמיד של בין הערביים – נשחט בשמונה שעות וחצי ומוקרב אחריו בשעה (בימים רגילים)','משנה פסחים ה:א',3);
+  // שחיטת הפסחים בשלוש כתות (פסחים ה:ה–י)
+  if(kitot){const kn=h<15.6?1:h<16.45?2:3;S.kitah=kn;const rows=[-34.5,-25.5,-16.5];
+   const ex=rows.map(x=>[x-1.5,x+1.5,-100,-62]);
+   rows.forEach((x,ri)=>{const pts=[];for(let i=0;i<13;i++)pts.push([x,-62.5-i*2.3,0,YA]);add({id:'row'+ri+'-'+kn,t:'stand',pop:'K',grp:'A',kind:'kohen',n:13,pts,anim:'pass',prop:'bowl',reg:ri==0?2:0,noGrow:1,
+     job:ri%2==0?'מושיט בזיך כסף לחברו – שורה של כסף':'מושיט בזיך זהב לחברו – שורה של זהב',who:'כהן בשורה: מקבל את דם הפסח במלא ומחזיר את הריקן; הקרוב למזבח זורק זריקה אחת כנגד היסוד'})});
+   add({id:'k-az-'+kn,t:'stand',pop:'Y',grp:'A',kind:'yisrael',n:q(430),rect:[-62,-5,-124,8],ex:ex.concat([[-44,-8,-61,5.5]]),face:'altar',anim:'sway',prop:'lamb',propP:.65,bow:0,reg:4,job:'שוחט את פסחו בעזרה ומקבל הכהן את דמו',who:'ישראל בכת '+(['ראשונה','שנייה','שלישית'][kn-1])+' של הפסח – נכנסו ונתמלאה העזרה'});
+   add({id:'k-in',t:'route',pop:'Y',grp:'A',kind:'yisrael',n:q(60),route:'azIn',spd:1.7,lane:1.1,anim:'walk',prop:'lamb',spread:1,reg:1,job:'נכנס לעזרה עם פסחו (שער הדלק)',who:'ישראל נושא טלה לשחיטת הפסח'});
+   cap('kitot','הפסח נשחט בשלוש כתות: נכנסה כת ראשונה – נתמלאה העזרה, נעלו הדלתות, תקעו הריעו ותקעו; הכהנים עומדים בשורות עם בזיכי כסף וזהב ומושיטים את הדם מיד ליד; קראו את ההלל (כת '+['א׳','ב׳','ג׳'][kn-1]+')','משנה פסחים ה:ה–ז; יוספוס, מלחמות ו:ט.ג (ט׳–י״א שעות)',1);
+   cap('kitot2','אחרי כל כת: יצאה כת ראשונה וישבה בהר הבית, השנייה בחיל והשלישית במקומה עומדת; בחשכה יצאו וצלו את פסחיהן; תולים ומפשיטים באנקליות של ברזל','משנה פסחים ה:ט–י',3);
+   S.bow='';S.song=true}
+  // סנהדרין (סנהדרין פח ע״ב): מתמיד של שחר עד תמיד של בין הערביים בלשכת הגזית; בשבתות וימים טובים – בחיל
+  if(inW(h,5.3,tamidEnd)){const gaz=!D.yt,seats=gaz?SAN_GAZIT():SAN_CHEL(),grp=gaz?'A':'C';S.stools=gaz?null:seats;const reg=[54,53,55,20,60,5,45,30];   // הנשיא באמצע הקשת החיצונית (אינדקס 54) וממנו שבעה חברים בולטים
+   const singles=new Set(reg);
+   reg.forEach((idx,j)=>{const s=seats[idx];add({id:'sanh-s'+j+(gaz?'g':'c'),t:'stand',obj:1,make:'sit',grp,kind:'sanhedrin',n:1,pts:[[s[0],s[1],s[2],s[3]]],anim:'sway',noGrow:1,reg:1,
+     job:()=>'יושב בבית דין הגדול '+(gaz?'בלשכת הגזית':'בחיל (שבת/יום טוב)')+' ודן בהלכה',who:j==0?'נשיא הסנהדרין – יושב במרכז חצי הגורן':'חבר בית הדין הגדול של שבעים ואחד (סנהדרין)',extra:{role:j==0?'nasi':'dayan',seat:idx}})});
+   add({id:'sanh',t:'stand',pop:'Q',grp:grp,kind:'sanhedrin',n:seats.length-reg.length,pts:seats.filter((s,i)=>!singles.has(i)).map(s=>[s[0],s[1],s[2],s[3]]),anim:'sway',noGrow:1,reg:0,job:'יושב בבית דין הגדול',who:'חבר בית הדין הגדול'});
+   add({id:'sanh-sf'+(gaz?'g':'c'),t:'stand',pop:'S',grp:grp,kind:'sanhedrin',n:2,pts:gaz?[[-28.5,-131.4,0,YA],[-22.5,-131.4,0,YA]]:[[-83,26.3,-PI/2,0],[-77,26.3,-PI/2,0]],noGrow:1,reg:2,job:'סופר הדיינים – כותב את דברי המזכים והמחייבים',who:'סופר הדיינים (אחד מימין ואחד משמאל – משנה סנהדרין ד:ג)'});
+   cap('sanh',gaz?'הסנהדרין הגדולה (71) יושבת בלשכת הגזית בחצי גורן עגולה מתמיד של שחר עד תמיד של בין הערביים':'בשבת וביום טוב הסנהדרין אינה בלשכת הגזית אלא יושבת בחיל','גמרא סנהדרין פח ע״ב; משנה סנהדרין ד:ג',1)}
+  else if(h>=tamidEnd&&h<tamidEnd+3&&!D.yt)cap('sanh0','תמיד של בין הערביים נשחט – הסנהדרין סיימה את ישיבתה בלשכת הגזית; מחר, מתמיד של שחר','גמרא סנהדרין פח ע״ב',4);
+  // קהל לפי ימים
+  const cr=D.cr;let hw=0;if(h>=4.5&&h<8)hw=(h-4.5)/3.5;else if(h>=8&&h<16)hw=1;else if(h>=16&&h<18.5)hw=1-(h-16)/2.5;
+  const nsukNight=dayId=='sukkot'&&(h>=19.2||h<3.2);
+  if(hw>0.02||nsukNight){const nIs=q(cr[0]*hw),nN=q(cr[1]*hw),nP=q(cr[2]*hw);
+   if(nIs)add({id:'c-isr',t:'wander',pop:'Y',grp:'A',kind:'yisrael',n:nIs,rect:ISR,y:YI,spd:.9,reg:3,job:'עומד בעזרת ישראל וצופה בעבודה',who:'ישראל בעזרת ישראל – מרחק אחד־עשרה אמות מן העזרה',prop:'lamb',propP:.18});
+   if(nN>8)add({id:'c-nic',t:'route',pop:'Y',grp:'N',kind:'yisrael',n:Math.min(60,Math.round(nN/9)),route:'nicanor',spd:1.5,lane:2.6,anim:'walk',spread:1,reg:1,job:a=>a.dir>0?'עולה במעלות שער ניקנור אל עזרת ישראל':'יורד מעזרת ישראל לעזרת נשים',who:'ישראל בשער ניקנור – ט״ו המעלות מעזרת נשים אל עזרת ישראל (מידות ב:ה)'});
+   if(nN){const ny=Math.round(nN*.6),nw=nN-ny;add({id:'c-nm',t:'wander',pop:'Y',grp:'N',kind:'yisrael',n:ny,rect:NASH,y:YN,spd:1,reg:3,job:'מסתובב בעזרת נשים',who:'ישראל בעזרת נשים (פתוחה לכל ישראל)'});add({id:'c-nw',t:'wander',pop:'W',grp:'N',kind:'yisrael',n:nw,rect:NASH,y:YN,spd:.9,reg:3,job:'מסתובבת בעזרת נשים',who:'אישה בעזרת נשים',extra:{female:true}})}
+   if(nP){const py=Math.round(nP*.62),pw=nP-py;add({id:'p-m',t:'wander',pop:'Y',grp:'M',kind:'yisrael',n:py,rect:PLZ,y:0,spd:1.1,reg:2,job:'עולה לרגל בהר הבית ממתין להיכנס',who:'עולה לרגל בחצר הר הבית'});add({id:'p-w',t:'wander',pop:'W',grp:'M',kind:'yisrael',n:pw,rect:PLZ,y:0,spd:1,reg:1,job:'עולה לרגל בהר הבית',who:'אישה בהר הבית',extra:{female:true}});
+    if(dayId!='chol'&&dayId!='shabbat'&&dayId!='rc'&&dayId!='yk')add({id:'p-m2',t:'wander',pop:'Y',grp:'M',kind:'yisrael',n:Math.round(nP*.5),rect:PLZ2,y:0,spd:1.1,job:'עולה לרגל בהר הבית',who:'עולה לרגל בחצר הר הבית'})}
+   if(dayId=='erev-pesach')cap('pil','בערב פסח עולים המונים: יוספוס מספר 256,500 קרבנות פסח, ולפחות עשרה אנשים לכל קרבן; השחיטה משעה תשיעית עד אחת־עשרה','יוספוס, מלחמות ו:ט.ג',3);else if(dayId!='chol')cap('pil','ברגלים עולים כל זכורך לראות את פני ה׳ בירושלים – המונים בהר הבית ובעזרת נשים','דברים טז:טז',5)}
+  if(hw<=.02&&!nsukNight&&night)cap('closed','הלילה: העזרה שקטה, שערי העזרה נעולים (המפתחות אצל זקני בית אב בבית המוקד)','משנה תמיד א:א',5);
+  // בשבת: סדר מיוחד; בר״ח – כהנים רבים; נוספים
+  if(dayId=='shabbat'&&h>=9&&h<14)cap('shab','בשבת הפסחים והנדבות נדחים; תמיד ומוסף קרבים; לחם הפנים מוחלף (ויקרא כד:ח)','משנה פסחים ה:ט; ויקרא כד:ח',6);
+  // יום הכיפורים
+  if(yk){const stand=inW(h,6.5,17.5)?q(cr[3]):0;
+   if(stand)add({id:'yk-stand',t:'stand',pop:'Y',grp:'A',kind:'yisrael',n:stand,rect:AZE,ex:[[-44,-8,-61,5.5]],face:'altar',anim:'sway',bow:1,reg:4,job:'עומד בעזרה כל היום; כורע ומשתחווה כששומע את השם המפורש',who:'ישראל העומדים בעזרה ביום הכיפורים (משנה יומא ו:ב)'});
+   const vid=inW(h,8.6,8.8)||inW(h,9.3,9.5)||inW(h,10.1,10.3);if(vid){S.bow='prost'}
+   cap('yk1','הכהנים והעם העומדים בעזרה – כששומעים את השם המפורש יוצא מפי כהן גדול הם כורעים, משתחווים ונופלים על פניהם ואומרים "ברוך שם כבוד מלכותו לעולם ועד"','משנה יומא ו:ב',1);
+   if(inW(h,11.3,12.2)){S.walkHold={y:1};cap('yk2','כהן גדול קורא בתורה בעזרה בעמידה (אחרי מות ואך בעשור), וחזן הכנסת מוסר את הספר לראש הכנסת, לסגן ולכהן גדול','משנה יומא ז:א',2)}
+   if(S.vis.g)cap('ykg','כהן גדול בבגדי זהב עובד בתמיד של שחר; אחר כך בבגדי לבן לעבודת היום','משנה יומא ג:ד–ו; ז:ג',3);else if(S.vis.y)cap('ykw','כהן גדול בבגדי לבן – עבודת יום הכיפורים (פר, שעירים, קטורת בקודש הקדשים)','ויקרא טז; משנה יומא',3)}
+  if(S.vis.g&&!yk)cap('kg','כהן גדול בשמונה בגדים בשבת/במועד: עולה בכבש והסגן בימינו, סומך על האברים וזורק','משנה תמיד ז:ג',3);
+  // סוכות
+  if(dayId=='sukkot'){
+   if(inW(h,7,9.5)){add({id:'water',t:'route',pop:'K',grp:'A',kind:'kohen',n:7,route:'water',spd:2.1,lane:.9,anim:'walk',prop:'trumpet',propP:.28,reg:1,loop:0,spread:1,job:a=>a.dir>0?'עולה עם צלוחית של זהב ממי השלוח לנסוך על המזבח':'יורד מן הכבש',who:'כהן – ניסוך המים (שער המים, תקעו והריעו ותקעו)'});
+    cap('nisuch','ניסוך המים: ממלאים צלוחית זהב מחזיקה שלושה לוגים מן השילוח; בשער המים תוקעים; עולים בכבש ופונים לשמאלו אל שני ספלי הכסף – מערבי של מים ומזרחי של יין','משנה סוכה ד:ט; מידות ב:ו',1)}
+   if(inW(h,11.5,12.6)){add({id:'arava',t:'route',pop:'K',grp:'A',kind:'kohen',n:12,route:'sovev',loop:1,spd:2,lane:.4,anim:'walk',prop:'branch',reg:1,job:'מקיף את המזבח עם ערבה: "אנא ה׳ הושיעה נא"',who:'כהן – מצות ערבה: מקיפים את המזבח פעם אחת בכל יום'});
+    cap('arava','מצות ערבה: מלקטים מרביות ערבה במוצא, זוקפים אותן בצדי המזבח, ומקיפים את המזבח פעם אחת ואומרים "אנא ה׳ הושיעה נא" (ביום השביעי – שבע פעמים)','משנה סוכה ד:ה (השעה משוערת)',2)}
+   if(S.song||inW(h,9.5,11.5))cap('lulav','הלולב נטלים בהלל ובאנא ה׳ הושיעה נא; כל העם מנענעים','משנה סוכה ג:ט',4);
+   if(nsukNight){const gal=[];for(let i=0;i<60;i++){gal.push([24+i*2.1,-123.1,0,YN+35.2],[24+i*2.1,8.4,PI,YN+35.2])}
+    S.simcha=1;add({id:'gal',t:'stand',pop:'W',grp:'N',kind:'yisrael',n:q(110),pts:gal,anim:'bounce',reg:2,job:'מסתכלת משמחת בית השואבה מן הגזוזטרה',who:'אישה בגזוזטרת הנשים – הנשים רואות מלמעלה והאנשים מלמטה',extra:{female:true,role:'gallery'}});
+    add({id:'sim-d',t:'route',pop:'Y',grp:'N',kind:'yisrael',n:14,route:'simcha',loop:1,spd:3.2,lane:.6,anim:'dance',prop:'torch',reg:2,job:'מרקד באבוקות של אור ואומר שירות ותשבחות',who:'מחסידי ואנשי מעשה – מרקדים באבוקות (משנה סוכה ה:ד)'});
+    add({id:'sim-w',t:'wander',pop:'Y',grp:'N',kind:'yisrael',n:q(240),rect:[40,132,-100,-12],y:YN,spd:1.4,anim:'bounce',reg:3,job:'שמח בשמחת בית השואבה',who:'ישראל בשמחת בית השואבה'});
+    const steps=[];for(let k=0;k<15;k+=1){const rad=15-k*(11/14)-.7,n=Math.max(2,Math.round(Math.PI*rad/(k%2?3.4:3.2)*.8));for(let j=0;j<n;j++){const th=(j+.5)/n*PI,x=17+rad*Math.sin(th),z=ZCr+rad*Math.cos(th);steps.push([x,z,Math.atan2(Math.sin(th),Math.cos(th)),YN+(k+1)*.5])}}
+    add({id:'sim-l',t:'stand',pop:'L',grp:'N',kind:'levi',n:Math.min(steps.length,120),pts:steps,anim:'sing',prop:'harp',propP:.45,noGrow:1,reg:3,job:'מנגן ושר על אחת מחמש עשרה המעלות',who:'לוי בכלי שיר על ט״ו המעלות – כנגד חמש עשרה שיר המעלות',extra:{role:'shir'}});
+    add({id:'sim-t',t:'stand',pop:'K',grp:'N',kind:'kohen',n:2,pts:[[15,ZCr-2.6,PI/2,YI],[15,ZCr+2.6,PI/2,YI]],prop:'trumpet',noGrow:1,reg:2,job:'עומד בשער העליון (ניקנור) ותוקע בחצוצרה כשקרא הגבר',who:'כהן בשער העליון היורד מעזרת ישראל לעזרת נשים – תקעו, הריעו ותקעו'});
+    add({id:'sim-b',t:'stand',pop:'K',grp:'N',kind:'kohen',n:4,pts:[[62,-79],[62,-36],[108,-79],[108,-36]].map(p=>[p[0]+3.5,p[1]+1.5,-PI/2,YN]),prop:'jar',sc:.62,noGrow:1,reg:1,job:'ילד מפרחי כהונה – נושא כד שמן ומטיל לספל',who:'פרחי כהונה – ארבעה ילדים בידם כדי שמן של מאה ועשרים לוג (סוכה ה:ב)'});
+    cap('simcha','שמחת בית השואבה: במוצאי יום טוב ראשון יורדים לעזרת נשים; מנורות זהב וארבעה ספלי שמן; חסידים מרקדים באבוקות; הלויים בכינורות, נבלים, מצלתים וחצוצרות על חמש עשרה המעלות; הנשים מלמעלה והאנשים מלמטה','משנה סוכה ה:א–ד; מידות ב:ה',1);
+    cap('simcha2','שני כהנים בשער העליון תוקעים בחצוצרות: בקרוא הגבר, במעלה העשירית ובעזרה – ובשער המזרחי הופכים פניהם מערבה ואומרים "אנו ליה ועינינו ליה"','משנה סוכה ה:ד',3)}}
+  // שבועות: ביכורים (ביכורים ג:ג–ו)
+  if(dayId=='shavuot'&&inW(h,7,16)){add({id:'bikk',t:'route',pop:'Y',grp:'M',kind:'yisrael',n:q(26),route:'bikk',spd:1.9,lane:2.2,anim:'walk',prop:'basket',spread:1,loop:0,reg:2,job:'מביא ביכורים בטנא על כתפו אל העזרה; החליל מכה לפניו',who:'מביא ביכורים – מהר הבית אל העזרה, והלויים אומרים: ארוממך ה׳ כי דליתני',noGrow:0});
+   add({id:'bikk-f',t:'route',pop:'Y',grp:'M',kind:'yisrael',n:2,route:'bikk',spd:1.9,lane:0,anim:'walk',prop:'flute',loop:0,spread:1,reg:1,job:'מחלל בחליל לפני מביאי הביכורים',who:'חלילן – "החליל מכה לפניהם עד שמגיעים להר הבית"'});
+   cap('bikk','הבאת ביכורים: החליל מכה לפניהם עד הר הבית; אפילו אגריפס המלך נוטל הסל על כתפו ונכנס עד העזרה; הלויים אומרים שירה "ארוממך ה׳ כי דליתני"; קורא "הגדתי היום" ומניח את הטנא בצד המזבח','משנה ביכורים ג:ג–ו',1)}
+  // לשכות עזרת נשים (מידות ב:ה) – ביום
+  if(h>=6&&h<17.5){add({id:'ln-etz',t:'stand',pop:'K',grp:'N',kind:'kohen',n:3,rect:[116,148,-122,-88],face:'rand',anim:'sway',reg:1,job:'כהן בעל מום – בודק עצים לתולעים',who:'כהן בעל מום בלשכת העצים (פינה מזרחית־צפונית של עזרת נשים)'});
+   add({id:'ln-naz',t:'stand',pop:'Y',grp:'N',kind:'yisrael',n:q(5)+1,rect:[116,148,-28,6],face:'rand',anim:'sway',reg:1,job:'נזיר – מבשל את שלמיו ומגלח את שערו',who:'נזיר בלשכת הנזירים (פינה דרומית־מזרחית של עזרת נשים)'});
+   if(h<14)cap('chambers','ארבע לשכות בפינות עזרת נשים: נזירים מבשלים שלמיהם ומגלחים (דרום־מזרח), כהנים בעלי מומין מתליעים עצים (מזרח־צפון), מצורעים (צפון־מערב), יין ושמן (דרום־מערב)','משנה מידות ב:ה',6)}
+  S.caps.sort((a,b)=>a.prio-b.prio);return S}
+ /* ---------------- ח. עדכון בכל פריים ---------------- */
+ let S=null,KEY='',READY=false,lastChip='',_slice=0;
+ const chipEl=()=>$('ambChip');
+ function chipText(){const D=S.D;let s='<b>'+D.n+' · '+hhmm(S.h)+'</b>';const seen=new Set();S.caps.slice(0,7).forEach(c=>{if(seen.has(c.t))return;seen.add(c.t);s+='<div style="margin-top:3px">• '+c.t+' <span style="opacity:.65">('+c.src+')</span></div>'});return s}
+ function init(){buildGrid();READY=true;const sel=$('crowdQ');if(sel){Qv=+sel.value||.7;sel.onchange=()=>{Qv=+sel.value||.7;KEY=''}}}
+ function replan(day,h){S=plan(day,h);applySpecs(S.specs);setStools(S.stools);const html=chipText();if(html!==lastChip){lastChip=html;const c=chipEl();if(c)c.innerHTML=html}}
+ function agentStep(a,t,dt){
+  const sp=a.sp;if(!sp)return;if(a.grow<1)a.grow=Math.min(1,a.grow+dt*1.6);
+  if(a.frozen){a.dy=0;a.pit=0;a.roll=0;writeAgent(a,t);return}
+  let moving=false;
+  if(a.r){const r=a.r;if(a.wait>0){a.wait-=dt}else{a.d+=a.dir*a.spd*dt;moving=true;
+    if(sp.loop){if(a.d>r.len)a.d-=r.len;if(a.d<0)a.d+=r.len}else if(a.d>=r.len){a.d=r.len;a.dir=-1;a.wait=rr(2.5,7);moving=false}else if(a.d<=0){a.d=0;a.dir=1;a.wait=rr(2,6);moving=false}}
+   const p=routePos(r,a.d,a.seg);a.seg=p[3];const nx=-Math.cos(p[2]),nz=Math.sin(p[2]);a.x=p[0]+nx*a.lane;a.z=p[1]+nz*a.lane;a.y=r.flat!=null?r.flat:(sp.y!=null?sp.y:levelY(a.x,a.z));
+   if(a.d>=r.len-.01&&!sp.loop&&sp.holdEnd){}
+   const ty=p[2]+(a.dir<0?PI:0);let dy=((ty-a.yaw+PI)%TAU+TAU)%TAU-PI;a.yaw+=dy*Math.min(1,dt*5)}
+  else if(sp.t=='wander'){if(a.wait>0){a.wait-=dt}else if(a.tx===a.x&&a.tz===a.z||Math.hypot(a.tx-a.x,a.tz-a.z)<.2){let ok=false;for(let i=0;i<6;i++){const p=sample(sp.rect,{ex:sp.ex,y:sp.y,free:1});if(!p)continue;if(Math.hypot(p.x-a.x,p.z-a.z)>22)continue;if(segClear(a.x,a.z,p.x,p.z,a.y,.7)){a.tx=p.x;a.tz=p.z;ok=true;break}}if(!ok)a.wait=rr(2,6)}
+   else{const dx=a.tx-a.x,dz=a.tz-a.z,L=Math.hypot(dx,dz),st=Math.min(L,(sp.spd||1)*dt*rr(.9,1.1));a.x+=dx/L*st;a.z+=dz/L*st;moving=true;const ty=Math.atan2(dx,dz);let dy=((ty-a.yaw+PI)%TAU+TAU)%TAU-PI;a.yaw+=dy*Math.min(1,dt*4);if(L<=st+.01){a.wait=rr(3,12);a.tx=a.x;a.tz=a.z}}}
+  // תנועות
+  const an=sp.anim,ph=a.ph;a.dy=0;a.pit=0;a.roll=0;
+  if(an=='walk'||(moving&&sp.t=='wander')){if(moving){a.dy=Math.abs(Math.sin(t*4.2+ph))*.07;a.roll=Math.sin(t*4.2+ph)*.03}}
+  else if(an=='dance'){a.dy=Math.abs(Math.sin(t*5+ph))*.4;a.roll=Math.sin(t*5+ph)*.12;a.yaw+=Math.sin(t*2.3+ph)*.04;a.pit=Math.sin(t*2.5+ph)*.06}
+  else if(an=='bounce'){a.dy=Math.abs(Math.sin(t*3.3+ph))*.22;a.roll=Math.sin(t*3.3+ph)*.06}
+  else if(an=='sing'){a.dy=Math.abs(Math.sin(t*2+ph))*.05;a.roll=Math.sin(t*1.6+ph)*.05;a.yaw=a.base+Math.sin(t*.9+ph)*.2}
+  else if(an=='pass'){const u=Math.sin(t*1.6-a.k*.7);a.pit=.06+.05*u;a.yaw=a.base+u*.12;a.dy=0}
+  else if(an=='sway'){a.roll=Math.sin(t*.9+ph)*.035;a.pit=Math.sin(t*.6+ph*1.3)*.02;a.yaw=a.base+Math.sin(t*.35+ph)*.18}
+  if(sp.bow&&bowAmt>.002){const m=bowMode=='prost'?1.45:1.15;a.pit+=bowAmt*m;a.dy-=bowAmt*(bowMode=='prost'?.35:.05)}
+  writeAgent(a,t)}
+ function update(t,dt){
+  if(!READY){if(typeof floorY=='undefined'||!COL.length)return;init()}
+  const tmv=$('tm'),h=tmv?+tmv.value:11,dsel=$('dayType'),day=dsel&&DAYS[dsel.value]?dsel.value:'chol';
+  const held=typeof LIFE!='undefined'&&LIFE.held;
+  const key=day+'|'+Math.floor(h*12)+'|'+Qv+'|'+(held?1:0);
+  if(key!==KEY){KEY=key;if(held){applySpecs([]);S=plan(day,h);S.specs=[];const c=chipEl();if(c)c.innerHTML='<b>'+S.D.n+'</b><div style="margin-top:3px">בנגן סדרי העבודה הקהל מוסתר כדי לא להפריע לסדר.</div>'}else replan(day,h)}
+  if(held)return;
+  // כריעה: תקיעות במנות / השתחוויה מלאה בשם המפורש
+  bowMode=S.bow;let tgt=0;if(S.bow=='cycle'){const tt=t%16;tgt=tt<2.6?Math.sin(tt/2.6*PI):0}else if(S.bow=='prost')tgt=1;
+  bowAmt+=(tgt-bowAmt)*Math.min(1,dt*(S.bow=='prost'?2.5:9));if(bowAmt<.002&&tgt==0)bowAmt=0;
+  for(const a of DYN){if(a.on)agentStep(a,t,dt)}
+  if(bowAmt>0||_lastBow>0){for(const a of BOW)if(a.on&&!DYN.has(a))agentStep(a,t,dt)}_lastBow=bowAmt;
+  // נדנוד קל לעומדים: פרוסה אחת בכל פריים
+  if(STAT.length){const n=Math.min(STAT.length,Math.ceil(STAT.length/10));for(let j=0;j<n;j++){_slice=(_slice+1)%STAT.length;const a=STAT[_slice];if(a.on&&!a.frozen&&a.sp){if(a.grow<1)a.grow=Math.min(1,a.grow+dt*10);a.roll=Math.sin(t*.8+a.ph)*.03;a.pit=Math.sin(t*.5+a.ph*1.7)*.015;a.yaw=(a.base!=null?a.base:a.yaw)+Math.sin(t*.3+a.ph)*.15;if(a.sp.bow&&bowAmt>.002)a.pit+=bowAmt*1.15;writeAgent(a,t)}}}
+  for(let i=STAT.length-1;i>=0;i--)if(!STAT[i].on)STAT.splice(i,1);
+  for(let i=BOW.length-1;i>=0;i--)if(!BOW[i].on)BOW.splice(i,1);
+  // הדלקות שמחת בית השואבה: המנורות הקיימות מאירות חזק בלילה (ללא אורות חדשים)
+  if(S.simcha&&typeof lampLights!='undefined'){lampLights.forEach(l=>l.intensity=3.4);_sim=true}else if(_sim){_sim=false;if(typeof setTime=='function')setTime(h)}
+  for(const m of DIRTY){if(m.isInstancedMesh){m.instanceMatrix.needsUpdate=true}else{m.robe.instanceMatrix.needsUpdate=true;m.head.instanceMatrix.needsUpdate=true;for(const k in m.props)m.props[k].instanceMatrix.needsUpdate=true}}DIRTY.clear();
+  // ריענון רשימת NPCS: אל תשאיר דמות לא פעילה
+ }
+ let _lastBow=0,_sim=false;
+ return{update,validate,plan,get S(){return S},set S(v){S=v},DAYS,DLIST,POOLS,ROUTES,blocked:(x,z,f,r)=>{if(!GRID)buildGrid();return blocked(x,z,f,r)},levelY,SAN_GAZIT,SAN_CHEL,get count(){let n=0;for(const k in POOLS)n+=POOLS[k].hi;return n},setQ:v=>{Qv=v;KEY=''}}
+})();

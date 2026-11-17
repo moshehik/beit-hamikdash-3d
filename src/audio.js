@@ -59,8 +59,10 @@ const AUD=(()=>{
  /* עצירה רכה (דעיכה קצרה, בלי "קליק"); הנמכת המנגינה חוזרת רק אחרי הפסקה ארוכה – כדי שהמוזיקה לא "תקפוץ" בין שלב לשלב */
  function stop(keepDuck){if(cur){const c=cur;cur=null;c.a.onended=null;c.a.onerror=null;const a=c.a;let v=a.volume;const iv=setInterval(()=>{v-=.15;if(v<=0.02){clearInterval(iv);try{a.pause()}catch(e){}a.src=''}else a.volume=v},12)}
   if(!keepDuck)setDuck(1)}
+ const BU={};   /* הקראות כ-blob: ולא כ-data-URI (נטפרי) */
+ function blobUrl(k,u){if(BU[k])return BU[k];try{const i=u.indexOf(','),b=atob(u.slice(i+1)),n=b.length,a=new Uint8Array(n);for(let j=0;j<n;j++)a[j]=b.charCodeAt(j);return BU[k]=URL.createObjectURL(new Blob([a],{type:'audio/mpeg'}))}catch(e){return u}}
  function narr(key,rate,onEnd){stop(true);clearTimeout(duckT);const e=NR[key];if(!narrWanted||!e){setDuck(1);onEnd&&onEnd();return false}
-  const a=new Audio(e[0]);a.playbackRate=Math.max(.5,Math.min(2,rate||1));const c={a,key,end:onEnd};cur=c;
+  const a=new Audio(blobUrl(key,e[0]));a.playbackRate=Math.max(.5,Math.min(2,rate||1));const c={a,key,end:onEnd};cur=c;
   const fin=()=>{if(cur!==c)return;cur=null;clearTimeout(duckT);duckT=setTimeout(()=>{if(!cur)setDuck(1)},350);onEnd&&onEnd()};a.onended=fin;a.onerror=fin;
   setDuck(.2);const pr=a.play();if(pr&&pr.catch)pr.catch(()=>fin());return true}
  const has=key=>!!NR[key];

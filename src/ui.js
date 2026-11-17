@@ -143,7 +143,7 @@ const clock=new T.Clock();let fr=0;
 function loop(){requestAnimationFrame(loop);if(mapOpen||kidOpen)return;const dt=Math.min(.05,clock.getDelta()),t=clock.elapsedTime;
  if(tw){tw.t+=dt/tw.dur;const k=Math.min(1,tw.t),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;camera.position.lerpVectors(tw.p0,tw.p1,e);controls.target.lerpVectors(tw.t0,tw.t1,e);if(k>=1)tw=null}
  SV.update(dt);if(walk)stepWalk(dt);else controls.update();
- ambUpdate&&ambUpdate(t,dt);LIFE.update(dt,t);
+ LIFE.update(dt,t);CROWD.update(t,dt);ambUpdate&&ambUpdate(t,dt);
  fires.forEach((f,i)=>{f.scale.set(1+.15*Math.sin(t*9+i),1+.3*Math.sin(t*7+i*2),1+.15*Math.cos(t*8+i));f.rotation.y=t*2+i});
  smoke.forEach(s=>{const p=(t*.045+s.userData.p)%1;s.position.set(-26+Math.sin(p*9+s.userData.p*20)*1.6*p,YA+16+p*120,-43+Math.cos(p*7)*1.4*p);const sc=6+p*26;s.scale.set(sc,sc,1);s.material.opacity=.55*(1-p)*Math.min(1,p*8)});
  updLabels();if(++fr%4==0)drawMap();
