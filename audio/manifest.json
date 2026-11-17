@@ -1,0 +1,434 @@
+{
+ "ketoret-0": {
+  "hash": "afaddb9af5",
+  "dur": 17.026167,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-1": {
+  "hash": "d4623394f8",
+  "dur": 17.158417,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-2": {
+  "hash": "c01c261a04",
+  "dur": 17.669833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-3": {
+  "hash": "9da7a7922f",
+  "dur": 16.463583,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-4": {
+  "hash": "0254ae1da1",
+  "dur": 14.743958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-5": {
+  "hash": "6e1c5a3636",
+  "dur": 24.421875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-6": {
+  "hash": "8bb741894c",
+  "dur": 10.235167,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-7": {
+  "hash": "df2bf35f3c",
+  "dur": 22.963667,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-8": {
+  "hash": "9a45b289ff",
+  "dur": 18.241958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-9": {
+  "hash": "0d39c7f51d",
+  "dur": 21.021125,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-10": {
+  "hash": "ec4cd6e4db",
+  "dur": 20.079958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "ketoret-11": {
+  "hash": "9f51333019",
+  "dur": 19.825958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "menorah-0": {
+  "hash": "18e5ffa264",
+  "dur": 10.743958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "menorah-1": {
+  "hash": "9d5db6b81e",
+  "dur": 23.559958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "menorah-2": {
+  "hash": "599d42c71a",
+  "dur": 11.995125,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "menorah-3": {
+  "hash": "da1afc9478",
+  "dur": 14.961833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "menorah-4": {
+  "hash": "ec1eed6bee",
+  "dur": 16.900208,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-0": {
+  "hash": "46446753ca",
+  "dur": 13.281083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-1": {
+  "hash": "b585db8201",
+  "dur": 11.218333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-2": {
+  "hash": "308c68853f",
+  "dur": 10.012542,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-3": {
+  "hash": "9d90c3d988",
+  "dur": 9.371667,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-4": {
+  "hash": "44bf36f369",
+  "dur": 20.339917,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-5": {
+  "hash": "6b8cf2707f",
+  "dur": 14.361583,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "minchat-solet-6": {
+  "hash": "e9f8800275",
+  "dur": 17.0635,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-0": {
+  "hash": "7f0f0af4c7",
+  "dur": 9.93075,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-1": {
+  "hash": "ac782573cc",
+  "dur": 12.16275,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-2": {
+  "hash": "66da02b216",
+  "dur": 19.730958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-3": {
+  "hash": "a0cd54751a",
+  "dur": 14.665958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-4": {
+  "hash": "52aba5fd19",
+  "dur": 14.321833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-5": {
+  "hash": "e488fc196d",
+  "dur": 14.491292,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-6": {
+  "hash": "4b94d7e779",
+  "dur": 24.377333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-7": {
+  "hash": "0cefb134dc",
+  "dur": 11.312042,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-8": {
+  "hash": "03785b2bdb",
+  "dur": 6.835167,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-9": {
+  "hash": "d288fe92cc",
+  "dur": 22.186333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-behema-10": {
+  "hash": "bb0a8ccb90",
+  "dur": 11.996667,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-0": {
+  "hash": "aaf70a54a9",
+  "dur": 7.04275,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-1": {
+  "hash": "9d8d301684",
+  "dur": 9.283917,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-2": {
+  "hash": "c4b962376e",
+  "dur": 10.153958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-3": {
+  "hash": "e44737782f",
+  "dur": 12.951958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-4": {
+  "hash": "c774db62e9",
+  "dur": 11.559958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-5": {
+  "hash": "63194635d4",
+  "dur": 8.6455,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-6": {
+  "hash": "f39b40ee30",
+  "dur": 14.055958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-7": {
+  "hash": "6b54088779",
+  "dur": 14.621458,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "olat-haof-8": {
+  "hash": "3b6274efc3",
+  "dur": 9.418,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-0": {
+  "hash": "ad0be3ee0f",
+  "dur": 28.079625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-1": {
+  "hash": "f4a0efb585",
+  "dur": 27.482917,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-2": {
+  "hash": "912a2e11c0",
+  "dur": 22.18475,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-3": {
+  "hash": "e367a2cfcf",
+  "dur": 17.586625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-4": {
+  "hash": "793a1a7682",
+  "dur": 21.797958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-5": {
+  "hash": "7d06f7aa8d",
+  "dur": 12.080167,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-6": {
+  "hash": "f5538ef5a3",
+  "dur": 11.258792,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-7": {
+  "hash": "96ebd6f972",
+  "dur": 35.738667,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-8": {
+  "hash": "1c6ec5a533",
+  "dur": 23.005292,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-9": {
+  "hash": "e8686a95a2",
+  "dur": 15.003167,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-10": {
+  "hash": "dfd04009e0",
+  "dur": 26.271958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-11": {
+  "hash": "37dfb23419",
+  "dur": 17.755583,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-12": {
+  "hash": "8030b70d01",
+  "dur": 20.422875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-13": {
+  "hash": "fb5cd59f7d",
+  "dur": 22.183375,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-14": {
+  "hash": "360ac64bd7",
+  "dur": 30.268083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-15": {
+  "hash": "8f9345d043",
+  "dur": 25.156708,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-16": {
+  "hash": "fd4b2d0f42",
+  "dur": 10.879542,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-17": {
+  "hash": "c260708669",
+  "dur": 34.45625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-18": {
+  "hash": "35d0eaa533",
+  "dur": 15.04325,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-19": {
+  "hash": "aebde8340a",
+  "dur": 20.980417,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-20": {
+  "hash": "f2b0804672",
+  "dur": 25.239958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-21": {
+  "hash": "0835faadab",
+  "dur": 25.641,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-22": {
+  "hash": "62d8cc58cd",
+  "dur": 25.117333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-23": {
+  "hash": "fff2459852",
+  "dur": 23.089958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-24": {
+  "hash": "0f5f515c63",
+  "dur": 34.443458,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-25": {
+  "hash": "e1246da8df",
+  "dur": 26.744125,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-26": {
+  "hash": "18b279e64a",
+  "dur": 24.427375,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ },
+ "tamid-shachar-27": {
+  "hash": "2d1bc1751c",
+  "dur": 9.927958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1
+ }
+}
