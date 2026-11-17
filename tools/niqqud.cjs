@@ -3,7 +3,7 @@
 //   (alignMarks: אם המודל סטה באותיות – מעתיקים אליו רק את סימני הניקוד) -> מטמון (audio/niqqud-cache.json) -> תיקוני מילון ידניים
 //   (tools/niqqud-fixes.json) -> fixPrefixShva. רק התוצאה הסופית נשלחת ל-TTS; הטקסט המוצג על המסך נשאר בלי ניקוד.
 const fs=require('fs'),p=require('path'),crypto=require('crypto');
-const MARKS=/[֑-ׇ]/g,TAAMIM=/[֑-ֽֿ֯׀׃-׆]/g;
+const MARKS=/[֑-ֽֿׁׂׄ-ׇ]/g,TAAMIM=/[֑-ֽֿ֯׀׃-׆]/g;
 const strip=s=>String(s).replace(MARKS,'');
 const norm=s=>String(s).replace(/\s+/g,' ').trim();
 const HEB=/[א-ת]/;
@@ -16,7 +16,7 @@ function fixPrefixShva(text){
   .replace(/(?<![א-ת֐-ׇ])([בכל])ְ(ּ?)(?=[א-ת]ְ)/g,'$1ִ$2')}
 
 // --- אשכולות (אות + סימניה) ו-alignMarks (פורט מ-print-center/lib/phonePromptsNikud.js, בלי לוגיקת {משתנים}) ---
-function clusters(text){const out=[];for(const ch of String(text)){if(/[֑-ׇ]/.test(ch)&&out.length)out[out.length-1].marks+=ch;else out.push({ch,marks:''})}return out}
+function clusters(text){const out=[];for(const ch of String(text)){if(/[֑-ֽֿׁׂׄ-ׇ]/.test(ch)&&out.length)out[out.length-1].marks+=ch;else out.push({ch,marks:''})}return out}
 function alignMarks(original,candidate){
  const a=[...String(original)],aPos=[];a.forEach((c,i)=>{if(!/\s/.test(c))aPos.push(i)});
  const b=clusters(candidate).filter(c=>!/\s/.test(c.ch)),n=aPos.length,m=b.length;
@@ -37,14 +37,15 @@ function loadFixes(file){let j={};try{j=JSON.parse(fs.readFileSync(file,'utf8'))
  for(const [k,v] of Object.entries(j)){if(k[0]==='_')continue;const key=norm(strip(k)),val=norm(String(v).normalize('NFC'));
   if(key.includes(' '))phrases.push({key,n:key.split(' ').length,val:val.split(' ')});else words.set(key,val)}
  return{words,phrases}}
-const TOKEN=/[א-תְ-ׇ]+/g;
+const TOKEN=/[א-תְ-ֽֿׁׂׄ-ׇ]+/g;
 function firstClusterDagesh(tok){const c=clusters(tok)[0];return c&&c.marks.includes('ּ')}
 function setDagesh(tok,on){const cs=clusters(tok);if(!cs.length)return tok;const c=cs[0],has=c.marks.includes('ּ');
  if(on&&!has)c.marks+='ּ';else if(!on&&has)c.marks=c.marks.replace('ּ','');return cs.map(x=>x.ch+x.marks).join('').normalize('NFC')}
-function replaceStem(tok,P,V){   // tok: הטוקן המנוקד של המודל, P: קידומת פשוטה (אורך), V: ערך התיקון (מנוקד)
+function replaceStem(tok,P,V){
+ if(V[0]==='='){V=V.slice(1);if(!P)return V;const c0=clusters(tok);return c0.slice(0,P.length).map(x=>x.ch+x.marks).join('')+V}   // =ערך: בלי העתקת דגש מהמודל   // tok: הטוקן המנוקד של המודל, P: קידומת פשוטה, V: ערך התיקון (מנוקד)
  if(!P)return V;const cs=clusters(tok),pre=cs.slice(0,P.length).map(x=>x.ch+x.marks).join(''),stem=cs.slice(P.length).map(x=>x.ch+x.marks).join('');
  const dg=stem?firstClusterDagesh(stem):false;
- return pre+setDagesh(V,dg&&HEB.test(V[0])&&!/[אהחער]/.test(V[0])?true:(firstClusterDagesh(V)&&!dg&&/[בגדכפת]/.test(V[0])?false:firstClusterDagesh(V)))}
+ return pre+setDagesh(V,dg&&!/^[אהחער]/.test(V))}
 function applyFixes(text,fx){
  const toks=[];let m;TOKEN.lastIndex=0;const src=String(text).normalize('NFC');while((m=TOKEN.exec(src)))toks.push({s:m.index,e:m.index+m[0].length,t:m[0],pl:strip(m[0])});
  const repl=new Array(toks.length).fill(null),skip=new Array(toks.length).fill(false);
@@ -73,7 +74,7 @@ STRICT RULES:
 const RETRY_NOTE=`\n\nIMPORTANT — a previous attempt was rejected because it changed letters (dropping or adding a י or ו, or changing punctuation) or left some words without niqqud. Copy every letter exactly; only add niqqud marks, and vocalize EVERY word.`;
 
 function make({curlJson,keys,cacheFile,fixesFile,corpusFile,models}){
- const MODELS=models||['gemini-3.8-flash','gemini-3.6-flash','gemini-3.5-flash','gemini-3.5-flash-lite','gemini-2.5-flash'];
+ const MODELS=models||(process.env.NIQQUD_MODELS||'gemini-3.5-flash-lite,gemini-3.8-flash,gemini-2.5-flash,gemini-3.1-flash-lite').split(',');
  let cache={};try{cache=JSON.parse(fs.readFileSync(cacheFile,'utf8'))}catch(e){}
  const saveCache=()=>fs.writeFileSync(cacheFile,JSON.stringify(cache,null,1));
  let corpus={};try{corpus=JSON.parse(fs.readFileSync(corpusFile,'utf8'))}catch(e){}
@@ -82,15 +83,16 @@ function make({curlJson,keys,cacheFile,fixesFile,corpusFile,models}){
  const ckey=plain=>crypto.createHash('sha1').update(sysHash+'|'+plain).digest('hex').slice(0,16);
  function gen(prompt,system){
   for(const model of MODELS){for(let n=0;n<K.length;n++){const i=(kix+n)%K.length,ck=model+'|'+i;if((cool.get(ck)||0)>Date.now())continue;
-   const r=curlJson('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+K[i],{system_instruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0}});
+   const r=curlJson('https://generativelanguage.googleapis.com/v1beta/models/'+model+':generateContent?key='+K[i],{system_instruction:{parts:[{text:system}]},contents:[{role:'user',parts:[{text:prompt}]}],generationConfig:{temperature:0}},45);
    if(r.status===200){const t=r.json&&r.json.candidates&&r.json.candidates[0]&&r.json.candidates[0].content&&r.json.candidates[0].content.parts;const txt=t&&t.map(x=>x.text||'').join('');
     if(txt){kix=(i+1)%K.length;return{text:txt,model}}cool.set(ck,Date.now()+60e3);continue}
    if(r.status===429||r.status===402||r.status===403)cool.set(ck,Date.now()+(r.status===429?20*60e3:3600e3));
-   else if(r.status===404||r.status===400)cool.set(ck,Date.now()+3600e3);else cool.set(ck,Date.now()+30e3)}}
+   else if(r.status===404)cool.set(ck,Date.now()+3600e3);else cool.set(ck,Date.now()+20e3);
+   if(process.env.NIQQUD_DEBUG)console.log('  [gen]',model,'key#'+i,r.status,JSON.stringify(r.json&&r.json.error&&r.json.error.message||'').slice(0,100))}}
   return null}
  function hintsFor(plains){const seen=new Set(),out=[];
   for(const t of plains)for(const w0 of String(t).split(/[^א-ת]+/)){if(w0.length<3||seen.has(w0))continue;
-   let w=w0,h=corpus[w];if(!h)for(const P of PFX_SORTED){if(P&&w0.startsWith(P)&&w0.length-P.length>=3&&corpus[w0.slice(P.length)]){h=corpus[w0];break}}   // רק צורה מלאה (עם קידומת) – אחרת אין רמז
+   const h=corpus[w0];
    if(h&&h.length){seen.add(w0);out.push(w0+' = '+h.join(' | '))}}
   return out.slice(0,140)}
  // items: [{id,plain}] -> {id: nikud}   (מטמון לפי hash; בקשה אחת לקבוצה)
@@ -113,6 +115,6 @@ function make({curlJson,keys,cacheFile,fixesFile,corpusFile,models}){
    if(pending.length)log&&log('niqqud: failed '+pending.map(c=>c.id).join(','))}
   return{res,failed:items.filter(t=>!res[t.id]).map(t=>t.id)}}
  const fixes=()=>loadFixes(fixesFile);
- const finish=nik=>fixPrefixShva(applyFixes(nik,fixes()));
+ const finish=nik=>fixPrefixShva(applyFixes(String(nik).replace(/־{2,}/g,'־'),fixes()));   // הורדת מקף כפול (תקלה ישנה במטמון)
  return{vocalize,finish,hintsFor,cache:()=>cache}}
 module.exports={make,fixPrefixShva,applyFixes,loadFixes,alignMarks,strip,SYSTEM};

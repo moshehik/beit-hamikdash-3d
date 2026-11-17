@@ -1,434 +1,443 @@
 {
  "ketoret-0": {
-  "hash": "afaddb9af5",
-  "dur": 17.026167,
+  "hash": "7890388e0d",
+  "dur": 21.325833,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-1": {
-  "hash": "d4623394f8",
-  "dur": 17.158417,
+  "hash": "033029f235",
+  "dur": 27.653375,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-2": {
-  "hash": "c01c261a04",
-  "dur": 17.669833,
+  "hash": "53093f99dd",
+  "dur": 22.74675,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-3": {
-  "hash": "9da7a7922f",
-  "dur": 16.463583,
+  "hash": "b8b89d2ab9",
+  "dur": 19.268458,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-4": {
-  "hash": "0254ae1da1",
-  "dur": 14.743958,
+  "hash": "a92642ce84",
+  "dur": 19.264958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-5": {
-  "hash": "6e1c5a3636",
-  "dur": 24.421875,
+  "hash": "6546ae75e9",
+  "dur": 21.415625,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-6": {
-  "hash": "8bb741894c",
-  "dur": 10.235167,
+  "hash": "d16ba592a8",
+  "dur": 18.184375,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-7": {
-  "hash": "df2bf35f3c",
-  "dur": 22.963667,
+  "hash": "144a0ac66a",
+  "dur": 20.852333,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-8": {
-  "hash": "9a45b289ff",
-  "dur": 18.241958,
+  "hash": "5a1cf9bb43",
+  "dur": 21.283833,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-9": {
-  "hash": "0d39c7f51d",
-  "dur": 21.021125,
+  "hash": "2869f121fa",
+  "dur": 21.152542,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-10": {
-  "hash": "ec4cd6e4db",
-  "dur": 20.079958,
+  "hash": "c1445e077e",
+  "dur": 25.322917,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "ketoret-11": {
-  "hash": "9f51333019",
-  "dur": 19.825958,
+  "hash": "8c47aaa10e",
+  "dur": 25.070625,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "menorah-0": {
-  "hash": "18e5ffa264",
-  "dur": 10.743958,
+  "hash": "1c73010048",
+  "dur": 20.724125,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "menorah-1": {
-  "hash": "9d5db6b81e",
-  "dur": 23.559958,
+  "hash": "8ca581ce1e",
+  "dur": 21.88425,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "menorah-2": {
-  "hash": "599d42c71a",
-  "dur": 11.995125,
+  "hash": "49e428b5ee",
+  "dur": 14.535958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "menorah-3": {
-  "hash": "da1afc9478",
-  "dur": 14.961833,
+  "hash": "5f91782c3d",
+  "dur": 17.156167,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "menorah-4": {
-  "hash": "ec1eed6bee",
-  "dur": 16.900208,
+  "hash": "90f65de99c",
+  "dur": 20.5115,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-0": {
-  "hash": "46446753ca",
-  "dur": 13.281083,
+  "hash": "7db7b51b82",
+  "dur": 18.5305,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-1": {
-  "hash": "b585db8201",
-  "dur": 11.218333,
+  "hash": "692111aa14",
+  "dur": 17.2005,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-2": {
-  "hash": "308c68853f",
-  "dur": 10.012542,
+  "hash": "f533ce7f1d",
+  "dur": 17.456,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-3": {
-  "hash": "9d90c3d988",
-  "dur": 9.371667,
+  "hash": "7c49673889",
+  "dur": 18.358208,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-4": {
-  "hash": "44bf36f369",
-  "dur": 20.339917,
+  "hash": "fec8339017",
+  "dur": 20.85275,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-5": {
-  "hash": "6b8cf2707f",
-  "dur": 14.361583,
+  "hash": "f65fc65d46",
+  "dur": 18.101792,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "minchat-solet-6": {
-  "hash": "e9f8800275",
-  "dur": 17.0635,
+  "hash": "b90cb7656d",
+  "dur": 21.234667,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-0": {
-  "hash": "7f0f0af4c7",
-  "dur": 9.93075,
+  "hash": "e0cc517de1",
+  "dur": 17.497958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-1": {
-  "hash": "ac782573cc",
-  "dur": 12.16275,
+  "hash": "cc4b9591ca",
+  "dur": 17.9275,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-2": {
-  "hash": "66da02b216",
-  "dur": 19.730958,
+  "hash": "a08d2b6176",
+  "dur": 21.026125,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-3": {
-  "hash": "a0cd54751a",
-  "dur": 14.665958,
+  "hash": "c4b0753021",
+  "dur": 15.904833,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-4": {
-  "hash": "52aba5fd19",
-  "dur": 14.321833,
+  "hash": "28024686cd",
+  "dur": 17.87975,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-5": {
-  "hash": "e488fc196d",
-  "dur": 14.491292,
+  "hash": "1a5879e2c3",
+  "dur": 20.510958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-6": {
-  "hash": "4b94d7e779",
-  "dur": 24.377333,
+  "hash": "56faea3bb7",
+  "dur": 27.39775,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-7": {
-  "hash": "0cefb134dc",
-  "dur": 11.312042,
+  "hash": "8d6afb1c47",
+  "dur": 20.554875,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-8": {
-  "hash": "03785b2bdb",
-  "dur": 6.835167,
+  "hash": "4cc15cd5e0",
+  "dur": 15.046333,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-9": {
-  "hash": "d288fe92cc",
-  "dur": 22.186333,
+  "hash": "e667d4f5d6",
+  "dur": 21.889958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "olat-behema-10": {
-  "hash": "bb0a8ccb90",
-  "dur": 11.996667,
+  "hash": "bff46ae7a1",
+  "dur": 18.958417,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-0": {
-  "hash": "aaf70a54a9",
-  "dur": 7.04275,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-1": {
-  "hash": "9d8d301684",
-  "dur": 9.283917,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-2": {
-  "hash": "c4b962376e",
-  "dur": 10.153958,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-3": {
-  "hash": "e44737782f",
-  "dur": 12.951958,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-4": {
-  "hash": "c774db62e9",
-  "dur": 11.559958,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-5": {
-  "hash": "63194635d4",
-  "dur": 8.6455,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-6": {
-  "hash": "f39b40ee30",
-  "dur": 14.055958,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-7": {
-  "hash": "6b54088779",
-  "dur": 14.621458,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
- },
- "olat-haof-8": {
-  "hash": "3b6274efc3",
-  "dur": 9.418,
-  "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-0": {
-  "hash": "ad0be3ee0f",
-  "dur": 28.079625,
+  "hash": "ac93dd8b50",
+  "dur": 26.748875,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-1": {
-  "hash": "f4a0efb585",
-  "dur": 27.482917,
+  "hash": "0814be9a15",
+  "dur": 25.379625,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-2": {
-  "hash": "912a2e11c0",
-  "dur": 22.18475,
+  "hash": "c3eef7ae53",
+  "dur": 18.877458,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-3": {
-  "hash": "e367a2cfcf",
-  "dur": 17.586625,
+  "hash": "9c29929261",
+  "dur": 19.993958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-4": {
-  "hash": "793a1a7682",
-  "dur": 21.797958,
+  "hash": "a9dcb288c7",
+  "dur": 17.28825,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-5": {
-  "hash": "7d06f7aa8d",
-  "dur": 12.080167,
+  "hash": "32aab143b9",
+  "dur": 18.449917,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-6": {
-  "hash": "f5538ef5a3",
-  "dur": 11.258792,
+  "hash": "291b9a70ab",
+  "dur": 16.506125,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-7": {
-  "hash": "96ebd6f972",
-  "dur": 35.738667,
+  "hash": "bb5bbce020",
+  "dur": 24.93425,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-8": {
-  "hash": "1c6ec5a533",
-  "dur": 23.005292,
+  "hash": "d750a56351",
+  "dur": 20.853583,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-9": {
-  "hash": "e8686a95a2",
-  "dur": 15.003167,
+  "hash": "636980455c",
+  "dur": 20.679958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-10": {
-  "hash": "dfd04009e0",
-  "dur": 26.271958,
+  "hash": "737ff12b83",
+  "dur": 20.467292,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-11": {
-  "hash": "37dfb23419",
-  "dur": 17.755583,
+  "hash": "1f495eee99",
+  "dur": 19.308125,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-12": {
-  "hash": "8030b70d01",
-  "dur": 20.422875,
+  "hash": "e83babd6f2",
+  "dur": 17.798375,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-13": {
-  "hash": "fb5cd59f7d",
-  "dur": 22.183375,
+  "hash": "6ac9509015",
+  "dur": 21.325375,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-14": {
-  "hash": "360ac64bd7",
-  "dur": 30.268083,
+  "hash": "d919ff60f5",
+  "dur": 24.125167,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-15": {
-  "hash": "8f9345d043",
-  "dur": 25.156708,
+  "hash": "fcd736df26",
+  "dur": 23.471042,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-16": {
-  "hash": "fd4b2d0f42",
-  "dur": 10.879542,
+  "hash": "f3f8ccbe73",
+  "dur": 15.127375,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-17": {
-  "hash": "c260708669",
-  "dur": 34.45625,
+  "hash": "6715eb09e3",
+  "dur": 25.89925,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-18": {
-  "hash": "35d0eaa533",
-  "dur": 15.04325,
+  "hash": "c095fd569c",
+  "dur": 22.054917,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-19": {
-  "hash": "aebde8340a",
-  "dur": 20.980417,
+  "hash": "f7b5a07174",
+  "dur": 19.441958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-20": {
-  "hash": "f2b0804672",
-  "dur": 25.239958,
+  "hash": "b9d0adfbf6",
+  "dur": 21.329875,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-21": {
-  "hash": "0835faadab",
-  "dur": 25.641,
+  "hash": "41c1ce28bb",
+  "dur": 20.085292,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-22": {
-  "hash": "62d8cc58cd",
-  "dur": 25.117333,
+  "hash": "cdf98c3d1f",
+  "dur": 20.039958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-23": {
-  "hash": "fff2459852",
-  "dur": 23.089958,
+  "hash": "be0c3dc960",
+  "dur": 24.291125,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-24": {
-  "hash": "0f5f515c63",
-  "dur": 34.443458,
+  "hash": "a86e811817",
+  "dur": 28.67975,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-25": {
-  "hash": "e1246da8df",
-  "dur": 26.744125,
+  "hash": "e12d0d826e",
+  "dur": 24.378417,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-26": {
-  "hash": "18b279e64a",
-  "dur": 24.427375,
+  "hash": "49aed197b0",
+  "dur": 24.508208,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  },
  "tamid-shachar-27": {
-  "hash": "2d1bc1751c",
-  "dur": 9.927958,
+  "hash": "1874aa2452",
+  "dur": 19.428958,
   "model": "gemini-3.8-flash-tts",
-  "faded": 1
+  "faded": 1,
+  "kid": 1
  }
 }

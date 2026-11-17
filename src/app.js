@@ -442,11 +442,11 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
  const m4=new T.Matrix4(),qq=new T.Quaternion(),ee=new T.Euler(),oo=new T.Object3D();
  /* --- המזבח: יסוד 32×32×1, גוף 30×30×5, סובב 28×28×3, קרנות; הכל סיד לבן --- */
  const MA=mAlt;box(gA,AX,YA,AZ,30,6,30,MA,{c:1});box(gA,AX,YA,AZ-15.5,32,1,1,MA,{c:1});box(gA,AX-15.5,YA,AZ+.5,1,1,31,MA,{c:1});box(gA,AX,YA+6,AZ,28,3,28,MA,{c:1});   // ליבה 30×30×6; יסוד רק בצפון ובמערב (כל האורך) ובדרום/מזרח אמה אחת בלבד (משנה, מידות ג:א); סובב 28×28×3   // יסוד (אמה), 30×30 (5 אמות), סובב 28×28 (3 אמות): גובה 9 + קרנות
- box(gA,AX,YA+4.34,AZ,30.06,.12,30.06,mRedL,{ns:1});                                                                  // חוט הסיקרא האדום – באמצע גובה המזבח (5 אמות)
- [[0,15.03,0],[0,-15.03,Math.PI],[15.03,0,Math.PI/2],[-15.03,0,-Math.PI/2]].forEach(([dx,dz,ry])=>{const m=new T.Mesh(new T.PlaneGeometry(30,.62),mBandM);m.position.set(AX+dx,YA+4.83,AZ+dz);m.rotation.y=ry;gA.add(m)});   // פס קישוט פרחוני מעל החוט
+ box(gA,AX,YA+4.93,AZ,30.06,.14,30.06,mRedL,{ns:1});                                                                  // חוט הסיקרא האדום – אמה אחת מתחת לסובב = חצי גובה המזבח (קונטרס כלי המקדש, יז), רחב קצת
+ [[0,15.03,0],[0,-15.03,Math.PI],[15.03,0,Math.PI/2],[-15.03,0,-Math.PI/2]].forEach(([dx,dz,ry])=>{const m=new T.Mesh(new T.PlaneGeometry(30,.62),mBandM);m.position.set(AX+dx,YA+5.52,AZ+dz);m.rotation.y=ry;gA.add(m)});   // פס קישוט פרחוני מעל החוט (באמה העליונה; ציורים ופרחים לדעת רש"י ותפארת ישראל – המחבר נוטה שלא היו, נשאר מהסרטון)
  // שפה נמוכה סביב המערכה (ללא פתח הכבש) וקרנות חלולות בארבע הפינות
  box(gA,AX,YA+9,AZ-13.85,28,.35,.3,MA,{ns:1});box(gA,AX-11,YA+9,AZ+13.85,6,.35,.3,MA,{ns:1});box(gA,AX+11,YA+9,AZ+13.85,6,.35,.3,MA,{ns:1});box(gA,AX-13.85,YA+9,AZ,.3,.35,27.4,MA,{ns:1});box(gA,AX+13.85,YA+9,AZ,.3,.35,27.4,MA,{ns:1});
- [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>{box(gA,AX+a*13.5,YA+9,AZ+b*13.5,1,1.3,1,MA,{ns:1});box(gA,AX+a*13.5,YA+10.28,AZ+b*13.5,.56,.04,.56,M.dark,{ns:1})});   // קרנות: אמה על אמה, חלולות
+ [[1,1],[1,-1],[-1,1],[-1,-1]].forEach(([a,b])=>{box(gA,AX+a*13.5,YA+9,AZ+b*13.5,1,.83,1,MA,{ns:1});box(gA,AX+a*13.5,YA+9.82,AZ+b*13.5,.56,.04,.56,M.dark,{ns:1})});   // קרנות: אמה על אמה, גובה 5 טפחים (רמב"ם, בית הבחירה ב:ו), חלולות
  /* --- ערימות גזעים (גזעים עגולים עם חתכי עץ בהירים בקצה), דשן ותפוח, גחלים --- */
  const logs=[];
  const stack=(cx,cz,w,L,n)=>rep(L,l=>rep(n,k=>{const o=-w/2+k*w/(n-1)+(rq()-.5)*.08,len=w*(.93+rq()*.1);logs.push(l%2?[cx+o,YA+9.25+l*.46,cz+(rq()-.5)*.25,len,'z']:[cx+(rq()-.5)*.25,YA+9.25+l*.46,cz+o,len,'x'])}));
@@ -464,7 +464,7 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
  const sh=new T.Shape();sh.moveTo(0,0);sh.lineTo(30.7,0);sh.lineTo(0,9);const rp=new T.Mesh(new T.ExtrudeGeometry(sh,{depth:16,bevelEnabled:false}),mRamp);
  rp.rotation.y=-Math.PI/2;rp.position.set(AX+8,YA,AZ+15);rp.castShadow=rp.receiveShadow=true;gA.add(rp);
  ZN.push({r:[AX-8,AX+8,AZ+15,AZ+45.7],ax:'z',a:AZ+45.7,ya:YA,b:AZ+15,yb:YA+9});
- {const wd=new T.Mesh(new T.CylinderGeometry(.55,.55,.12,16),mIron);wd.rotation.z=Math.PI/2;wd.position.set(AX-9.04,YA+4.2,AZ+19);gA.add(wd)}   // חלון עגול בכבש (מערב) לעופות פסולים
+ {const wd=new T.Mesh(new T.BoxGeometry(.12,1,1),M.dark);wd.position.set(AX-9.04,YA+2,AZ+19);gA.add(wd);[-1,1].forEach(q=>{const f1=new T.Mesh(new T.BoxGeometry(.16,.1,1.2),mIron);f1.position.set(AX-9.05,YA+2+q*.55,AZ+19);gA.add(f1);const f2=new T.Mesh(new T.BoxGeometry(.16,1.2,.1),mIron);f2.position.set(AX-9.05,YA+2,AZ+19+q*.55);gA.add(f2)})}   // הרבובה לפסולי חטאת העוף: חלון אמה על אמה במערב הכבש, בתוך שלוש האמות התחתונות (מדות ג:ג; רמב"ם)
  const tFl=cv(64,128,(c,w,h)=>{c.filter='blur(2.2px)';const g=c.createLinearGradient(0,h,0,0);g.addColorStop(0,'rgba(255,236,130,1)');g.addColorStop(.4,'rgba(255,150,30,.96)');g.addColorStop(.78,'rgba(225,70,10,.62)');g.addColorStop(1,'rgba(200,40,0,0)');c.fillStyle=g;
   c.beginPath();c.moveTo(w/2,0);c.bezierCurveTo(w*.72,h*.3,w*1.02,h*.55,w*.8,h*.82);c.bezierCurveTo(w*.7,h*.98,w*.3,h*.98,w*.2,h*.82);c.bezierCurveTo(-w*.02,h*.55,w*.28,h*.3,w/2,0);c.fill();
   const g2=c.createLinearGradient(0,h,0,h*.45);g2.addColorStop(0,'rgba(255,255,225,.95)');g2.addColorStop(1,'rgba(255,235,130,0)');c.fillStyle=g2;c.beginPath();c.ellipse(w/2,h*.8,w*.2,h*.17,0,0,6.3);c.fill()}),mFlS=new T.SpriteMaterial({map:tFl,transparent:true,depthWrite:false,fog:true});
@@ -485,7 +485,7 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
    const r=new T.Mesh(new T.RingGeometry(.3,.42,18),mIron);r.rotation.x=-Math.PI/2;r.position.set(AX-15.5,YA+1.02,z);gA.add(r)});
   lbl('שני נקבים לשפיכת שיירי הדם',AX-15.5,YA+3.2,AZ+14,'azarah',60)}
  // שני נקבים בקרן דרומית־מערבית ושני ספלי כסף
- [0,1.2].forEach(o=>{box(gA,AX-13.3+o,YA+9,AZ+13.3,.7,.1,.7,M.dark,{ns:1});cyl(gA,AX-12.4+o,YA+9.1,AZ+11.7,.28,.55,mSil,12)});
+ [0,1.2].forEach(o=>{box(gA,AX-13.3+o,YA+9,AZ+13.3,.7,.1,.7,M.dark,{ns:1});const sp=new T.Mesh(new T.LatheGeometry([[0,0],[.12,0],[.28,.16],[.34,.3]].map(q=>new T.Vector2(q[0],q[1])),14),new T.MeshStandardMaterial({color:0xdde1e6,metalness:.7,roughness:.28,emissive:0x23262a,side:T.DoubleSide}));sp.position.set(AX-12.4+o,YA+9.1,AZ+11.7);gA.add(sp)});   // שני ספלי כסף (נסוך המים והיין): קערות עם נקב בשוליים
  // אמת המים: חריצי ניקוז לאורך בסיס המזבח (מערב)
  rep(12,i=>box(gA,AX-17.3,YA,AZ-11+i*2,.7,.05,.3,M.dark,{ns:1}));
  lbl('המזבח · 32×32',AX,YA+22,AZ,'azarah',320,1);lbl('הכבש הגדול · 32 על 16',AX,YA+8,AZ+31,'azarah',200);lbl('כבש קטן מזרחי',AX+9,YA+7.5,AZ+23,'azarah',90);lbl('כבש קטן מערבי',AX-9,YA+7.5,AZ+23,'azarah',90);lbl('התפוח',AX,YA+13.5,AZ+1.4,'azarah',70);lbl('מערכה גדולה',AX+6.4,YA+17,AZ+5.6,'azarah',110);lbl('מערכה שנייה (קטורת)',AX-7.8,YA+14,AZ+11.2,'azarah',80);lbl('מערכה שלישית – קיום האש',AX-7.5,YA+13,AZ-5.6,'azarah',80);lbl('שני נקבים',AX-13,YA+11,AZ+13,'azarah',70);lbl('אמת המים',AX-17.3,YA+2.5,AZ,'azarah',60);
@@ -495,11 +495,11 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
   const cyc=(x,y,z,rt,rb,h,mat,seg=16)=>{const m=new T.Mesh(new T.CylinderGeometry(rt,rb,h,seg),mat);m.position.set(x,y,z);m.castShadow=true;K.add(m);return m};
   cyc(0,.08,0,2.7,2.7,.16,mDisc,32);                                                                       // מכסה הבור – דיסקה עם קרניים
   const pr=[[0,.16],[1.5,.16],[1.64,.3],[1.45,.46],[1.05,.66],[.9,.86],[1.2,1.1],[1.62,1.48],[1.9,1.93],[1.94,2.33],[1.77,2.73],[1.4,3.03],[1.14,3.16],[1.22,3.26],[1.12,3.36]].map(([r,y])=>new T.Vector2(r,y));
-  const body=new T.Mesh(new T.LatheGeometry(pr,12),mCu);body.castShadow=true;K.add(body);                      // גוף מצולע (12 פאות) כבסרטון
+  const body=new T.Mesh(new T.LatheGeometry(pr,24),mCu);body.castShadow=true;K.add(body);                      // גוף עגול (המפרשים סתמו שהכיור עגול; הקונטרס עמ' פ)
   const beads=new T.InstancedMesh(new T.SphereGeometry(.075,8,6),mCu,46);for(let i=0;i<46;i++){const a=i<28?i/28*6.283:(i-28)/18*6.283,r=i<28?1.97:1.2,y=i<28?2.4:3.46;oo.position.set(Math.cos(a)*r,y,Math.sin(a)*r);oo.rotation.set(0,0,0);oo.scale.setScalar(1);oo.updateMatrix();beads.setMatrixAt(i,oo.matrix)}K.add(beads);   // שתי שורות חרוזים
   const tapG=new T.CylinderGeometry(.07,.07,.6,6),tapH=new T.BoxGeometry(.3,.07,.07),taps=new T.InstancedMesh(tapG,mCu,12),hand=new T.InstancedMesh(tapH,mCu,12);
-  for(let i=0;i<12;i++){const a=i/12*6.283+.26,cx=Math.cos(a),cz=Math.sin(a);oo.position.set(cx*1.82,1.45,cz*1.82);oo.rotation.set(0,0,0);oo.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),new T.Vector3(cx*.75,-.6,cz*.75).normalize());oo.scale.setScalar(1);oo.updateMatrix();taps.setMatrixAt(i,oo.matrix);
-   oo.position.set(cx*1.7,1.7,cz*1.7);oo.rotation.set(0,-a,0);oo.scale.setScalar(1);oo.updateMatrix();hand.setMatrixAt(i,oo.matrix)}K.add(taps,hand);   // 12 ברזים
+  for(let i=0;i<12;i++){const a=i/12*6.283+.26,cx=Math.cos(a),cz=Math.sin(a);const lo=i==0,r0=lo?1.16:1.86,y0=lo?1.2:2.32;oo.position.set(cx*r0,y0,cz*r0);oo.rotation.set(0,0,0);oo.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),new T.Vector3(cx*.75,-.6,cz*.75).normalize());oo.scale.setScalar(1);oo.updateMatrix();taps.setMatrixAt(i,oo.matrix);
+   oo.position.set(cx*(r0-.12),y0+.25,cz*(r0-.12));oo.rotation.set(0,-a,0);oo.scale.setScalar(1);oo.updateMatrix();hand.setMatrixAt(i,oo.matrix)}K.add(taps,hand);   // 12 ברזים (דדים): הצעת המחבר (קונטרס כלי המקדש, פב) – 11 בחצי העליון וברז אחד בשיפולי הכיור
   const rib=new T.InstancedMesh(new T.CylinderGeometry(.05,.05,1,5),mCu,42),pts=[[1.12,3.5],[1.03,3.9],[.66,4.25],[.18,4.55]];   // מכסה סבכה (14 צלעות מעוגלות)
   for(let i=0;i<14;i++){const a=i/14*6.283,cx=Math.cos(a),cz=Math.sin(a);for(let j=0;j<3;j++){const A=new T.Vector3(cx*pts[j][0],pts[j][1],cz*pts[j][0]),B=new T.Vector3(cx*pts[j+1][0],pts[j+1][1],cz*pts[j+1][0]),d=B.clone().sub(A);
     oo.position.copy(A).add(B).multiplyScalar(.5);oo.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.clone().normalize());oo.scale.set(1,d.length(),1);oo.updateMatrix();rib.setMatrixAt(i*3+j,oo.matrix)}}K.add(rib);
@@ -735,14 +735,50 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
  box(gH,-95,YH,ZC-9.5,3.6,8.6,.3,M.gold,{ns:1});box(gH,-95,YH,ZC-9.4,3,8,.3,MG,{ns:1});
  // שני עמודונים קטנים לפני הפרוכת
  [-2.5,2.5].forEach(o=>{cyl(gH,-124.8,YH,ZC+o,.12,2.2,M.gold,6);cyl(gH,-124.8,YH+2.2,ZC+o,.3,.25,M.gold,8);sph(gH,-124.8,YH+2.7,ZC+o,.13,M.flame)});
- // מזבח הזהב (1×1×2 עם קרנות), שולחן (2×1×1.5 + 12 לחם), מנורה (7 קנים) על שלוש מדרגות שיש
- box(gH,-116,YH,ZC,1,2,1,M.gold,{c:1});box(gH,-116,YH+2,ZC,1.3,.15,1.3,M.gold,{ns:1});[[-.6,-.6],[.6,-.6],[-.6,.6],[.6,.6]].forEach(o=>box(gH,-116+o[0],YH+2.1,ZC+o[1],.14,.4,.14,M.gold,{ns:1}));
- box(gH,-100,YH,ZC-6,1,1.5,2,M.gold,{c:1});rep(12,i=>box(gH,-100,YH+1.5+Math.floor(i/6)*.3+.2,ZC-6.5+(i%6<3?0:1.0)+(i%3)*.0,.5,.25,.6,M.stoneRaw,{ns:1}));
- {const mg=new T.Group(),h=3;cyl(mg,0,0,0,.4,.2,M.gold,10);cyl(mg,0,.2,0,.07,h,M.gold,8);
-  [1,2,3].forEach(k=>{const r=k*.5,a=new T.Mesh(new T.TorusGeometry(r,.05,6,18,Math.PI),M.gold);a.position.y=h*(.35+k*.07);mg.add(a);const a2=a.clone();a2.rotation.y=Math.PI;});
-  [1,2,3].forEach(k=>{[-1,1].forEach(s=>{const y0=h*(.35+k*.07);cyl(mg,s*k*.5,y0,0,.05,h-y0,M.gold,6);cyl(mg,s*k*.5,h,0,.12,.12,M.gold,8);sph(mg,s*k*.5,h+.25,0,.13,M.flame)})});
-  cyl(mg,0,h,0,.12,.12,M.gold,8);sph(mg,0,h+.25,0,.13,M.flame);mg.rotation.y=Math.PI/2;mg.position.set(-100,YH+.8,ZC+6);
-  cyl(gH,-100,YH,ZC+6,2.5,.27,MP,20);cyl(gH,-100,YH+.27,ZC+6,1.8,.27,MP,20);cyl(gH,-100,YH+.54,ZC+6,1.1,.26,MP,20);mg.scale.setScalar(1.15);gH.add(mg)}
+ /* ===== כלי ההיכל לפי "קונטרס כלי המקדש" (פירוט ופערים: KLEI_HAMIKDASH_NOTES.md). 1 טפח = 1/6 אמה. מזבח הזהב 5×5 טפחים וגובה 12 (קצח); שולחן 2×1×1.5 אמה (רמב"ם, 12×6×9 טפחים) עם מסגרת למטה, רגליים מרובעות/עגולות, שתי מערכות של 6 חלות כ"תיבה פרוצה", 28 קנים, 4 סניפים, 2 בזיכים; מנורה 18 טפחים כדעת הרמב"ם: בסיס חצי כדור על 3 רגלים, 6 קנים ישרים באלכסון, 22 גביעים, 11 כפתורים, 9 פרחים, 7 נרות שפיותיהם למערב, ושלוש מעלות אבן במערבה ===== */
+ {const TF=1/6,gm=mk(0xf0c040,{metalness:.72,roughness:.26,emissive:0x3a2600}),gm2=mk(0xd9a52a,{metalness:.7,roughness:.32,emissive:0x2c1c00}),gd=mk(0xf0c040,{metalness:.72,roughness:.26,emissive:0x3a2600,side:T.DoubleSide}),dk=mk(0x1a1208,{roughness:1}),
+  bread=mk(0xc98a3c,{roughness:.85}),inc=mk(0xf6efd8,{roughness:.9}),dm=new T.Object3D(),BXG=new T.BoxGeometry(1,1,1),
+  inst=(geo,m,L,g)=>{const im=new T.InstancedMesh(geo,m,L.length);L.forEach((a,i)=>{dm.position.set(a[0],a[1],a[2]);dm.rotation.set(a[3]||0,a[4]||0,a[5]||0);dm.scale.set(a[6]==null?1:a[6],a[7]==null?1:a[7],a[8]==null?1:a[8]);dm.updateMatrix();im.setMatrixAt(i,dm.matrix)});im.frustumCulled=false;(g||gH).add(im);return im},
+  lathe=(pts,m,x,y,z,g)=>{const me=new T.Mesh(new T.LatheGeometry(pts.map(p=>new T.Vector2(p[0],p[1])),14),m);me.position.set(x,y,z);(g||gH).add(me);return me};
+  /* מזבח הזהב (מזבח הקטורת): עץ שיטים מצופה זהב; הכרעת המחבר: רוחב 5 טפחים (אמה בת 5) וגובה 12 טפחים כולל הקרנות; קרנות טפח על טפח ברום טפח, חלולות; זר זהב גבוה משהו סביב הגג; בבית עולמים אין טבעות */
+  {const GX=-116,GW=5*TF,BH=2-TF;box(gH,GX,YH,ZC,GW,BH,GW,gm,{c:1});
+   [-1,1].forEach(s=>{box(gH,GX,YH+BH,ZC+s*(GW/2-.02),GW,.045,.04,gm,{ns:1});box(gH,GX+s*(GW/2-.02),YH+BH,ZC,.04,.045,GW-.08,gm,{ns:1})});
+   [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b])=>{box(gH,GX+a*(GW/2-TF/2),YH+BH,ZC+b*(GW/2-TF/2),TF,TF,TF,gm,{ns:1});box(gH,GX+a*(GW/2-TF/2),YH+2-.004,ZC+b*(GW/2-TF/2),TF*.6,.005,TF*.6,dk,{ns:1})})}
+  /* שולחן לחם הפנים */
+  {const TX=-100,TZ=ZC-6,TL=2,TW=1,TH=1.5,tt=.1,fh=TF,lg=.14,Ly0=YH+TH,pitch=2*TF,lw=5*TF,ll=6*TF,gap=.1667,sc=lw/2+gap;
+   [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([a,b])=>{const lx=TX+a*(TL/2-.12),lz=TZ+b*(TW/2-.12);   // רגל: מרובעת בחציה העליון, עגולה בחציה התחתון
+    box(gH,lx,YH+.72,lz,lg,TH-tt-.72,lg,gm,{ns:1});const c=new T.Mesh(new T.CylinderGeometry(.05,.075,.72,10),gm);c.position.set(lx,YH+.36,lz);gH.add(c);cyl(gH,lx,YH,lz,.1,.05,gm2,10);
+    const rg=new T.Mesh(new T.TorusGeometry(.075,.02,6,12),gm2);rg.position.set(lx,YH+TH-tt-fh/2,lz+b*(lg/2+.02));rg.rotation.y=Math.PI/2;gH.add(rg)});   // טבעת זהב על הרגל (לעמת המסגרת)
+   [-1,1].forEach(s=>{box(gH,TX,YH+TH-tt-fh,TZ+s*(TW/2-.12),TL-.24-lg,fh,.06,gm2,{ns:1});box(gH,TX+s*(TL/2-.12),YH+TH-tt-fh,TZ,.06,fh,TW-.24-lg,gm2,{ns:1})});   // המסגרת: טפח גובה, למטה (הלכה), בין הרגליים
+   box(gH,TX,YH+TH-tt,TZ,TL,tt,TW,gm,{ns:1});   // דף השולחן
+   [-1,1].forEach(s=>{box(gH,TX,Ly0,TZ+s*(TW/2-.02),TL,.05,.04,gm,{ns:1});box(gH,TX+s*(TL/2-.02),Ly0,TZ,.04,.05,TW-.08,gm,{ns:1})});   // זר זהב
+   COL.push([TX-TL/2,TX+TL/2,TZ-TW/2,TZ+TW/2,YH,YH+TH]);
+   const sl=[],wl=[],kn=[],pl=[];
+   [-1,1].forEach(s=>{const cx=TX+s*sc;for(let j=0;j<6;j++){const y=Ly0+j*pitch;sl.push([cx,y+.06,TZ,0,0,0,lw,.12,ll]);[-1,1].forEach(b=>wl.push([cx,y+.145,TZ+b*(ll/2-.03),0,0,0,lw,.29,.06]));   // חלה: 6×5 טפחים, שתי דפנות (7 אצבעות) – "תיבה פרוצה" (רמב"ם)
+    if(j>0)(j==5?[-.2,.2]:[-.28,0,.28]).forEach(zz=>kn.push([cx,y-pitch+.12,TZ+zz,0,0,Math.PI/2,1,1,1]))}   // קנים: 3 מתחת לכל חלה (2 לעליונה), חצי קנה חלול
+    [-1,1].forEach(b=>{const px=cx,pz=TZ+b*(TW/2+.13);cyl(gH,px,YH,pz,.2,.05,gm2,14);cyl(gH,px,YH+.05,pz,.13,.09,gm2,14);cyl(gH,px,YH+.14,pz,.07,.06,gm2,12);
+     const p=new T.Mesh(new T.CylinderGeometry(.03,.04,3.4,8),gm);p.position.set(px,YH+.2+1.7,pz);gH.add(p);   // סניף: עמוד זהב עומד בארץ, בראש הערימה
+     for(let j=0;j<6;j++)pl.push([px,Ly0+j*pitch+.17,pz-b*.1,0,0,0,lw,.26,.03])})});   // 6 לוחות לכל סניף (חזקוני), כנגד כל חלה
+   inst(BXG,bread,sl);inst(BXG,bread,wl);inst(BXG,gm,pl);
+   inst(new T.CylinderGeometry(.085,.085,lw,8,1,true,0,Math.PI),gd,kn);
+   [-1,1].forEach(b=>{lathe([[0,0],[.05,0],[.09,.07],[.1,.09]],gd,TX,Ly0+.02,TZ+b*.2);const pi=new T.Mesh(new T.SphereGeometry(1,10,6),inc);pi.scale.set(.08,.035,.08);pi.position.set(TX,Ly0+.1,TZ+b*.2);gH.add(pi)})}   // שני בזיכי לבונה על השולחן, בין המערכות (רמב"ם)
+  /* מנורה: 18 טפחים (3 אמות), רוחב 2 אמות; כדעת הרמב"ם (ציור הספר): בסיס חצי כדור על 3 רגלים; 6 קנים ישרים באלכסון מכפתורים בטפח 9, 11, 13 עד גובה 18; 22 גביעים, 11 כפתורים, 9 פרחים; הנרות ספינה קטנה, פיות למערב; שלוש מעלות אבן (חצי אמה גובה ועומק, רוחב 2 אמות) במערב המנורה */
+  {const MX=-100,MZ=ZC+6,mg=new T.Group(),Y=t=>t*TF,fl=[[0,0],[.025,0],[.05,.05],[.085,.1],[.105,.155],[.09,.165]],cupG=new T.CylinderGeometry(.034,.08,1,10),kG=new T.SphereGeometry(1,10,8),fG=new T.LatheGeometry(fl.map(p=>new T.Vector2(p[0],p[1])),10);
+   mg.position.set(MX,YH,MZ);gH.add(mg);
+   const arm=(ax,ay,az,bx,by,bz,r)=>{const d=new T.Vector3(bx-ax,by-ay,bz-az),L=d.length(),m=new T.Mesh(new T.CylinderGeometry(r,r,L,8),gm);m.position.set((ax+bx)/2,(ay+by)/2,(az+bz)/2);m.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),d.normalize());mg.add(m)};
+   const cups=[],knobs=[],flows=[],lamps=[],spouts=[],flames=[];
+   const top=z=>{[2.54,2.61,2.68].forEach(y=>cups.push([0,y,z,0,0,0,1,.09,1]));knobs.push([0,2.78,z,0,0,0,.055,.07,.055]);flows.push([0,2.84,z,0,0,0,1,1,1])};   // ראש הקנה: ג׳ גביעים, כפתור, פרח
+   const dome=new T.Mesh(new T.SphereGeometry(.4,20,10,0,Math.PI*2,0,Math.PI/2),gm);dome.position.y=.09;dome.scale.y=.95;mg.add(dome);   // בסיס חצי כדור (רמב"ם)
+   [90,210,330].forEach(a=>{const r=a*Math.PI/180,f=new T.Mesh(new T.SphereGeometry(.065,8,6),gm2);f.position.set(Math.cos(r)*.32,.06,Math.sin(r)*.32);mg.add(f)});   // 3 רגלים
+   flows.push([0,.44,0,0,0,0,1,1,1]);   // פרח בראש הבסיס
+   arm(0,.5,0,0,3.0,0,.03);   // הקנה האמצעי, 18 טפחים
+   cups.push([0,.865,0,0,0,0,1,.07,1]);knobs.push([0,.93,0,0,0,0,.05,.06,.05]);flows.push([0,.95,0,0,0,0,.9,.9,.9]);   // טפח 6: גביע, כפתור ופרח
+   top(0);
+   [[9,.9167],[11,.6111],[13,.3056]].forEach(([t,zk])=>{const yk=Y(t-.5);knobs.push([0,yk,0,0,0,0,.06,.083,.06]);   // כפתור בטפח 9/11/13, ממנו יוצאים שני קנים
+    [-1,1].forEach(s=>{arm(0,yk,0,0,2.5,s*zk,.026);arm(0,2.5,s*zk,0,2.85,s*zk,.022);top(s*zk)})});
+   for(let i=0;i<7;i++){const z=(i-3)*.30556;lamps.push([0,3.03,z,0,0,0,.095,.035,.06]);spouts.push([-.105,3.035,z,0,0,0,.06,.02,.028]);flames.push([0,3.13,z,0,0,0,.045,.07,.045])}   // 7 נרות; פיות למערב (-x)
+   inst(cupG,gm,cups,mg);inst(kG,gm,knobs,mg);inst(fG,gd,flows,mg);inst(kG,gm,lamps,mg);inst(BXG,gm,spouts,mg);inst(kG,M.flame,flames,mg);
+   [[.75,1.5],[1.25,1],[1.75,.5]].forEach(([d,h])=>box(gH,MX-d,YH,MZ,.5,h,2,M.marble,{c:1}))}}   // שלוש מעלות האבן (משנה תמיד ג:ט): הכהן עומד על העליונה, בגובה הנרות
  const il=new T.PointLight(0xffc070,.45,60);il.position.set(-104,YH+24,ZC);gH.add(il);var hekLight=il;
  const il2=new T.PointLight(0xffd090,.3,30);il2.position.set(-137,YH+16,ZC);gH.add(il2);
  Object.values(I).forEach(i=>i.fin(gH));

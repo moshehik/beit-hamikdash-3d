@@ -1,22 +1,22 @@
 /* סדר העבודה: הטבת נרות והדלקת המנורה, בבוקר ובין הערבים (משנה תמיד ג:ט, ו:א; רמב״ם תמידין ומוספין ג:י–יז) */
-{const V=SVL,M=V.menorah,Y=YH+4.54,YS=YH+.54,mx=-98.2,lz=i=>M[1]-1.725+i*.575;   // שבעת הנרות על ציר צפון־דרום; i=0 הצפוני ... 6 הדרומי; הכהן עומד במזרח על מעלות המנורה
+{const V=SVL,M=V.menorah,Y=YH+3.1,YS=YH+1.5,mx=-100.75,lz=i=>M[1]+(i-3)*.30556;   // שבעת הנרות על ציר צפון־דרום (רוחב המנורה 2 אמות, נר כל 5.5/3 טפחים); i=0 הצפוני ... 6 הדרומי; הכהן עומד במערב על העליונה משלוש מעלות האבן (חצי אמה כל אחת) ופניו מזרחה אל הנרות, שפיותיהם למערב (רמב"ם; קונטרס כלי המקדש קלד, קלז)
  const cap=i=>({spawn:'lampcap',id:'c'+i,at:[M[0],lz(i),Y]});
- const tend=(i,t)=>[{who:'k',walk:[[mx,lz(i),YS]],speed:3.5,face:'w'},{who:'k',pose:'high'},{who:'k',anim:'press',dur:t||1.5},{remove:'c'+i}];   // מדשן ומדליק נר: מסיר פתילה ושמן ישנים, פתילה חדשה וחצי לוג שמן
+ const tend=(i,t)=>[{who:'k',walk:[[mx,lz(i),YS]],speed:3.5,face:'e'},{who:'k',pose:'high'},{who:'k',anim:'press',dur:t||1.5},{remove:'c'+i}];   // מדשן ומדליק נר: מסיר פתילה ושמן ישנים, פתילה חדשה וחצי לוג שמן
  const inW=[[-70,ZC],[-84,ZC],[-92,ZC+1],[mx,lz(3)-.8,YS]];
  const cam={pos:[-90,YH+6,ZC-1],tgt:[M[0],YH+3.2,M[1]]};
  SERVICES.push({id:'menorah',name:'הטבת נרות והדלקת המנורה',cat:'תמידין',src:'משנה תמיד ג:ט, ו:א · רמב״ם תמידין ומוספין ג:י–יז',
   actors:{k:'k'},main:'k',start:{k:{at:[-68,ZC],face:'w'}},items:[0,1,2,3,4].map(cap),
   steps:[
    {text:'בבוקר נכנס הזוכה בדשן המנורה אל ההיכל ובידו הכוז – כלי זהב דומה לקיתון גדול. הוא מוצא שני נרות דולקים, והשאר כבו. (מיקום הנרות הדולקים בדגם מקורב.)',src:'משנה, תמיד ג:ט · רמב״ם ג:יז',cam,
-    actions:[{who:'k',pose:'rh'},{who:'k',take:'kuz',id:'kz',hand:'R'},{who:'k',walk:inW,speed:5.5,face:'w'}]},
+    actions:[{who:'k',pose:'rh'},{who:'k',take:'kuz',id:'kz',hand:'R'},{who:'k',walk:inW,speed:5.5,face:'e'}]},
    {text:'דשון המנורה: בכל נר שכבה מסיר את הפתילה ואת השמן שנשאר, מקנח, ונותן פתילה חדשה ושמן במדה – חצי לוג. הוא עומד על האבן בעלת שלוש המעלות שלפני המנורה, ומדליק את הנרות הכבויים מן הדולקים: "מושך הפתילה עד שמדליקה ומחזירה". וההדלקה היא ההטבה.',src:'משנה, תמיד ג:ט · רמב״ם ג:יא–יד',cam,
     actions:[...tend(0),...tend(1),...tend(2),...tend(3),...tend(4)]},
    {text:'אין מטיבים את כל הנרות בבת אחת, כדי להרגיש את כל העזרה: מטיב חמישה, מניח את הכוז על המעלה השנייה, ויוצא לעבודה אחרת.',src:'רמב״ם ג:טז–יז · משנה, תמיד ג:ט',cam,
-    actions:[{who:'k',pose:'rh'},{who:'k',drop:'kz',at:[mx+.4,lz(5)+.2,YS-.2]},{who:'k',pose:'idle'},{who:'k',walk:[[-92,ZC+1],[-84,ZC],[-70,ZC]],speed:5.5,face:'e'},{wait:1.2}]},
+    actions:[{who:'k',pose:'rh'},{who:'k',drop:'kz',at:[mx-.5,lz(5)+.2,YS-.5]},{who:'k',pose:'idle'},{who:'k',walk:[[-92,ZC+1],[-84,ZC],[-70,ZC]],speed:5.5,face:'e'},{wait:1.2}]},
    {text:'אחר כך הוא נכנס שנית ומטיב את שני הנרות האחרונים: מדשן את המזרחי ומניח את המערבי דולק – ממנו מדליקים את המנורה בין הערבים. הוא נוטל את הכוז, משתחווה ויוצא.',src:'משנה, תמיד ו:א · רמב״ם ג:יז',cam,
-    actions:[{who:'k',pose:'high'},{who:'k',walk:[[-84,ZC],[-92,ZC+1],[mx,lz(6),YS]],speed:5.5,face:'w'},{who:'k',anim:'press',dur:1.5},{who:'k',pose:'rh'},{who:'k',take:'kz',hand:'R'},{who:'k',anim:'bow'},{who:'k',pose:'idle'},{who:'k',walk:[[-92,ZC+1],[-84,ZC],[-70,ZC]],speed:5.5,face:'e'}]},
+    actions:[{who:'k',pose:'high'},{who:'k',walk:[[-84,ZC],[-92,ZC+1],[mx,lz(6),YS]],speed:5.5,face:'e'},{who:'k',anim:'press',dur:1.5},{who:'k',pose:'rh'},{who:'k',take:'kz',hand:'R'},{who:'k',anim:'bow'},{who:'k',pose:'idle'},{who:'k',walk:[[-92,ZC+1],[-84,ZC],[-70,ZC]],speed:5.5,face:'e'}]},
    {text:'בין הערבים: מדליקים את המנורה מנר המערבי שנשאר דולק כל היום, ומדליקים את שבעת הנרות. "אין מחנכים את המנורה אלא בהדלקת שבעה נרותיה בין הערבים". אם כבה הנר המערבי – מדליקים אותו ממזבח העולה. (בדגם הנרות כבויים לפני ההדלקה.)',src:'משנה, תמיד ו:א · רמב״ם ג:יא, יג',cam,
-    actions:[...[0,1,2,3,4,6].map(cap),{who:'k',pose:'high'},{who:'k',walk:[[-84,ZC],[-92,ZC+1],[mx,lz(5)-.6,YS]],speed:5.5,face:'w'},
-     ...[4,3,2,1,0,6].map(i=>[{who:'k',walk:[[mx,lz(i),YS]],speed:3.5,face:'w'},{who:'k',anim:'press',dur:1.2},{remove:'c'+i}]).flat(),
+    actions:[...[0,1,2,3,4,6].map(cap),{who:'k',pose:'high'},{who:'k',walk:[[-84,ZC],[-92,ZC+1],[mx,lz(5)-.6,YS]],speed:5.5,face:'e'},
+     ...[4,3,2,1,0,6].map(i=>[{who:'k',walk:[[mx,lz(i),YS]],speed:3.5,face:'e'},{who:'k',anim:'press',dur:1.2},{remove:'c'+i}]).flat(),
      {who:'k',pose:'idle'},{who:'k',walk:[[-92,ZC+1],[-84,ZC],[-70,ZC]],speed:5.5,face:'e'}]}
   ]})}

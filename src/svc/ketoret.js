@@ -1,16 +1,16 @@
 /* סדר העבודה: הקטרת הקטרת של שחר – הפיס, כף ומחתה, הכנסה להיכל והקטרה על מזבח הזהב (משנה תמיד ה:ב–ז:ב; רמב״ם תמידין ומוספין ג:א–ט) */
 {const V=SVL,H=SVH,ZC_=ZC,YH_=YH,view=H.view,GS=V.L.gazit.s,GDN=GS>0?'n':'s',GIN=GS>0?'s':'n';
- const GA=V.goldAlt,GX=GA[0],AT=YH_+2.15;                       // גובה עליון של מזבח הזהב
+ const GA=V.goldAlt,GX=GA[0],AT=YH_+1.9;                       // גובה עליון של מזבח הזהב (12 טפחים כולל הקרנות; הגג ב-1.83)
  const stairs=[[-48,ZC_],[-52,ZC_],[-66,ZC_],[V.hekDoor[0]-3,ZC_]];   // מפתח המעלות, האולם ופתח ההיכל
  const inTo=(x,z)=>[...stairs,[x,z]],outFrom=(x,z)=>[[x,z],...stairs.slice().reverse().slice(0,3),[-48,ZC_+2]];
  const heCam={pos:[V.hekDoor[0]-8,YH_+5,ZC_+7.5],tgt:[GX+2,YH_+2.5,ZC_]};
  const VID='מתוך הסרט "המסע אל המקדש"';
- const M=V.menorah,mx=-98.2,lz=i=>M[1]-1.725+i*.575,YS=YH_+.54;                  // המנורה: הכהן עומד על המעלה השנייה (YS); i=0 הצפוני ... 6 הדרומי
+ const M=V.menorah,mx=-100.75,lz=i=>M[1]+(i-3)*.30556,YS=YH_+1.5;                  // המנורה: הכהן עומד במערבה על העליונה משלוש מעלות האבן (YS), פניו מזרחה; הכוז על המעלה השנייה; i=0 הצפוני ... 6 הדרומי
  const toDsh=[[-46,ZC_+4],[-46,5],[-14.2,5],V.deshenStand],fromDsh=[[-14.2,5],[-46,5],[-46,ZC_+4]];   // מן האולם אל בית הדשן (מזרח הכבש) ובחזרה, לפי החצר
  SERVICES.push({id:'ketoret',name:'הקטרת הקטרת',cat:'תמידין',src:'משנה תמיד ה:ב–ז:ב · רמב״ם תמידין ומוספין ג:א–ט',
   actors:{k1:'k',k2:'k',k3:'k',k4:'k',k5:'k'},main:'k1',
   start:{k1:{at:[V.gazitIn[0]-2.5,V.gazitIn[1]-2*GS],face:GIN},k2:{at:[V.gazitIn[0]+2.5,V.gazitIn[1]-2*GS],face:GIN},k3:{at:[V.gazitIn[0]-2.5,V.gazitIn[1]+2*GS],face:GDN},k4:{at:[V.gazitIn[0]+2.5,V.gazitIn[1]+2*GS],face:GDN},k5:{at:[V.gazitIn[0]+6,V.gazitIn[1]],face:GDN}},
-  items:[{spawn:'tani',id:'tn',at:[GX+3.2,ZC_+1.6,YH_]},{spawn:'coals',id:'ash',opts:{s:.3},at:[GX+3.2,ZC_+1.6,YH_+.35]},{spawn:'kuz',id:'kz',at:[mx+.4,lz(5)+.2,YS-.2]}],   // מן דישון הבוקר: התני עם האפר על רצפת ההיכל, והכוז על המעלה השנייה של המנורה
+  items:[{spawn:'tani',id:'tn',at:[GX+3.2,ZC_+1.6,YH_]},{spawn:'coals',id:'ash',opts:{s:.3},at:[GX+3.2,ZC_+1.6,YH_+.35]},{spawn:'kuz',id:'kz',at:[mx-.5,lz(5)+.2,YS-.5]}],   // מן דישון הבוקר: התני עם האפר על רצפת ההיכל, והכוז על המעלה השנייה של המנורה
   steps:[
    {text:'הפייס השלישי, בלשכת הגזית: "חדשים לקטרת באו והפיסו". הזוכה בקטרת לא יזכה בה שנית – כך כל כהן זוכה פעם אחת בחייו. (הסדר: הפייס השלישי, ומיד אחריו הרביעי; רק אחר כך מקטירים.)',src:'משנה, תמיד ה:ב · יומא ב:ד · '+VID+' (37:00–37:54)',cam:{pos:[V.gazitIn[0],YA+8,V.gazit[1]-12*GS],tgt:[V.gazitIn[0],YA+3,V.gazitIn[1]-4*GS]},
     actions:[[{who:'k1',walk:[[V.gazitIn[0]-1.2,V.gazitIn[1]]],face:'e'},{who:'k2',walk:[[V.gazitIn[0]+1.2,V.gazitIn[1]]],face:'w'},{who:'k3',walk:[[V.gazitIn[0],V.gazitIn[1]+1.8*GS]],face:GDN},{who:'k4',walk:[[V.gazitIn[0],V.gazitIn[1]-1.8*GS]],face:GIN}],{wait:.8},{who:'k1',pose:'wave'},{wait:1.2},{who:'k1',pose:'idle'}]},
@@ -33,7 +33,7 @@
    {text:'לא היה המקטיר מקטיר עד שהממנה אומר לו "הקטר" (ואם כהן גדול – "אישי כהן גדול, הקטר"). אחר כך פורש כל העם מן ההיכל ומבין האולם למזבח, והמקטיר משליך את הקטורת על האש בנחת ומשתחווה.',src:'משנה, תמיד ו:ג · רמב״ם ג:ג, ט',cam:heCam,
     actions:[{wait:1},{who:'k1',pose:'rh'},{who:'k1',anim:'sprinkle',dur:1.2},{spawn:'fire',id:'kf1',opts:{s:.28},at:[GX,ZC_,AT]},{wait:1.2},{who:'k1',anim:'bow'}]},
    {text:'אחרי עשן הקטורת חוזר הזוכה במנורה אל ההיכל, מטיב את שני הנרות המזרחיים – האחרונים – והוא והמקטיר משתחווים בפישוט ידיים ורגליים. אחר כך הוא נוטל את הכוז ויוצא. בינתיים יורד המדשן אל בית הדשן, מזרחית לכבש, ושופך שם את הדשן – והוא נבלע בנס.',src:'משנה, תמיד ו:א–ג · רמב״ם ג:ז, ט · '+VID+' (42:50–43:20)',cam:{pos:[-90,YH_+6,ZC_-1],tgt:[M[0],YH_+3.2,M[1]]},
-    actions:[[{seq:[{who:'k5',pose:'rh'},{who:'k5',walk:[...stairs,[-92,ZC_+1],[mx,lz(5),YS]],speed:6.5,face:'w'},{who:'k5',pose:'high'},{who:'k5',anim:'press',dur:1.2},{who:'k5',walk:[[mx,lz(6),YS]],speed:3.5,face:'w'},{who:'k5',anim:'press',dur:1.2},{who:'k5',pose:'rh'},{who:'k5',walk:[[mx,lz(5),YS]],speed:3.5,face:'w'},
+    actions:[[{seq:[{who:'k5',pose:'rh'},{who:'k5',walk:[...stairs,[-92,ZC_+1],[mx,lz(5),YS]],speed:6.5,face:'e'},{who:'k5',pose:'high'},{who:'k5',anim:'press',dur:1.2},{who:'k5',walk:[[mx,lz(6),YS]],speed:3.5,face:'e'},{who:'k5',anim:'press',dur:1.2},{who:'k5',pose:'rh'},{who:'k5',walk:[[mx,lz(5),YS]],speed:3.5,face:'e'},
       [{who:'k5',anim:'bow',dur:2.2},{who:'k1',anim:'bow',dur:2.2}],{who:'k5',take:'kz',hand:'R'},{who:'k5',walk:[[-92,ZC_+1],...stairs.slice().reverse().slice(0,3),[-48,ZC_-2]],speed:6.5}]},
       {seq:[{who:'k3',walk:[[-48,ZC_+2],...toDsh],speed:7,face:'w'},{who:'k3',anim:'sprinkle',dur:1},{spawn:'coals',id:'dp',opts:{s:.45},at:[V.deshen[0],V.deshen[1]]},{wait:.7},{remove:'dp'},{who:'k3',walk:[...fromDsh,[-50,ZC_+2]],speed:7}]}]]},
    {text:'ואז יוצאים הכהנים מן ההיכל, ועומדים חמישה מהם על מעלות האולם, והכלים בידם – להראות לאחיהם שנעשתה עבודתם: כף הקטורת, המחתה, התני, הכוז והבזך. אחר כך נכנסים כל הכהנים אל ההיכל להשתחוות.',src:'משנה, תמיד ז:ב · '+VID+' (43:20–43:50)',cam:view(-57,ZC_,YA+6,24,8,70),

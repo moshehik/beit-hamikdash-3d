@@ -22,7 +22,7 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
   mSlv=mk(0xdde1e6,{metalness:.7,roughness:.28,emissive:0x23262a});
  /* --- טקסטורות הכהן מתמונות Gemini (PTEX מ-people_tex.js, אם קיים): רקמת פשתן כמכפיל + אבנט רקום; אחרת נשארים וקטוריים --- */
  const _pt=(u,rx,ry)=>{if(typeof PTEX=='undefined'||!u)return null;const t=new T.TextureLoader().load(u);t.wrapS=t.wrapT=T.MirroredRepeatWrapping;t.repeat.set(rx,ry);t.encoding=T.sRGBEncoding;t.anisotropy=4;return t};
- const _tLin=typeof PTEX!='undefined'?_pt(PTEX.linen,3,3):null,_tBlt=typeof PTEX!='undefined'?_pt(PTEX.belt,2,1):null;
+ const _tLin=typeof PTEX!='undefined'?_pt(PTEX.linen,2,2):null,_tBlt=typeof PTEX!='undefined'?_pt(PTEX.belt,2,1):null;
  const mP=mk(0xffffff,Object.assign({vertexColors:true,roughness:.93,side:T.DoubleSide},_tLin?{map:_tLin}:{})),
   mBeltP=_tBlt?mk(0xffffff,{map:_tBlt,roughness:.88,side:T.DoubleSide}):mBeltM,mFrg=mk(0xece6d6,{roughness:.95,side:T.DoubleSide});
  /* --- כהן: kind = k הדיוט (ארבעה בגדי לבן), g כהן גדול (שמונה בגדים), y כהן גדול ביום הכיפורים (ארבעה בגדי לבן); pose = idle|tray|basket|rake|wave|trumpet --- */
@@ -44,7 +44,7 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
  // מגבעת כרוכה: חרוט (פרופיל קמור קלות) עם פס בד ספירלי – כל "כריכה" מבליטה מדרגה קטנה
  function wcap(R0,H,turns){const pts=[];for(let i=0;i<=26;i++){const t=i/26;pts.push(new T.Vector2(Math.max(.006,R0*Math.pow(1-t,.86)),H*t))}
   const g=new T.LatheGeometry(pts,44),p=g.attributes.position;
-  for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),t=y/H,th=Math.atan2(z,x),s=((t*turns-th/6.2832)%1+1)%1,k=1+.05*s*(1-.55*t);p.setX(i,x*k);p.setZ(i,z*k)}
+  for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),t=y/H,th=Math.atan2(z,x),s=((t*turns-th/6.2832)%1+1)%1,k=1+.085*s*(1-.5*t);p.setX(i,x*k);p.setZ(i,z*k)}
   g.computeVertexNormals();return g}
  // קצה אבנט תלוי: מישור ש-UV שלו לאורך הרצועה (הדוגמה רצה לאורך הקצה)
  function beltTail(W,Ln){const g=new T.PlaneGeometry(W,Ln),p=g.attributes.position,u=g.attributes.uv;for(let i=0;i<p.count;i++){u.setXY(i,(p.getY(i)/Ln+.5)*Ln/2.55,.19+.62*(p.getX(i)/W+.5))}return g}
@@ -54,22 +54,22 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
   // רגליים: כפות יחפות (אליפסואיד + עקב), קרסול, מכנסי פשתן צרים מתחת לכתונת
   [-.15,.15].forEach(o=>{B.add(new T.SphereGeometry(.1,10,8),PSKIN,o,.055,.1,.9,.5,2.0);B.add(new T.SphereGeometry(.07,8,6),PSKIN,o,.09,-.07,1,1.1,1);B.add(new T.CylinderGeometry(.052,.058,.14,8),PSKIN,o,.14,0);
    B.add(new T.CylinderGeometry(.118,.13,.5,12),PTRO,o,.38,0)});
-  // כתונת: חרוט מתרחב מצווארון עד חצי השוק, קפלים אנכיים (שני תדרים) ותפיחה מעל האבנט
-  {const tg=new T.LatheGeometry([[.55,.38],[.535,.6],[.505,.95],[.47,1.3],[.435,1.6],[.415,1.8],[.435,1.98],[.41,2.1]].map(a=>new T.Vector2(a[0],a[1])),32);pleat(pleat(tg,10,.035),23,.012);B.add(tg,PLIN)}
-  B.add(new T.CylinderGeometry(.31,.40,.95,24,2),PLIN,0,2.22,0);B.add(new T.SphereGeometry(.31,16,8),PLIN,0,2.69,0,1,.3,1);[-1,1].forEach(s=>B.add(new T.SphereGeometry(.14,10,8),PLIN,s*.34,2.62,0));   // חזה וכתפיים
+  // כתונת: גוף אחד (חזה+חצאית) מצווארון עד חצי השוק, קפלים אנכיים (שני תדרים) ותפיחה מעל האבנט
+  {const tg=new T.LatheGeometry([[.51,.38],[.5,.6],[.48,.95],[.455,1.3],[.43,1.6],[.415,1.8],[.43,1.98],[.405,2.14],[.375,2.38],[.33,2.58],[.27,2.69]].map(a=>new T.Vector2(a[0],a[1])),32);pleat(pleat(tg,10,.035),23,.012);B.add(tg,PLIN)}
+  B.add(new T.SphereGeometry(.27,16,8),PLIN,0,2.69,0,1,.34,1);[-1,1].forEach(s=>B.add(new T.SphereGeometry(.14,10,8),PLIN,s*.34,2.62,0));   // חזה וכתפיים
   B.add(new T.CylinderGeometry(.085,.1,.18,8),PSKIN,0,2.74,0);B.add(new T.TorusGeometry(.125,.024,6,16),PLIN,0,2.7,0,1,1,1,Math.PI/2,0,0);   // צוואר וצווארון עגול
   // ראש: פנים, אף, עיניים (לובן+אישון), גבות, אוזניים, שפם, זקן מלא, פיאות מסולסלות
   B.add(new T.SphereGeometry(.205,18,14),PSKIN,0,2.93,.01,1,1.1,.97);B.add(new T.SphereGeometry(.045,8,6),PSKIN,0,2.915,.2,.95,1.5,1.2);
-  [-1,1].forEach(s=>{B.add(new T.SphereGeometry(.03,8,6),0xf2ece0,s*.08,2.975,.178,1.2,.8,.7);B.add(new T.SphereGeometry(.017,6,5),0x1a1410,s*.08,2.975,.2);
-   B.add(new T.BoxGeometry(.105,.03,.035),HAIR,s*.08,3.025,.185,1,1,1,0,0,-s*.14);B.add(new T.SphereGeometry(.05,6,5),PSKIN,s*.21,2.93,0);
+  [-1,1].forEach(s=>{B.add(new T.SphereGeometry(.024,8,6),0xf2ece0,s*.08,2.975,.18,1.2,.8,.7);B.add(new T.SphereGeometry(.017,6,5),0x1a1410,s*.08,2.975,.2);
+   B.add(new T.BoxGeometry(.1,.024,.03),HAIR,s*.08,3.022,.185,1,1,1,0,0,-s*.14);B.add(new T.SphereGeometry(.05,6,5),PSKIN,s*.21,2.93,0);
    B.add(new T.SphereGeometry(.075,8,6),HAIR,s*.135,2.81,.08,.8,1.3,.9);B.add(new T.SphereGeometry(.06,8,6),HAIR,s*.045,2.86,.205,1.35,.55,.6);   // לחי וחצי שפם
    for(let i=0;i<5;i++)B.add(new T.SphereGeometry(.032,6,5),HAIR,s*(.2+(i%2?.013:-.008)),2.9-.055*i,.05+(i%2)*.012)});   // פיאה: ספירלת תלתלים
-  B.add(new T.SphereGeometry(.19,14,10),HAIR,0,2.69,.08,1,.95,.8);B.add(new T.SphereGeometry(.1,10,8),HAIR,0,2.54,.12,1,1.1,.8);B.add(new T.BoxGeometry(.06,.014,.02),0x6a3a34,0,2.83,.205);
+  B.add(new T.SphereGeometry(.2,16,12),HAIR,0,2.7,.11,1,1.0,.85);B.add(new T.SphereGeometry(.11,10,8),HAIR,0,2.52,.16,1,1.15,.8);B.add(new T.BoxGeometry(.06,.014,.02),0x6a3a34,0,2.83,.205);
   B.add(new T.SphereGeometry(.2,12,8),HAIR,0,3.0,-.06,1,.8,.85);   // שיער בעורף
   if(hp){                                                                                                                                 // כהן גדול: מצנפת רחבה ונמוכה
    [[.23,.085,3.1],[.2,.08,3.19],[.14,.075,3.27]].forEach(([R,r,y])=>{B.add(new T.TorusGeometry(R,r,8,22),0xf6f1e4,0,y,0,1,1,1,Math.PI/2,0,0)});B.add(new T.SphereGeometry(.17,12,8),0xf6f1e4,0,3.31,0,1,.7,1);
    if(gold){G.add(new T.BoxGeometry(.34,.1,.025),0xf0c040,0,3.1,.3);B.add(new T.TorusGeometry(.305,.013,6,24),BLUE,0,3.0,0,1,1,1,Math.PI/2,0,0)}}                  // ציץ הזהב ופתיל תכלת
-  else B.add(wcap(.245,.64,9),PCAP,0,3.06,-.01);   // כהן הדיוט: מגבעת חרוט מלופפת בספירלה (9 כריכות)
+  else B.add(wcap(.245,.64,7),PCAP,0,3.06,-.01);   // כהן הדיוט: מגבעת חרוט מלופפת בספירלה (9 כריכות)
   // מעיל תכלת, אפוד (סינר רקום), חושן עם י״ב אבנים, כתפיות עם אבני שהם, פעמונים ורימונים
   if(gold){B.add(pleat(new T.CylinderGeometry(.40,.62,1.6,28,6,true),13,.04),BLUE,0,1.65,0);
    rep(18,i=>{const a=i*Math.PI/9;const pm=i%2;if(pm)G.add(new T.SphereGeometry(.055,8,6),0xf0c040,Math.sin(a)*.64,.86,Math.cos(a)*.64);else B.add(new T.SphereGeometry(.07,8,6),[0x2457b8,0x7a3a9a,0xc0392b][i/2%3|0],Math.sin(a)*.64,.86,Math.cos(a)*.64)});

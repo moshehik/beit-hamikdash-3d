@@ -30,7 +30,7 @@
    {who,drop:'id',at:[x,z,y?]}                            הנחה במקום (ברירת מחדל: ליד השחקן);  {who,give:'id',to:'k2',hand:'R'} מסירה לשחקן אחר
   אביזרים/בעלי חיים:
    {spawn:'sheep',id:'a1',at:[x,z,y?],face:'w',opts:{...}}   יצירה. סוגים: sheep ram bull goat dove pigeon | knife mizrak tray bowl jar kaf bazach machta kuz tani rake tzenor flask loaf logs torch fire coals meat saltpile blood pool basket cloth lampcap key trumpet broom vtable paskhter
-   {move:'id',to:[x,z,y?],speed:5,face:'w'}                 הזזה/הליכה של אביזר או חיה
+   {move:'id',to:[x,z,y?],speed:5,face:'w',arc:3}            הזזה/הליכה של אביזר או חיה (arc = גובה קשת בנקודת האמצע, לזריקה)
    {item:'id',state:'lay'|'stand'|'hung'|'skinned'|'live',dur} מצב חיה (lay=שוכב על צד שמאל, hung=תלוי בווים, skinned=מופשט)
    {item:'id',on:false}   (לאש/לפיד)   {show:'id'} {hide:'id'}   {remove:'id'|['id',...]}
    {wait:1.5}                                                 המתנה
@@ -239,7 +239,7 @@ const SV=(()=>{
  function actSpawn(a){return RUN(()=>{if(S.items[a.id])killItem(a.id);spawnItem(a.id||a.spawn,a.spawn,a.opts,a.at,a.face)},null,null)}
  function actRemove(a){const ids=[].concat(a.remove);return RUN(()=>ids.forEach(killItem),null,null)}
  function actMove(a){let it,p0,p1,L,t=0,sp,y1;return RUN(()=>{it=gI(a.move);detach(it);const g=it.g.position;p0=g.clone();p1=V3(a.to[0],a.to[2]!=null?a.to[2]:floorY(a.to[0],a.to[1]),a.to[1]);L=p0.distanceTo(p1)||.01;sp=a.speed||4;if(a.face!=null)it.g.userData.fy=dirYaw(a.face)},
-  dt=>{t+=sp*dt/L;const k=Math.min(1,t);it.g.position.lerpVectors(p0,p1,k);if(it.g.userData.fy!=null)it.g.rotation.y+=angD(it.g.rotation.y,it.g.userData.fy)*Math.min(1,dt*8);if(it.kind in {sheep:1,ram:1,bull:1,goat:1})it.g.position.y+=Math.abs(Math.sin(t*L*1.3))*.08;return k>=1},()=>{it.g.position.copy(p1);if(it.g.userData.fy!=null)it.g.rotation.y=it.g.userData.fy})}
+  dt=>{t+=sp*dt/L;const k=Math.min(1,t);it.g.position.lerpVectors(p0,p1,k);if(a.arc)it.g.position.y+=a.arc*4*k*(1-k);if(it.g.userData.fy!=null)it.g.rotation.y+=angD(it.g.rotation.y,it.g.userData.fy)*Math.min(1,dt*8);if(it.kind in {sheep:1,ram:1,bull:1,goat:1})it.g.position.y+=Math.abs(Math.sin(t*L*1.3))*.08;return k>=1},()=>{it.g.position.copy(p1);if(it.g.userData.fy!=null)it.g.rotation.y=it.g.userData.fy})}
  function actState(a){const gu=()=>gI(a.item).g.userData;if(a.state=='skinned'||a.state=='live'){return RUN(()=>{const u=gu();u.skinned=a.state=='skinned'?1:0;u.apply&&u.apply()},null,null)}
   const tl=a.state=='lay'?1:0,th=a.state=='hung'?1:0;let l0,h0;return tween(a.dur||.9,(k,e)=>{const u=gu();if(l0==null){l0=u.lay;h0=u.hang}u.lay=l0+(tl-l0)*e;u.hang=h0+(th-h0)*e;u.apply&&u.apply()},()=>{const u=gu();u.lay=tl;u.hang=th;u.apply&&u.apply()})}
  function actVis(a){const A=gA(a.who);return RUN(()=>{if(a.at){A.x=a.at[0];A.z=a.at[1];A.y=ptY(a.at);A.explicit=a.at[2]!=null}if(a.face!=null)A.yaw=faceYaw(A,a.face);A.root.visible=!!a.vis},null,null)}
@@ -274,9 +274,12 @@ const SV=(()=>{
  function goTo(i,instant){if(!S)return;const n=S.sc.steps.length;i=clamp(i,0,n-1);resetState();
   try{for(let j=0;j<i;j++){top(S.sc.steps[j].actions||[]).fin()}}catch(e){fail(e)}
   S.idx=i;startStep(true)}
+ /* שפת ילדים (בקשת משה 17.11): ברירת מחדל – הסיפור מ-STORY['<id>-<שלב>'] (src/story*.js); המתג 👶 (localStorage bh_kid) מחליף ללשון המקורות (step.text). ההקראה בקול תמיד מקריאה את גרסת הילדים כשקיימת. */
+ let KID=true;try{KID=localStorage.getItem('bh_kid')!=='0'}catch(e){}
+ function stText(st){const k=S.sc.id+'-'+S.idx;return KID&&typeof STORY!=='undefined'&&STORY[k]?STORY[k]:(st.text||'')}
  function startStep(jump){const st=S.sc.steps[S.idx];S.t=0;S.phase='run';S.hold=0;
   try{S.run=top(st.actions||[]);S.run.init()}catch(e){fail(e)}
-  const chars=(st.text||'').length;S.minT=1.4+chars*.03;S.holdT=st.hold!=null?st.hold:.8;narrStart();
+  const chars=stText(st).length;S.minT=1.4+chars*.03;S.holdT=st.hold!=null?st.hold:.8;narrStart();
   uiStep();if(st.cam!==undefined&&st.cam!==null)applyCam(st.cam,jump);else if(jump)applyCam(null,true);
   if(jump)updateActors(0)}
  /* הקראה בקול: השלב לא מסתיים לפני שההקראה נגמרה (הפעולות והקול רצים יחד); במהירות מעל 2× או כשהקול כבוי – תזמון לפי אורך הטקסט */
@@ -342,7 +345,7 @@ const SV=(()=>{
    xs.forEach(s=>{const b=document.createElement('button');b.className='svc-it';b.innerHTML='<span>'+s.name+'</span><small>'+(s.src||'')+'</small>';b.onclick=()=>open(s.id);L.appendChild(b)})});
   if(!SERVICES.length)L.textContent='אין תסריטים';
   const pl=$('svPlay');pl.innerHTML='<button class="svb" id="svBack">← כל הסדרים</button><h3 id="svT"></h3><div class="svsrc" id="svSrc"></div>'+
-   '<div class="svbar"><button id="svPrev" title="שלב קודם">⏮</button><button id="svPP" class="pri">⏸</button><button id="svNext" title="שלב הבא">⏭</button><select id="svSpd"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><button id="svNar" title="הקראה בקול">🔊</button><button id="svMus" title="מוזיקה">🎵</button><button id="svMoreB" title="מצלמה ורשימת שלבים">☰</button></div>'+
+   '<div class="svbar"><button id="svPrev" title="שלב קודם">⏮</button><button id="svPP" class="pri">⏸</button><button id="svNext" title="שלב הבא">⏭</button><select id="svSpd"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option></select><button id="svNar" title="הקראה בקול">🔊</button><button id="svMus" title="מוזיקה">🎵</button><button id="svKid">👶</button><button id="svMoreB" title="מצלמה ורשימת שלבים">☰</button></div>'+
    '<div class="svprog"><i id="svProg"></i></div><div id="svMore" style="display:none"><div class="t" style="margin-top:8px">מצלמה</div><div class="svcam"><label><input type="radio" name="svcm" value="follow" checked> סיור רציף – עוקבת אחרי הכהן</label><label><input type="radio" name="svcm" value="script"> מצלמת התסריט (קופצת לכל תחנה)</label><label><input type="radio" name="svcm" value="free"> חופשי</label></div>'+
    '<div class="t" style="margin-top:8px">שלבים</div><div id="svSteps"></div></div>';
   $('svBack').onclick=()=>{close(true);uiBack()};$('svPP').onclick=()=>{if(!S)return;if(S.phase=='end'){goTo(0);S.playing=true}else S.playing=!S.playing;uiState()};
@@ -350,6 +353,8 @@ const SV=(()=>{
   $('svMoreB').onclick=()=>{const m=$('svMore');m.style.display=m.style.display=='none'?'block':'none'};
   $('svSpd').onchange=e=>{if(!S)return;S.speed=+e.target.value;if(S.speed>2){AUD.stop();S.auDone=true}else AUD.rate(S.speed)};
   $('svNar').onclick=()=>{AUD.setNarr(!AUD.narrOn);if(S){if(AUD.narrOn)narrStart();else S.auDone=true}};$('svMus').onclick=()=>AUD.setMusic(!AUD.music);AUD.btn();
+  const kidBtn=()=>{const b=$('svKid');b.classList.toggle('off',!KID);b.title=KID?'שפת ילדים (סיפור) – לחצו למעבר ללשון המקורות':'לשון המקורות – לחצו למעבר לשפת ילדים'};kidBtn();
+  $('svKid').onclick=()=>{KID=!KID;try{localStorage.setItem('bh_kid',KID?'1':'0')}catch(e){}kidBtn();if(S){const st=S.sc.steps[S.idx];$('svCapT').textContent=stText(st);if(S.phase=='run'&&!AUD.speaking)S.minT=1.4+stText(st).length*.03}};
   document.querySelectorAll('input[name=svcm]').forEach(r=>r.onchange=()=>{if(!S||!r.checked)return;S.camMode=r.value;S.camTw=null;if(r.value=='follow')applyCam(null,false),applyFollowNow();else if(r.value=='script')applyCam(S.sc.steps[S.idx].cam,false)});
   renderer.domElement.addEventListener('pointerdown',()=>{if(S){S.camTw=null;S.ut=performance.now()}});renderer.domElement.addEventListener('wheel',()=>{if(S)S.ut=performance.now()},{passive:true});window.addEventListener('pointerup',()=>{if(S&&S.ut)S.ut=performance.now()})}
  function applyFollowNow(){const A=S.actors[S.follow];if(!A)return;const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,1.2)}
@@ -360,7 +365,7 @@ const SV=(()=>{
   S.speed=+$('svSpd').value;document.querySelectorAll('input[name=svcm]').forEach(r=>r.checked=r.value==S.camMode);AUD.btn();uiState()}
  function uiBack(){if(!ui.panel)return;$('svList').style.display='block';$('svPlay').style.display='none';ui.cap.style.display='none'}
  function uiState(){if(!S)return;$('svPP').textContent=S.phase=='end'?'↻':S.playing?'⏸':'▶'}
- function uiStep(){const st=S.sc.steps[S.idx];$('svCapN').textContent='שלב '+(S.idx+1)+' מתוך '+S.sc.steps.length;$('svCapT').textContent=st.text;$('svCapS').textContent=st.src?'מקור: '+st.src:'';
+ function uiStep(){const st=S.sc.steps[S.idx];$('svCapN').textContent='שלב '+(S.idx+1)+' מתוך '+S.sc.steps.length;$('svCapT').textContent=stText(st);$('svCapS').textContent=st.src?'מקור: '+st.src:'';
   document.querySelectorAll('.svst').forEach((b,i)=>b.classList.toggle('on',i==S.idx));const on=document.querySelector('.svst.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});uiState();uiProg()}
  function uiProg(){if(!S)return;const n=S.sc.steps.length;$('svProg').style.width=(100*(S.idx+(S.phase=='run'?Math.min(1,S.t/Math.max(.1,S.minT)):1))/n)+'%'}
  return{rampY,update,open,close,show,build,get S(){return S},goTo,SVL}

@@ -1,33 +1,43 @@
 // הפקת הקראה בקול (Gemini TTS) לשלבי הסיורים של דגם בית המקדש.
 //   node tools/narration.cjs           -> מפיק קליפים חסרים/ישנים (audio/<svc>-<idx>.mp3) ואורז ל-src/narr.js
 //   node tools/narration.cjs pack      -> רק אורז את מה שקיים
-//   node tools/narration.cjs list      -> מציג את הטקסטים שיוקראו
+//   node tools/narration.cjs list      -> מציג את הטקסטים שיוקראו (מנוקדים, אם כבר נוקדו)
+//   node tools/narration.cjs niqqud    -> מנקד (Gemini טקסט, מטמון audio/niqqud-cache.json) בלי להפיק קול
+//   ENV: SKIP=olat-haof,... (תסריטים לדלג עליהם) | ONLY=ketoret-3,... (רק שלבים אלה) | LIMIT=N (מקס' קליפים בהרצה) | NIQQUD=0 (בלי ניקוד)
+// טקסט להקראה = סיפור הילדים (STORY מ-src/story.js ו-src/story_*.js) ואם אין – step.text; אחר כך ניקוד אוטומטי (tools/niqqud.cjs) + תיקוני tools/niqqud-fixes.json + fixPrefixShva.
+// ה-hash של הקליפ כולל את הטקסט המנוקד, כך שתיקון במילון/בסיפור מפיק מחדש רק את הקליפים שהושפעו.
 // מפתחות: GEMINI_API_KEYS מתוך print-center/.env (לא מודפסים). השיחה דרך curl (פילטר הרשת של המחשב שובר fetch של Node).
 // מכסה חינמית: ~10 בקשות ליום לפרויקט*מודל; מפתח שקיבל 429 מושהה והסקריפט עובר הלאה. אפשר להריץ שוב מחר – ממשיך מאיפה שעצר.
-const fs=require('fs'),p=require('path'),cp=require('child_process'),crypto=require('crypto'),os=require('os');
+const fs=require('fs'),p=require('path'),cp=require('child_process'),crypto=require('crypto'),os=require('os'),vm=require('vm');
+const NIQ=require('./niqqud.cjs');
 const ROOT=p.join(__dirname,'..'),SVC=p.join(ROOT,'src','svc'),AUD=p.join(ROOT,'audio'),MAN=p.join(AUD,'manifest.json');
 const ENV=process.env.PC_ENV||'C:/Users/moshe/Music/מדפיס בוט/print-center/.env';
 const VOICE=process.env.TTS_VOICE||'Achird';   // קול ידידותי וחם – מתאים לילדים (בקשת משה 16.11); קצב מואט מעט ב-ffmpeg (atempo)
 const TEMPO=process.env.TTS_TEMPO||'0.93';
 const MODELS=(process.env.TTS_MODELS||'gemini-3.8-flash-tts,gemini-3.8-flash-lite-tts,gemini-3.1-flash-tts-preview,gemini-2.5-flash-preview-tts').split(',');
 const BS=String.fromCharCode(92),NL=String.fromCharCode(10);
+const SKIP=(process.env.SKIP||'').split(',').filter(Boolean),ONLY=(process.env.ONLY||'').split(',').filter(Boolean);
 fs.mkdirSync(AUD,{recursive:true});
 
-function steps(){const out=[];
+// סיפורי ילדים: מריצים את src/story.js ואת src/story_*.js (לפי סדר) בהקשר vm משותף ומוציאים את STORY; קובץ שנכשל – מדלגים עליו עם אזהרה
+function loadStory(){const ctx=vm.createContext({});const files=['story.js'].concat(fs.readdirSync(p.join(ROOT,'src')).filter(f=>/^story_.*[.]js$/.test(f)).sort());
+ for(const f of files){const fp=p.join(ROOT,'src',f);if(!fs.existsSync(fp))continue;try{vm.runInContext(fs.readFileSync(fp,'utf8'),ctx,{filename:f})}catch(e){console.log('warn: '+f+' – '+e.message)}}
+ try{return vm.runInContext('typeof STORY==="object"?STORY:{}',ctx)||{}}catch(e){return{}}}
+function steps(){const out=[],STORY=loadStory();
  for(const f of fs.readdirSync(SVC).filter(f=>f.endsWith('.js')).sort()){
   const s=fs.readFileSync(p.join(SVC,f),'utf8'),id=(s.match(/SERVICES[.]push[(][{]\s*id:'([^']+)'/)||[])[1];if(!id)continue;
   const re=/[{,]\s*text:\s*(['"`])/g;let m,idx=0;
   while((m=re.exec(s))){const q=m[1];let i=re.lastIndex,str='';
    while(i<s.length&&s[i]!==q){if(s[i]===BS){const c=s[i+1];str+=c==='n'?NL:c;i+=2}else str+=s[i++]}
-   out.push({id,idx:idx++,key:id+'-'+(idx-1),text:prep(str)})}}
- return out}
+   const key=id+'-'+idx,kid=STORY[key];out.push({id,idx:idx++,key,kid:!!kid,text:prep(kid||str)})}}
+ return out.filter(s=>!SKIP.includes(s.id)&&(!ONLY.length||ONLY.includes(s.key)))}
 // טקסט להקראה: בלי הערות על "הדגם/הסרט" (מיועדות לקריאה בלבד), קיצורים מורחבים
 function prep(t){return t.replace(/\s*[(][^)]*(בדגם|כמו בסרט|מקורב|בסרט)[^)]*[)]/g,'').replace(/ר'\s/g,'ראו ').replace(/\s+/g,' ').replace(/\s+([.,:;])/g,'$1').trim()}
 const hash=t=>crypto.createHash('sha1').update(VOICE+'|'+TEMPO+'|'+t).digest('hex').slice(0,10);
 
 function keys(){const e=fs.readFileSync(ENV,'utf8').match(/^GEMINI_API_KEYS=(.*)$/m);if(!e)throw new Error('no keys');return e[1].replace(/^["']|["']$/g,'').split(',').map(s=>s.trim()).filter(Boolean)}
-function curlJson(url,body){const f=p.join(os.tmpdir(),'nar-'+process.pid+'.json');fs.writeFileSync(f,JSON.stringify(body));
- const r=cp.spawnSync('curl',['-s','-m','90','-o','-','-w',NL+'%{http_code}','-H','content-type: application/json','--data-binary','@'+f,url],{encoding:'utf8',maxBuffer:64*1024*1024,env:{...process.env,MSYS2_ARG_CONV_EXCL:'*'}});
+function curlJson(url,body,tmo){const f=p.join(os.tmpdir(),'nar-'+process.pid+'.json');fs.writeFileSync(f,JSON.stringify(body));
+ const r=cp.spawnSync('curl',['-s','-m',String(tmo||90),'-o','-','-w',NL+'%{http_code}','-H','content-type: application/json','--data-binary','@'+f,url],{encoding:'utf8',maxBuffer:64*1024*1024,env:{...process.env,MSYS2_ARG_CONV_EXCL:'*'}});
  try{fs.unlinkSync(f)}catch(e){}
  const o=r.stdout||'',k=o.lastIndexOf(NL),status=+o.slice(k+1);let json=null;try{json=JSON.parse(o.slice(0,k))}catch(e){}return{status,json}}
 const cool=new Map();let kix=0;
@@ -58,16 +68,25 @@ function pack(){const man=JSON.parse(fs.existsSync(MAN)?fs.readFileSync(MAN,'utf
  for(const k of Object.keys(man).sort()){const f=p.join(AUD,k+'.mp3');if(!fs.existsSync(f))continue;const b=fs.readFileSync(f);sz+=b.length;n++;js+=JSON.stringify(k)+':['+JSON.stringify('data:audio/mpeg;base64,'+b.toString('base64'))+','+(+man[k].dur.toFixed(2))+'],'}
  js+='};'+NL;fs.writeFileSync(p.join(ROOT,'src','narr.js'),js);console.log('packed',n,'clips',(sz/1024|0)+'KB')}
 
+// ניקוד: מטמון audio/niqqud-cache.json (לפי hash של הטקסט הפשוט) – מודל טקסט נקרא רק לטקסטים חדשים/ששונו
+function vocalizeAll(all,K){
+ if(process.env.NIQQUD==='0'){all.forEach(s=>{s.tts=NIQ.fixPrefixShva(s.text)});return}
+ const nq=NIQ.make({curlJson,keys:K,cacheFile:p.join(AUD,'niqqud-cache.json'),fixesFile:p.join(__dirname,'niqqud-fixes.json'),corpusFile:p.join(__dirname,'niqqud-corpus.json')});
+ const r=nq.vocalize(all.map(s=>({id:s.key,plain:s.text})),m=>console.log(m));
+ for(const s of all){const n=r.res[s.key];s.tts=n?nq.finish(n):null}}
 const cmd=process.argv[2];
-if(cmd==='list'){steps().forEach(s=>console.log(s.key,s.text.length,s.text.slice(0,70)));process.exit(0)}
 if(cmd==='fixfades'){fixFades();process.exit(0)}
 if(cmd==='pack'){pack();process.exit(0)}
 const man=fs.existsSync(MAN)?JSON.parse(fs.readFileSync(MAN,'utf8')):{};
-const K=keys(),all=steps();const todo=all.filter(s=>!man[s.key]||man[s.key].hash!==hash(s.text)||!fs.existsSync(p.join(AUD,s.key+'.mp3')));
+const K=cmd==='list'?[]:keys(),all=steps();vocalizeAll(all,K);
+if(cmd==='list'||cmd==='niqqud'){all.forEach(s=>console.log(s.key,s.kid?'kid':'orig',s.text.length,s.tts?'':'(לא מנוקד)'+NL+'  ',(s.tts||s.text)));process.exit(0)}
+const bad=all.filter(s=>!s.tts);if(bad.length)console.log('niqqud failed (skipped):',bad.map(s=>s.key).join(','));
+const ready=all.filter(s=>s.tts);
+const todo=ready.filter(s=>!man[s.key]||man[s.key].hash!==hash(s.tts)||!fs.existsSync(p.join(AUD,s.key+'.mp3')));
 console.log('steps',all.length,'to do',todo.length,'keys',K.length);
 const lim=+process.env.LIMIT||1e9;let done=0;
-for(const s of todo){if(done>=lim)break;const r=synth(s.text,K);
+for(const s of todo){if(done>=lim)break;const r=synth(s.tts,K);
  if(!r){console.log('quota exhausted at',s.key);break}
- const f=p.join(AUD,s.key+'.mp3');toMp3(r.pcm,f);man[s.key]={hash:hash(s.text),dur:dur(f),model:r.model,faded:1};fs.writeFileSync(MAN,JSON.stringify(man,null,1));done++;
+ const f=p.join(AUD,s.key+'.mp3');toMp3(r.pcm,f);man[s.key]={hash:hash(s.tts),dur:dur(f),model:r.model,faded:1,kid:s.kid?1:0};fs.writeFileSync(MAN,JSON.stringify(man,null,1));done++;
  console.log('ok',s.key,man[s.key].dur.toFixed(1)+'s',r.model,'key#'+r.key)}
-pack();console.log('remaining',all.filter(s=>!man[s.key]||man[s.key].hash!==hash(s.text)).length);
+pack();console.log('remaining',ready.filter(s=>!man[s.key]||man[s.key].hash!==hash(s.tts)).length+bad.length);

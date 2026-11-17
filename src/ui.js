@@ -157,6 +157,7 @@ $('per').onchange=e=>setPeriod(e.target.value);
 {const L=$('landing'),hide=()=>{L.classList.add('out');setTimeout(()=>{if(L.classList.contains('out'))L.style.display='none'},650)};
  const act={model:()=>{},tours:()=>SV.show(true),walk:()=>setWalk(true),map:()=>openMap(true),kids:()=>openKids(true),about:()=>{$('about').style.display='flex'},
   ark:()=>{const c=$('lArk');c.checked=true;c.onchange();const i=P.findIndex(p=>p[0]=='קודש הקדשים');if(i>=0)goto(P[i])}};
+ if(typeof LAND_ICONS!='undefined')L.querySelectorAll('[data-go]').forEach(b=>{const u=LAND_ICONS[b.dataset.go],ic=b.querySelector('.ic');if(!u||!ic)return;const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{ic.textContent='';ic.classList.add('im');ic.appendChild(im)};im.src=u});   /* האימוג'י נשאר אם התמונה חסרה/נכשלה */
  L.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go;if(k!='about')hide();act[k]()});
  $('ldMus').onclick=()=>{AUD.setMusic(!AUD.music)};
  $('bHome').onclick=()=>{L.style.display='flex';setTimeout(()=>L.classList.remove('out'),30)}}
