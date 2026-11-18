@@ -27,12 +27,15 @@ window.KTAG=TAG;   /* נגן הסיורים (services.js) משתמש באותן 
 /* ---------- סרגל עליון: כפתורי תמונה ---------- */
 const top=document.createElement('div');top.id='ktop';
 const mk=(key,emo,lb,fn,id)=>{const b=document.createElement('button');if(id)b.id=id;const s=document.createElement('span');s.textContent=lb;b.appendChild(ico(key,emo));b.appendChild(s);b.onclick=fn;top.appendChild(b);return b};
+/* התפריט הראשי: רק קישורים לדפים + ללכת + סיורים (המוזיקה ובחירת היום – ליד השעון) */
 mk('home','🏠','בית',()=>$('bHome').click());
+mk('har','🕍','הדגם',()=>{try{openMap(false)}catch(e){}try{openKids(false)}catch(e){}try{SV.show(false)}catch(e){}try{if($('about'))$('about').style.display='none'}catch(e){}const c=document.querySelector('#landing [data-go=model]');if(c)c.click()},'kModel');
 mk('tours','🕎','סיורים',()=>$('bSvc').click());
 mk('walk','🚶','ללכת',()=>$('bWalk').click(),'kWalk');
 mk('map','🗺️','מפות',()=>$('bMap').click());
 mk('kids','🧒','שבטים',()=>$('bKids').click());
-mk('music','🎵','מוזיקה',()=>$('bMus').click(),'kMus');
+mk('about','ℹ️','על הדגם',()=>$('bAbout').click());
+const mkMus=mk('music','🎵','מוזיקה',()=>$('bMus').click(),'kMus');
 /* ---------- איזה יום? (בחירת סוג היום לפעילות בעזרה; בא במקום הבורר מהפאנל הישן) ---------- */
 const DAYS=[['chol','🗓️','יום חול'],['shabbat','🕯️','שבת'],['rc','🌙','ראש חודש'],['erev-pesach','🐑','ערב פסח'],['pesach','🍞','פסח'],['shavuot','🌾','שבועות'],['rh','📯','ראש השנה'],['yk','🤍','יום כיפור'],['sukkot','🌿','סוכות']];
 const dayPop=document.createElement('div');dayPop.id='kdays';
@@ -40,6 +43,7 @@ DAYS.forEach(([v,e,l])=>{const b=document.createElement('button');b.dataset.v=v;
  b.onclick=()=>{const d=$('dayType');if(d){d.value=v;d.dispatchEvent(new Event('change'))}dayPop.classList.remove('on');const kb=$('kDay');if(kb){kb.querySelector('i').textContent=e;kb.querySelector('span').textContent=l}};dayPop.appendChild(b)});
 body.appendChild(dayPop);
 const dayBtn=mk('','🗓️','יום',()=>dayPop.classList.toggle('on'),'kDay');
+const side=document.createElement('div');side.id='kside';side.appendChild(mkMus);side.appendChild(dayBtn);body.appendChild(side);
 body.appendChild(top);
 
 /* ---------- שעון מכני עגול + תצוגה דיגיטלית במרכז: לחיצה עוצרת/ממשיכה את הזמן; גרירה סביב השעון מסובבת את הזמן ---------- */
@@ -138,6 +142,11 @@ function setAdult(on){adult=on;LS.set('bh_adult',on?'1':'0');body.classList.togg
  if(!on&&card.style.display=='block'){const d=card.dataset.full||$('cD').textContent;if(d)window.showCard($('cT').textContent,d,(card.dataset.src||$('cS').textContent||'').replace(/^מקור: /,''))}}
 setAdult(adult);
 
+/* ---------- חזרה לדף הבית: סיור/מפות/שבטים שנפתחו מדף הבית – בסגירה חוזרים אליו (ולא לדגם התלת־ממדי) ---------- */
+let fromHome=null,ovWas=false;
+{const L=$('landing');if(L)L.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.go;fromHome=(k=='tours'||k=='map'||k=='kids')?k:null},true))}
+const ovOpen=()=>{const v=id=>{const e=$(id);return e&&getComputedStyle(e).display!=='none'};return v('mapov')||v('kidov')||v('svc')};
+setInterval(()=>{const o=ovOpen();if(ovWas&&!o&&fromHome){const k=fromHome;fromHome=null;const L=$('landing');if(L&&L.style.display=='none'||(L&&L.classList.contains('out')))$('bHome').click()}if(o)ovWas=true;else ovWas=false},250);
 /* ---------- מה מוצג מתי ---------- */
 const busy=()=>{const v=id=>{const e=$(id);return e&&getComputedStyle(e).display!=='none'};const L=$('landing');return (L&&L.style.display!=='none'&&!L.classList.contains('out'))||v('mapov')||v('kidov')||v('about')};
 setInterval(()=>{const hide=busy(),sv=$('svc')&&getComputedStyle($('svc')).display!=='none',walk=!!$('lookb')&&getComputedStyle($('lookb')).display!=='none';

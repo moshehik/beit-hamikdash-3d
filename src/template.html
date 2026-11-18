@@ -139,6 +139,12 @@ body.kid #ktime{display:block;top:10px;left:10px;width:112px;height:112px;cursor
 #kdays button{display:flex;flex-direction:column;align-items:center;gap:2px;width:84px;padding:8px 4px;border:1px solid var(--line);border-radius:16px;background:rgba(40,36,90,.85);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 #kdays button i{font-style:normal;font-size:28px}#kdays button:hover{border-color:#ffd66b}
 @media(max-width:460px){#kdays button{width:74px}}
+#kside{display:none;position:fixed;left:10px;top:130px;z-index:8;flex-direction:column;gap:8px}
+body.kid #kside{display:flex}body.kbusy #kside,body.ksv.ksvl #kside{display:none!important}
+#kside button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:64px;height:62px;border:1px solid var(--line);background:rgba(28,26,66,.82);color:#fff;font:inherit;cursor:pointer;border-radius:18px;backdrop-filter:blur(6px)}
+#kside button i{font-style:normal;font-size:26px;line-height:1}#kside button i.pic img{display:block;width:34px;height:34px;object-fit:contain}#kside button span{font-size:12px;font-weight:700;line-height:1.1}
+#kside button.off{opacity:.55}
+@media(max-width:900px){#kside{top:162px;left:6px}#kside button{width:52px;height:54px}#kside button i{font-size:22px}#kside button span{font-size:10.5px}}
 body.kbusy #ktop,body.kbusy #kdock,body.kbusy #ktime,body.ksv #kdock{display:none!important}
 body.kid #card{bottom:104px;width:min(560px,calc(100% - 24px));min-width:0;padding:10px 14px}
 body.kid #card h2{font-size:18px}body.kid #card p{font-size:16px;line-height:1.5}
@@ -452,16 +458,53 @@ body.kid #svCap.kend{display:none!important}
 @media(max-width:900px){#mcrow{padding:0 8px 4px}#mctag{font-size:13px}#mper .mcard{width:94px}#mper .mcard .mpic{height:52px}#mapside{max-height:34%}}
 @media(max-width:420px){#mctag small{display:none}}
 @media(prefers-reduced-motion:reduce){#mper .mcard.on{animation:none}.mlg{transition:none}}
+
+/* ===== שיחה עם דמויות – עיצוב לילדים (מינימום מלל, כפתורים גדולים) ===== */
+#ncw{width:min(480px,calc(100% - 20px));border-radius:26px;background:linear-gradient(170deg,rgba(40,34,96,.97),rgba(18,16,46,.97))!important;border:1px solid #ffd66b66}
+#ncw .nch{padding:12px 14px;gap:12px;border-bottom:0;background:linear-gradient(90deg,rgba(255,214,107,.14),transparent)}
+#ncAv{width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#4d3f9e,#241d5c);border:2px solid #ffd66b;display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden;flex:none}
+#ncAv img{width:62px;height:62px;object-fit:contain;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));animation:kfloat 3.6s ease-in-out infinite}
+#ncw .nct b{font-size:20px}#ncw .nct small{font-size:13px;max-height:2.8em;overflow:hidden}
+#ncX{width:44px;height:44px;border-radius:50%;font-size:20px}
+#ncLog{padding:8px 14px;gap:8px;font-size:17px;line-height:1.5;max-height:34vh}
+#ncLog .sys{background:transparent;border:0;color:#ffe9a0;text-align:center;font-size:19px;font-weight:700}
+#ncLog .npc{background:linear-gradient(160deg,#3a3380,#29245e);border-radius:20px 20px 20px 6px;padding:10px 14px}
+#ncLog .me{background:rgba(255,214,107,.16);border-radius:20px 20px 6px 20px;padding:8px 14px}
+#ncw .ncf{padding:10px 14px 4px;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+#ncMic{width:84px;height:84px;border-radius:50%;font-size:40px;line-height:1;border:0;background:radial-gradient(circle at 35% 30%,#ffd66b,#d9902a);box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 6px rgba(255,214,107,.18);cursor:pointer;order:0;flex:none}
+#ncMic.rec,#ncMic.on,#ncMic.recording{background:radial-gradient(circle at 35% 30%,#ff7a6a,#c92a2a);animation:ncpulse 1s ease-in-out infinite}
+@keyframes ncpulse{50%{box-shadow:0 6px 16px rgba(0,0,0,.45),0 0 0 16px rgba(255,90,70,.25)}}
+#ncTxt{flex:1 1 150px;min-width:120px;height:44px;border-radius:22px;font-size:16px;padding:0 16px}
+#ncSend{width:48px;height:48px;border-radius:50%;font-size:22px;padding:0;background:linear-gradient(160deg,#ffd66b,#d9902a);color:#241a05;border:0;cursor:pointer}
+#ncw .ncf2{padding:4px 14px 12px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+#ncw .ncf2 span:not(.nctl span){display:none}
+.nctl{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;background:rgba(255,255,255,.08);cursor:pointer;font-size:15px;font-weight:700;color:#fff}
+.nctl input{position:absolute;opacity:0;pointer-events:none}.nctl i{font-style:normal;font-size:22px;opacity:.5}
+.nctl:has(input:checked){background:rgba(120,255,180,.2)}.nctl:has(input:checked) i{opacity:1}
+#ncw .ncgo{height:48px;border-radius:24px;padding:0 20px;font-size:17px;font-weight:800;background:linear-gradient(160deg,#ffd66b,#d9902a);color:#241a05;border:0;cursor:pointer}
+#ncAck{padding:14px;font-size:18px;text-align:center}#ncAck .ak{font-size:26px}
+#ncAck .row2{display:flex;gap:10px;justify-content:center;margin-top:10px}#ncAck .row2 button{height:48px;border-radius:24px;padding:0 22px;font-size:17px;font-weight:800;border:0;cursor:pointer;background:rgba(255,255,255,.12);color:#fff}
+#ncAck .row2 .pri{background:linear-gradient(160deg,#ffd66b,#d9902a);color:#241a05}
+#ncLog .ncqs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:6px}
+#ncLog .ncqs button{border:0;border-radius:20px;padding:10px 16px;font:inherit;font-size:16px;font-weight:700;background:rgba(255,214,107,.18);color:#ffe9a0;cursor:pointer}
+#ncLog .ncqs button:hover{background:rgba(255,214,107,.32)}
+#ncMarks{position:fixed;inset:0;pointer-events:none;z-index:6}
+.ncmk{position:absolute;transform:translate(-50%,-100%);display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:18px;border:2px solid #fff;background:linear-gradient(160deg,#ffd66b,#e8932a);color:#3a2306;font:inherit;font-size:12px;font-weight:800;cursor:pointer;pointer-events:auto;box-shadow:0 3px 8px rgba(0,0,0,.4);animation:ncbob 1.8s ease-in-out infinite;white-space:nowrap}
+.ncmk i{font-style:normal;font-size:16px}.ncmk span{display:none}.ncmk.lg span{display:inline}
+.ncmk::after{content:'';position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);border:6px solid transparent;border-top-color:#e8932a;border-bottom:0}
+@keyframes ncbob{50%{transform:translate(-50%,calc(-100% - 4px))}}
+@media(prefers-reduced-motion:reduce){.ncmk{animation:none}}
+@media(max-width:460px){#ncMic{width:72px;height:72px;font-size:34px}#ncLog{font-size:16px}}
 </style>
 <div id="ncHint">💬 לחצו על כהן, לוי או כל דמות כדי לעצור אותה ולשוחח איתה</div>
 <div id="ncw" class="panel" dir="rtl" role="dialog" aria-label="שיחה עם דמות">
  <div class="nch"><span id="ncAv">🙂</span><div class="nct"><b id="ncName"></b><small id="ncJob"></small></div><button id="ncX" title="סגור (הדמות ממשיכה)" aria-label="סגור">✕</button></div>
  <div id="ncLog" aria-live="polite"></div>
- <div id="ncAck" style="display:none"><b>לפני השליחה הראשונה:</b> ההקלטה (או הטקסט) נשלחים לשרת האתר ומשם לשירות Gemini של גוגל <b>רק כשאתם לוחצים ״שלח״</b> – לא לפני כן ולא ברקע. לא נדרש מפתח או הרשמה.
-  <div class="row2"><button id="ncAckOk" class="pri">הבנתי, שלח</button><button id="ncAckNo">ביטול</button></div></div>
+ <div id="ncAck" style="display:none"><span class="ak">🔒</span> <b>ההקלטה נשלחת רק כשלוחצים ״שלח״</b>
+  <div class="row2"><button id="ncAckOk" class="pri">✔ שלח</button><button id="ncAckNo">✖ ביטול</button></div></div>
  <div id="ncRecBar"><span class="rdot"></span><span id="ncTime">0:00</span><audio id="ncPrev" controls></audio><button id="ncDelRec" title="מחק הקלטה" aria-label="מחק הקלטה">🗑️</button></div>
- <div class="ncf"><button id="ncMic" title="הקלטה: לחצו להתחלה ולחצו שוב לעצירה (או החזיקו ושחררו)" aria-label="הקלטה">🎤</button><input type="text" id="ncTxt" placeholder="הקלידו שאלה, או הקליטו…" maxlength="500" autocomplete="off" aria-label="שאלה לדמות"><button id="ncSend">שלח</button></div>
- <div class="ncf2"><label><input type="checkbox" id="ncTts"> הקראת התשובה בקול</label><span>ההקלטה נשלחת לשרת האתר ולגוגל רק ב״שלח״</span><button id="ncGo" class="ncgo">▶ המשך</button></div>
+ <div class="ncf"><button id="ncMic" title="הקלטה: לחצו להתחלה ולחצו שוב לעצירה (או החזיקו ושחררו)" aria-label="הקלטה">🎤</button><input type="text" id="ncTxt" placeholder="או כתבו כאן…" maxlength="500" autocomplete="off" aria-label="שאלה לדמות"><button id="ncSend" aria-label="שלח">➤</button></div>
+ <div class="ncf2"><label class="nctl" title="הקראת התשובה בקול"><input type="checkbox" id="ncTts"><i>🔊</i><span>קול</span></label><button id="ncGo" class="ncgo">▶ להמשיך</button></div>
 </div>
 <script>{{THREE}}</script>
 <script>{{ORBIT}}</script>

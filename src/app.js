@@ -187,7 +187,9 @@ for(let x=-240;x<=240;x+=10)[190,220].forEach(z=>{if(!(z==220&&x>-4&&x<54))box(g
 // (ירושלים והסביבה נבנות ב-jerusalem.js)
 // כוכבים
 {const p=new Float32Array(1800);for(let i=0;i<600;i++){const a=rand()*6.283,b=Math.acos(rand()),r=5000;p.set([r*Math.sin(b)*Math.cos(a),r*Math.cos(b),r*Math.sin(b)*Math.sin(a)],i*3)}
- const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(p,3));var stars=new T.Points(g,new T.PointsMaterial({color:0xffffff,size:6,sizeAttenuation:false,fog:false,transparent:true,opacity:0}));scene.add(stars)}
+ const g=new T.BufferGeometry();g.setAttribute('position',new T.BufferAttribute(p,3));const sc=document.createElement('canvas');sc.width=sc.height=32;const sx=sc.getContext('2d'),sg=sx.createRadialGradient(16,16,0,16,16,16);   /* כוכבים: נקודה עגולה רכה (ולא ריבוע לבן) */
+ sg.addColorStop(0,'rgba(255,255,255,1)');sg.addColorStop(.22,'rgba(255,255,240,.95)');sg.addColorStop(.55,'rgba(200,215,255,.28)');sg.addColorStop(1,'rgba(200,215,255,0)');sx.fillStyle=sg;sx.fillRect(0,0,32,32);
+ var stars=new T.Points(g,new T.PointsMaterial({color:0xffffff,size:9,sizeAttenuation:false,map:new T.CanvasTexture(sc),fog:false,transparent:true,opacity:0,depthWrite:false,blending:T.AdditiveBlending}));scene.add(stars)}
 
 /* ================= החיל והסורג, עזרת נשים, עזרה ================= */
 // מפלסים (אזורי רצפה): ברירת מחדל 0
@@ -509,10 +511,23 @@ box(gA,-10,YA,ZC,.4,.3,125,M.stoneRaw,{ns:1});
   const mx=kx+4.6,mz=kz-.6;
   [-1.5,1.5].forEach(s=>[-.8,.8].forEach(t=>bx2(mx+s,YA+1.7,mz+t,.34,3.4,.34,mWd,t*.06,0,-s*.04)));   // ארבע רגליים (שתי מסגרות A)
   [-1.5,1.5].forEach(s=>bx2(mx+s,YA+3.5,mz,.34,.34,2.1,mWd));bx2(mx+.5,YA+2.0,mz,4.6,.28,.28,mWd);            // קורות עליונות וציר
-  {const d=new T.Mesh(new T.CylinderGeometry(1.0,1.0,2.0,18),mRope);d.rotation.z=Math.PI/2;d.position.set(mx,YA+2.0,mz);d.castShadow=true;gA.add(d);
-   rep(7,i=>{const r=new T.Mesh(new T.TorusGeometry(1.0,.1,6,18),mRope);r.rotation.y=Math.PI/2;r.position.set(mx-.9+i*.3,YA+2.0,mz);gA.add(r)});
-   const wh=new T.Mesh(new T.CylinderGeometry(1.35,1.35,.16,20),mWd);wh.rotation.z=Math.PI/2;wh.position.set(mx+2.0,YA+2.0,mz);gA.add(wh);
-   [0,1,2,3].forEach(i=>bx2(mx+2.1,YA+2.0,mz,.1,.14,2.6,mWd,i*Math.PI/4,0,0));bx2(mx+2.9,YA+2.4,mz+.9,1.3,.12,.12,mWd)}   // גלגל וידית
+  /* מוכני בן קטין (משנה תמיד ג:ח, יומא ג:י): תוף עם חבל, גלגל וידית – מסתובבים ומורידים/מעלים את הכיור (life.js ← mochniSync) */
+  var MOCH=new T.Group();MOCH.position.set(mx,YA+2.0,mz);gA.add(MOCH);
+  {const d=new T.Mesh(new T.CylinderGeometry(1.0,1.0,2.0,18),mRope);d.rotation.z=Math.PI/2;d.castShadow=true;MOCH.add(d);
+   rep(7,i=>{const r=new T.Mesh(new T.TorusGeometry(1.0,.1,6,18),mRope);r.rotation.y=Math.PI/2;r.position.set(-.9+i*.3,0,0);MOCH.add(r)});
+   const wh=new T.Mesh(new T.CylinderGeometry(1.35,1.35,.16,20),mWd);wh.rotation.z=Math.PI/2;wh.position.set(2.0,0,0);MOCH.add(wh);
+   [0,1,2,3].forEach(i=>{const s=new T.Mesh(new T.BoxGeometry(.1,.14,2.6),mWd);s.position.set(2.1,0,0);s.rotation.x=i*Math.PI/4;MOCH.add(s)});
+   const hd=new T.Mesh(new T.BoxGeometry(1.3,.12,.12),mWd);hd.position.set(2.9,.4,.9);MOCH.add(hd)}   // גלגל וידית (על אותו ציר)
+  // חבל ועוגן: מן התוף עולה אל קורת המנוף שמעל הכיור, ומשם יורד אל ראש הכיור (אורך החבל משתנה עם גובה הכיור)
+  const ropeY=YA+5.75;bx2((mx+kx)/2,ropeY-.05,kz,Math.abs(mx-kx)+.4,.28,.28,mWd);   // קורת מנוף אופקית מעל הכיור
+  const rUp=new T.Mesh(new T.CylinderGeometry(.06,.06,1,6),mRope);rUp.position.set(mx,YA+4.4,kz+(mz-kz)*.0);gA.add(rUp);
+  const rHz=new T.Mesh(new T.CylinderGeometry(.06,.06,1,6),mRope);rHz.rotation.z=Math.PI/2;rHz.position.set((mx+kx)/2,ropeY+.12,kz);rHz.scale.y=Math.abs(mx-kx);gA.add(rHz);
+  const rDn=new T.Mesh(new T.CylinderGeometry(.06,.06,1,6),mRope);gA.add(rDn);
+  rUp.scale.y=ropeY+.12-(YA+3.0);rUp.position.set(mx,(ropeY+.12+YA+3.0)/2,mz);
+  window.mochniSync=function(){const K=typeof KIYOR!='undefined'?KIYOR:null;if(!K)return;const dy=K.position.y-YA;   // dy=0 למעלה, -5.6 למטה
+   MOCH.rotation.x=dy/1.0;                                   // רדיוס התוף 1: סיבוב לפי אורך החבל
+   const top=K.position.y+4.98*K.scale.x,bot=Math.max(top,YA-.2),len=Math.max(.05,ropeY+.12-bot);
+   rDn.visible=K.visible||dy>-5;rDn.scale.y=len;rDn.position.set(kx,(ropeY+.12+bot)/2,kz)};
   bx2(mx,YA+4.4,mz,.34,2.0,.34,mWd);bx2(mx,YA+5.3,mz+2.2,.3,.3,5.6,mWd,0,0,0);                              // עמוד וקורת מנוף
   {const wx=mx,wz=mz+4.7,rim=new T.Mesh(new T.CylinderGeometry(1.7,1.8,.6,20,1,true),M.stoneRaw);rim.material=rim.material.clone();rim.material.side=T.DoubleSide;rim.position.set(wx,YA+.3,wz);gA.add(rim);
    const rg=new T.Mesh(new T.RingGeometry(1.3,1.82,20),M.stoneRaw);rg.rotation.x=-Math.PI/2;rg.position.set(wx,YA+.61,wz);gA.add(rg);

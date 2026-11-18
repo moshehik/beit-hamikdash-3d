@@ -167,6 +167,9 @@ const NPC_CHAT=(()=>{
 
  /* ---------- פתיחה וסגירה (עצירת הדמות והנגן) ---------- */
  const svPP=()=>el('svPP');
+ /* דמות בחלון: איקון חימר (kohanim) מ-UI_ICONS דרך blob אם קיים, אחרת אימוג'י */
+ const AVK={kohen:'kohanim','kohen-gadol':'kohanim'};
+ function setAv(emo,kd){const a=el('ncAv');a.textContent=emo;const k=AVK[kd];if(k&&typeof UI_ICONS!='undefined'&&UI_ICONS[k]){try{const s=atob(UI_ICONS[k]),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);const im=new Image();im.alt='';im.onload=()=>{a.textContent='';a.appendChild(im)};im.src=URL.createObjectURL(new Blob([u],{type:'image/png'}))}catch(e){}}}
  function open(npc){
   if(!npc)return;
   const S=safe(()=>SV.S,null),carry=!!(cur&&cur.resume&&cur.S===S);
@@ -178,10 +181,11 @@ const NPC_CHAT=(()=>{
   try{npc.freeze&&npc.freeze(true)}catch(e){}
   try{npc.face&&npc.face(camera.position.clone())}catch(e){}
   const kd=PERSONAS.kind(npc),inf=PERSONAS.info(kd);
-  el('ncAv').textContent=inf.emoji;el('ncName').textContent=npc.who||inf.title;
+  setAv(inf.emoji,kd);{const nf=PERSONAS.nameFor?PERSONAS.nameFor(npc):null;el('ncName').textContent=nf?nf.name+' – '+inf.title:(npc.who||inf.title)}
   const jb=safe(()=>npc.brief?npc.brief():npc.job&&npc.job(),'');el('ncJob').textContent=jb?'עכשיו: '+String(jb).slice(0,240):'';
   log.textContent='';stopSpeak();clearRec();el('ncTxt').value='';el('ncAck').style.display='none';setBusy(false);
-  note('אפשר לשאול את '+inf.the+' על מעשיו, חייו ועבודתו – בהקלטה (🎤) או בהקלדה. התשובות מבוססות על משנה, תלמוד, רמב״ם ויוסף בן מתתיהו; מה שאינו ידוע – הוא יאמר שאינו ידוע.');
+  note('🎤 שאלו אותי!');
+  {const q=document.createElement('div');q.className='ncqs';['מה אתה עושה עכשיו?','מה התפקיד שלך?','ספר על היום שלך'].forEach(s=>{const b=document.createElement('button');b.textContent=s;b.onclick=()=>{el('ncTxt').value=s;send()};q.appendChild(b)});log.appendChild(q)}
   W.style.display='flex';const h=el('ncHint');if(h)h.classList.remove('on');
   setTimeout(()=>{try{el('ncTxt').focus({preventScroll:true})}catch(e){}},60)}
  function release(resume){
@@ -230,6 +234,20 @@ const NPC_CHAT=(()=>{
  {const L=el('landing'),h=el('ncHint'),gone=()=>!L||L.style.display==='none'||L.classList.contains('out');let n=0;
   const iv=setInterval(()=>{if(++n>600){clearInterval(iv);return}if(!gone())return;clearInterval(iv);if(!h)return;setTimeout(()=>{if(cur)return;h.classList.add('on');setTimeout(()=>h.classList.remove('on'),14000)},1500)},1000)}
 
+ /* ---------- "שאלו אותי": בועה קטנה מעל הדמויות הקרובות (לחיצה פותחת שיחה) ---------- */
+ {const box=document.createElement('div');box.id='ncMarks';document.body.appendChild(box);const pool=[],pv=new THREE.Vector3();
+  const get=i=>{if(!pool[i]){const b=document.createElement('button');b.className='ncmk';b.innerHTML='<i>💬</i><span>שאלו אותי</span>';b.style.display='none';box.appendChild(b);pool[i]=b}return pool[i]};
+  const hideAll=()=>pool.forEach(b=>b.style.display='none');
+  (function tick(){requestAnimationFrame(tick);
+   try{const bd=document.body,L=el('landing');
+    if(isOpen()||bd.classList.contains('kbusy')||bd.classList.contains('ksv')||(L&&L.style.display!=='none'&&!L.classList.contains('out'))){hideAll();return}
+    const cp=camera.position,cand=[];
+    for(const n of NPCS.list){if(n.active===false)continue;let p=null;try{p=NPCS.posOf(n,pv)}catch(e){}if(!p)continue;const d=Math.hypot(p.x-cp.x,p.y-cp.y,p.z-cp.z);if(d<70)cand.push([d,n,p.x,p.y,p.z])}
+    cand.sort((a,b)=>a[0]-b[0]);const r=renderer.domElement.getBoundingClientRect();let k=0;
+    for(const c of cand){if(k>=5)break;pv.set(c[2],c[3]+3.7,c[4]).project(camera);if(pv.z>1||Math.abs(pv.x)>.96||Math.abs(pv.y)>.92)continue;
+     if(NPCS.occluded&&NPCS.occluded(c[1]))continue;
+     const b=get(k++);b.style.display='flex';b.style.left=(r.left+(pv.x+1)/2*r.width)+'px';b.style.top=(r.top+(1-pv.y)/2*r.height)+'px';b.classList.toggle('lg',k<=2);b.onclick=e=>{e.stopPropagation();open(c[1])};b.onpointerdown=e=>e.stopPropagation()}
+    for(let i=k;i<pool.length;i++)pool[i].style.display='none'}catch(e){}})()}
  return{open,close,get isOpen(){return isOpen()},syncSV,
   _dbg:{toWav,speak,buildBody,ctxText,parseReply,askServer,endpoint,svNpcs,get cur(){return cur},hists,wavBlob,errText}}
 })();

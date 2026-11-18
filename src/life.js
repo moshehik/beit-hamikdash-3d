@@ -12,7 +12,7 @@ const LIFE=(()=>{
  const TSTEP={'tamid-shachar':i=>i<=10?4.5+i*.04:i==11?5.8:i<=14?5.9+(i-12)*.05:i<=17?6.05+(i-15)*.05:6.3+(i-18)*.09};
  const TOUR_H={'tamid-shachar':4.5,ketoret:6.4,menorah:6.2,'olat-behema':10.5,'olat-haof':10.5,'minchat-solet':10.5};
  const sm=(a,b,x)=>{x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)};
- const kiyorUp=h=>sm(4.2,4.9,h)-sm(18.4,19.1,h);
+ const kiyorUp=h=>sm(3.6,4.35,h)-sm(18.4,19.1,h);   /* עולה לפני תחילת תמיד של שחר (במצגת: 4:30) */
  /* --- שמש/ירח --- */
  const glow=(stops,sz=128)=>{const c=document.createElement('canvas');c.width=c.height=sz;const x=c.getContext('2d'),g=x.createRadialGradient(sz/2,sz/2,0,sz/2,sz/2,sz/2);stops.forEach(([o,col])=>g.addColorStop(o,col));x.fillStyle=g;x.fillRect(0,0,sz,sz);const t=new T.CanvasTexture(c);return t};
  const tSun=glow([[0,'rgba(255,255,240,1)'],[.12,'rgba(255,248,210,1)'],[.22,'rgba(255,220,140,.55)'],[.5,'rgba(255,190,100,.14)'],[1,'rgba(255,180,80,0)']]);
@@ -40,7 +40,7 @@ const LIFE=(()=>{
   else if(hold&&tgt!=null){if(hf==null)hf=+tm.value;hf+=(tgt-hf)*Math.min(1,dt*.5);H=hf;tm.value=H;since+=dt;if(since>.08){since=0;setTime(H)}}else{H=+tm.value;hf=null}   /* בסיור: מעבר חלק לשעת השלב (עלות השחר) */
   if(clk){const hh=Math.floor(H),mm=Math.floor((H-hh)*60);clk.textContent=(hh<10?'0':'')+hh+':'+(mm<10?'0':'')+mm}
   /* הכיור */
-  if(typeof KIYOR!='undefined'){const u=kiyorUp(H);KIYOR.position.y=YA-5.6*(1-u);KIYOR.visible=u>.02}
+  if(typeof KIYOR!='undefined'){const u=kiyorUp(H);KIYOR.position.y=YA-5.6*(1-u);KIYOR.visible=u>.02;if(typeof mochniSync=='function')mochniSync()}
   /* שמש/ירח */
   const a=(H-6)/12*Math.PI,s=Math.sin(a),dx=Math.cos(a),dz=.4,L=Math.hypot(dx,s,dz),cp=camera.position;
   sunS.position.set(cp.x+dx/L*3400,cp.y+s/L*3400,cp.z+dz/L*3400);moonS.position.set(cp.x-dx/L*3400,cp.y-s/L*3400,cp.z-dz/L*3400);
