@@ -139,12 +139,12 @@ body.kid #ktime{display:block;top:10px;left:10px;width:112px;height:112px;cursor
 #kdays button{display:flex;flex-direction:column;align-items:center;gap:2px;width:84px;padding:8px 4px;border:1px solid var(--line);border-radius:16px;background:rgba(40,36,90,.85);color:#fff;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
 #kdays button i{font-style:normal;font-size:28px}#kdays button:hover{border-color:#ffd66b}
 @media(max-width:460px){#kdays button{width:74px}}
-#kside{display:none;position:fixed;left:10px;top:130px;z-index:8;flex-direction:column;gap:8px}
-body.kid #kside{display:flex}body.kbusy #kside,body.ksv.ksvl #kside{display:none!important}
-#kside button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:64px;height:62px;border:1px solid var(--line);background:rgba(28,26,66,.82);color:#fff;font:inherit;cursor:pointer;border-radius:18px;backdrop-filter:blur(6px)}
-#kside button i{font-style:normal;font-size:26px;line-height:1}#kside button i.pic img{display:block;width:34px;height:34px;object-fit:contain}#kside button span{font-size:12px;font-weight:700;line-height:1.1}
-#kside button.off{opacity:.55}
-@media(max-width:900px){#kside{top:162px;left:6px}#kside button{width:52px;height:54px}#kside button i{font-size:22px}#kside button span{font-size:10.5px}}
+#kidbar{display:none;position:fixed;left:10px;top:130px;z-index:8;flex-direction:column;gap:8px}
+body.kid #kidbar{display:flex}body.kbusy #kidbar,body.ksv.ksvl #kidbar{display:none!important}
+#kidbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;width:64px;height:62px;border:1px solid var(--line);background:rgba(28,26,66,.82);color:#fff;font:inherit;cursor:pointer;border-radius:18px;backdrop-filter:blur(6px)}
+#kidbar button i{font-style:normal;font-size:26px;line-height:1}#kidbar button i.pic img{display:block;width:34px;height:34px;object-fit:contain}#kidbar button span{font-size:12px;font-weight:700;line-height:1.1}
+#kidbar button.off{opacity:.55}
+@media(max-width:900px){#kidbar{top:162px;left:6px}#kidbar button{width:52px;height:54px}#kidbar button i{font-size:22px}#kidbar button span{font-size:10.5px}}
 body.kbusy #ktop,body.kbusy #kdock,body.kbusy #ktime,body.ksv #kdock{display:none!important}
 body.kid #card{bottom:104px;width:min(560px,calc(100% - 24px));min-width:0;padding:10px 14px}
 body.kid #card h2{font-size:18px}body.kid #card p{font-size:16px;line-height:1.5}

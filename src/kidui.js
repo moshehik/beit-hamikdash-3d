@@ -43,7 +43,7 @@ DAYS.forEach(([v,e,l])=>{const b=document.createElement('button');b.dataset.v=v;
  b.onclick=()=>{const d=$('dayType');if(d){d.value=v;d.dispatchEvent(new Event('change'))}dayPop.classList.remove('on');const kb=$('kDay');if(kb){kb.querySelector('i').textContent=e;kb.querySelector('span').textContent=l}};dayPop.appendChild(b)});
 body.appendChild(dayPop);
 const dayBtn=mk('','🗓️','יום',()=>dayPop.classList.toggle('on'),'kDay');
-const side=document.createElement('div');side.id='kside';side.appendChild(mkMus);side.appendChild(dayBtn);body.appendChild(side);
+const side=document.createElement('div');side.id='kidbar';side.appendChild(mkMus);side.appendChild(dayBtn);body.appendChild(side);
 body.appendChild(top);
 
 /* ---------- שעון מכני עגול + תצוגה דיגיטלית במרכז: לחיצה עוצרת/ממשיכה את הזמן; גרירה סביב השעון מסובבת את הזמן ---------- */
@@ -94,7 +94,7 @@ PL.forEach(([key,ic,lb,pf])=>{const p=P.find(x=>x[0]!='sec'&&x[0].indexOf(pf)==0
 const ALLP=[['מבט על','har','הר הבית'],['הר הבית וחומותיו','p_walls','החומות'],['שערי ההר','p_hulda','שערי חולדה'],['הסטיו המלכותי','p_stoa','הסטיו'],['שער שושן','p_shushan','שער שושן'],
  ['ירושלים כולה','yerushalayim','ירושלים'],['עיר דוד','p_irdavid','עיר דוד'],['העיר העליונה','p_upper','ארמון הורדוס'],['אנטוניה','p_antonia','אנטוניה'],['קשת וילסון','p_wilson','הקשת'],
  ['החיל והסורג','p_chel','החיל'],['עזרת נשים','p_nashim','עזרת נשים'],['שער ניקנור','p_nikanor','שער ניקנור'],['עזרת ישראל','p_yisrael','עזרת ישראל'],['המזבח והכבשים','mizbeach','המזבח'],['בית המטבחיים','p_slaughter','בית המטבחיים'],['הכיור','kiyor','הכיור'],
- ['לשכות העזרה – צפון','p_north','לשכות צפון'],['בית הטבילה','p_mikveh','בית הטבילה'],['המסיבה','p_tunnel','המסיבה'],['לשכות העזרה – דרום','p_south','לשכות דרום'],
+ ['בתי כנסת','j_syn','בתי כנסת'],['אולמות לאכילת','j_eat','אולמות אכילה'],['מקוואות לפני','j_mikveh','מקוואות'],['שוק הבהמות','j_market','שוק הבהמות'],['מפעלי מנחות','j_minchah','מפעלי מנחות'],['בארות, בריכות','j_water','בארות ומים'],['לשכות העזרה – צפון','p_north','לשכות צפון'],['בית הטבילה','p_mikveh','בית הטבילה'],['המסיבה','p_tunnel','המסיבה'],['לשכות העזרה – דרום','p_south','לשכות דרום'],
  ['כהן וכהן גדול','kohanim','הכהנים'],['האולם','p_ulam','האולם'],['ההיכל מצד מערב','heichal','ההיכל'],['חתך – בתוך ההיכל','p_cutin','חתך ההיכל'],['חתך – תאי הלשכות','p_cutsouth','תאים בדרום'],['חתך – תאי המערב','p_cutwest','תאים במערב'],['בתוך ההיכל','inside','בתוך ההיכל'],['קודש הקדשים','kodesh','קודש הקדשים']];
 const pw=document.createElement('div');pw.id='kplaces';pw.innerHTML='<div class="kph"><b>לאן נלך?</b><button id="kpx" aria-label="סגור">✕</button></div><div class="kpg"></div>';body.appendChild(pw);
 const pg=pw.querySelector('.kpg');

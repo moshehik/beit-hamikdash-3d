@@ -1,0 +1,39 @@
+{
+ "sheet_israelite.jpg": {
+  "tunic": "#a0846e",
+  "tunic_stripe": "#9d8773",
+  "cloak": "#d3c7b9",
+  "belt": "#856b5b",
+  "hem_band": "#7d5b50",
+  "skin": "#ddac97",
+  "beard": "#352a2a",
+  "turban": "#b6a696",
+  "sandal": "#b19e91",
+  "tz_blue": "#a29383",
+  "sw_wool": "#9a846e",
+  "sw_linen": "#e6d9c6",
+  "sw_red": "#8b2a33"
+ },
+ "sheet_woman.jpg": {
+  "dress": "#5e6174",
+  "veil": "#b6afa8",
+  "hem": "#6f665f",
+  "cord": "#6f555c",
+  "skin": "#a86e61",
+  "hair": "#342b2a",
+  "sw_blue": "#47516c"
+ },
+ "sheet_levite_kinor.jpg": {
+  "coat": "#ccb39c",
+  "coat_stripe": "#9c816d",
+  "tunic": "#d6c6b6",
+  "ribbon": "#a38975",
+  "belt": "#913738",
+  "turban": "#e8d9c5",
+  "cap": "#d9b9a6",
+  "beard": "#322826",
+  "skin": "#9e5e4a",
+  "wood": "#a37550",
+  "sw_coat": "#c8b39c"
+ }
+}

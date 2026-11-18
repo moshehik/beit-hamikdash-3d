@@ -6,8 +6,16 @@ let _s=11;const rand=()=>(_s=_s*16807%2147483647)/2147483647;
 const COL=[],ZN=[],LBL=[],ROOFS=[],GRP={},cols=[],PGS=[];
 
 /* ---------- renderer / scene ---------- */
-const renderer=new T.WebGLRenderer({canvas:$('c'),antialias:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+/* יצירת ה-WebGL בעמידות: אם הדפדפן לא מצליח (חסרות הקשרי WebGL, כרטיס עמוס) – ניסיון בלי החלקה/במצב חסכוני, והודעה ברורה לילד + כפתור ניסיון חוזר;
+   ואם ההקשר הולך לאיבוד באמצע (זיכרון כרטיס) – הודעה, והדף נטען מחדש אם לא התאושש. */
+function glNote(txt,retry){let d=document.getElementById('glnote');if(!d){d=document.createElement('div');d.id='glnote';d.style.cssText='position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(20,18,50,.94);color:#ffe9a0;font:700 22px/1.5 inherit;text-align:center;padding:24px';document.body.appendChild(d)}
+ d.innerHTML='<div style="font-size:54px">🕍</div><div></div>'+(retry?'<button style="font:inherit;font-size:20px;border:0;border-radius:26px;padding:12px 28px;background:linear-gradient(160deg,#ffd66b,#d9902a);color:#241a05;cursor:pointer">🔄 לנסות שוב</button>':'');
+ d.children[1].textContent=txt;const b=d.querySelector('button');if(b)b.onclick=()=>location.reload();d.style.display='flex'}
+const renderer=(()=>{let r=null,err=null;for(const o of [{antialias:true},{antialias:false},{antialias:false,powerPreference:'low-power'}]){try{r=new T.WebGLRenderer(Object.assign({canvas:$('c')},o));break}catch(e){err=e}}
+ if(!r){const ld=document.getElementById('load');if(ld)ld.style.display='none';glNote('התלת־ממד לא נפתח. סגרו לשוניות אחרות ונסו שוב',true);throw err}return r})();
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
+{let lostT=0;$('c').addEventListener('webglcontextlost',e=>{e.preventDefault();glNote('רגע, התמונה מתאוששת…',false);clearTimeout(lostT);lostT=setTimeout(()=>glNote('התלת־ממד נעצר. לוחצים ונטען מחדש',true),6000)});
+ $('c').addEventListener('webglcontextrestored',()=>{clearTimeout(lostT);const d=document.getElementById('glnote');if(d)d.style.display='none'})}
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
 renderer.outputEncoding=T.sRGBEncoding;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=.78;
 const scene=new T.Scene();scene.fog=new T.Fog(0xbcd4ec,900,4200);scene.background=new T.Color(0xbcd4ec);
