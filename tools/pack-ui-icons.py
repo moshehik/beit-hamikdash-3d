@@ -1,3 +1,4 @@
+# (18.11) base64 גולמי בלי קידומת data: – מסנן נטפרי החליף data:image לתמונות מסוימות ב-JPEG לבן 1x1; ב-kidui/ui/services מפענחים ל-Blob בזמן ריצה.
 # אורז את איקוני ממשק הילדים (סרגל + מעגן + מקומות) ל-src/ui_icons.js:  const UI_ICONS={key:'data:image/png;base64,...'}
 # מקורות: (1) assets/landing/*.png (האיקונים של דף הבית, משמשים שוב), (2) תיקיית PNG-ים שנוצרו ע"י tools/landing-icons.py (רקע ירוק הוסר, 256x256).
 # שימוש:  python -I tools/pack-ui-icons.py <dir_of_keyed_256_pngs>
@@ -22,6 +23,6 @@ if extra:
         if f.lower().endswith('.png'): out[f[:-4]]=enc(os.path.join(extra,f))
 for k,b in out.items():
     open(os.path.join(udir,k+'.png'),'wb').write(b); tot+=len(b)
-js='// נוצר ע"י tools/pack-ui-icons.py – אל תערוך ידנית\nconst UI_ICONS='+json.dumps({k:'data:image/png;base64,'+base64.b64encode(b).decode() for k,b in out.items()},ensure_ascii=False)+';\n'
+js='// נוצר ע"י tools/pack-ui-icons.py – אל תערוך ידנית\nconst UI_ICONS='+json.dumps({k:base64.b64encode(b).decode() for k,b in out.items()},ensure_ascii=False)+';\n'
 open(os.path.join(D,'src','ui_icons.js'),'w',encoding='utf-8').write(js)
 print('packed',len(out),'icons',tot//1024,'KB png;',sorted(out))
