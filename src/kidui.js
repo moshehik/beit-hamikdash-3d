@@ -42,12 +42,41 @@ body.appendChild(dayPop);
 const dayBtn=mk('','🗓️','יום',()=>dayPop.classList.toggle('on'),'kDay');
 body.appendChild(top);
 
-/* ---------- שעון היום: שמש ← → ירח ---------- */
-const kt=document.createElement('div');kt.id='ktime';kt.innerHTML='<span>☀️</span><input type="range" min="0" max="24" step="0.1" aria-label="שעה ביום"><span>🌙</span>';body.appendChild(kt);
-const kr=kt.querySelector('input');let drag=false;
-kr.oninput=()=>{drag=true;const a=$('autoDay');if(a&&a.checked){a.checked=false;a.dispatchEvent(new Event('change'))}$('tm').value=kr.value;$('tm').dispatchEvent(new Event('input'))};
-kr.onchange=()=>{drag=false};
-setInterval(()=>{if(!drag&&$('tm'))kr.value=$('tm').value},700);
+/* ---------- שעון מכני עגול + תצוגה דיגיטלית במרכז: לחיצה עוצרת/ממשיכה את הזמן; גרירה סביב השעון מסובבת את הזמן ---------- */
+const NS='http://www.w3.org/2000/svg',kt=document.createElement('div');kt.id='ktime';kt.setAttribute('role','button');kt.setAttribute('aria-label','שעון: לחצו לעצור או להמשיך את הזמן, גררו כדי לסובב');
+const sv=(tag,at,par)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);(par||svg).appendChild(e);return e};
+const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox','0 0 120 120');kt.appendChild(svg);
+{const df=sv('defs',{});const g1=sv('linearGradient',{id:'kcB',x1:0,y1:0,x2:1,y2:1},df);sv('stop',{offset:0,'stop-color':'#ffe9a0'},g1);sv('stop',{offset:.5,'stop-color':'#d9a83a'},g1);sv('stop',{offset:1,'stop-color':'#8a6420'},g1);
+ const g2=sv('radialGradient',{id:'kcF',cx:.5,cy:.45,r:.6},df);sv('stop',{offset:0,'stop-color':'#2c2862'},g2);sv('stop',{offset:1,'stop-color':'#14123a'},g2)}
+sv('circle',{cx:60,cy:60,r:58,fill:'url(#kcB)'});sv('circle',{cx:60,cy:60,r:53,fill:'url(#kcF)'});
+const gear=sv('circle',{cx:60,cy:60,r:47,fill:'none',stroke:'#4a4488','stroke-width':5,'stroke-dasharray':'3.2 3.4',class:'kgear'});   /* גלגל שיניים מסתובב כשהזמן רץ */
+for(let i=0;i<60;i++){const a=i*6*Math.PI/180,m=i%5==0,r1=m?42:45,r2=50;sv('line',{x1:60+Math.sin(a)*r1,y1:60-Math.cos(a)*r1,x2:60+Math.sin(a)*r2,y2:60-Math.cos(a)*r2,stroke:m?'#ffd66b':'#8d86c8','stroke-width':m?2.2:1})}
+[[12,0],[3,90],[6,180],[9,270]].forEach(([n,d])=>{const a=d*Math.PI/180,x=60+Math.sin(a)*34,y=60-Math.cos(a)*34;const tx=sv('text',{x:x,y:y+4,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'#ffe9a0'});tx.textContent=String(n)});
+const sunI=sv('text',{x:60,y:34,'text-anchor':'middle','font-size':12});
+const hH=sv('path',{d:'M-3.2 6 L0 -27 L3.2 6 Z',fill:'#ffe9a0',stroke:'#8a6420','stroke-width':.8,transform:'translate(60 60)'});
+const hM=sv('path',{d:'M-2.2 8 L0 -41 L2.2 8 Z',fill:'#ffffff',stroke:'#8a6420','stroke-width':.8,transform:'translate(60 60)'});
+const hS=sv('line',{x1:60,y1:60,x2:60,y2:22,stroke:'#ff6b5a','stroke-width':1.2,'stroke-linecap':'round',class:'ksec'});
+sv('rect',{x:34,y:49,width:52,height:22,rx:7,fill:'#0c0a26','fill-opacity':.88,stroke:'#d9a83a','stroke-width':1.4});
+const dig=sv('text',{x:60,y:65.5,'text-anchor':'middle','font-size':16,'font-weight':800,fill:'#9fffd0','font-family':'ui-monospace,Consolas,monospace',class:'kdig'});dig.textContent='00:00';
+const pause=sv('text',{x:60,y:92,'text-anchor':'middle','font-size':11,fill:'#ff9a8a',class:'kpause'});pause.textContent='⏸';
+body.appendChild(kt);
+const pad=n=>(n<10?'0':'')+n;
+const showH=h=>{h=((h%24)+24)%24;const hh=Math.floor(h),mm=Math.floor((h-hh)*60);
+ hH.setAttribute('transform','translate(60 60) rotate('+(((hh%12)+mm/60)*30)+')');hM.setAttribute('transform','translate(60 60) rotate('+(mm*6+((h*60)%1)*6)+')');
+ hS.setAttribute('transform','rotate('+(((h*3600)%60)*6)+' 60 60)');dig.textContent=pad(hh)+':'+pad(mm);sunI.textContent=(h>=6&&h<18)?'☀️':'🌙'};
+const auto=()=>{const a=$('autoDay');return !a||a.checked};
+const setAuto=on=>{const a=$('autoDay');if(a){a.checked=on;a.dispatchEvent(new Event('change'))}};
+const curH=()=>(typeof LIFE!='undefined'&&LIFE.hour!=null)?LIFE.hour:(+($('tm')||{}).value||11);
+let cdrag=null;
+const ang=e=>{const r=kt.getBoundingClientRect();return Math.atan2(e.clientX-(r.left+r.width/2),-(e.clientY-(r.top+r.height/2)))*180/Math.PI};
+kt.addEventListener('pointerdown',e=>{cdrag={a0:ang(e),h0:curH(),moved:false,last:ang(e),acc:0};try{kt.setPointerCapture(e.pointerId)}catch(x){}});
+kt.addEventListener('pointermove',e=>{if(!cdrag)return;const a=ang(e);let d=a-cdrag.last;if(d>180)d-=360;if(d<-180)d+=360;cdrag.last=a;cdrag.acc+=d;
+ if(!cdrag.moved&&Math.abs(cdrag.acc)<4)return;cdrag.moved=true;if(auto())setAuto(false);   /* גרירה: זמן ידני – 30° = שעה */
+ const h=((cdrag.h0+cdrag.acc/30)%24+24)%24;const tm=$('tm');if(tm){tm.value=h;tm.dispatchEvent(new Event('input'))}showH(h)});
+const end=e=>{if(!cdrag)return;const c=cdrag;cdrag=null;try{kt.releasePointerCapture(e.pointerId)}catch(x){}if(!c.moved)setAuto(!auto())};   /* לחיצה: עצירה/המשך */
+kt.addEventListener('pointerup',end);kt.addEventListener('pointercancel',()=>{cdrag=null});
+kt.addEventListener('keydown',e=>{if(e.key==' '||e.key=='Enter'){e.preventDefault();setAuto(!auto())}});kt.tabIndex=0;
+(function tick(){showH(curH());const run=auto()&&!(typeof LIFE!='undefined'&&LIFE.held);kt.classList.toggle('stop',!run);requestAnimationFrame(tick)})();
 
 /* ---------- מעגן מקומות: תמונה + מילה ---------- */
 const dock=document.createElement('div');dock.id='kdock';

@@ -102,8 +102,12 @@
 body.kid #side,body.kid #ctl,body.kid #mini,body.kid #perChip,body.kid #hint{display:none!important}
 body.kid #ktop{display:flex;top:10px;right:10px;gap:8px}
 body.kid #kdock{display:flex;bottom:10px;left:50%;transform:translateX(-50%);gap:8px;max-width:calc(100% - 16px);overflow-x:auto;padding:8px 10px;background:rgba(18,16,46,.78);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:26px;scrollbar-width:none}
-body.kid #ktime{display:flex;top:12px;left:12px;align-items:center;gap:8px;padding:8px 14px;background:rgba(18,16,46,.78);backdrop-filter:blur(6px);border:1px solid var(--line);border-radius:22px;font-size:22px}
-#ktime input{width:min(190px,28vw);accent-color:#ffc857;height:8px}
+body.kid #ktime{display:block;top:10px;left:10px;width:112px;height:112px;cursor:pointer;touch-action:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));-webkit-tap-highlight-color:transparent;user-select:none}
+#ktime svg{display:block;width:100%;height:100%;overflow:visible}
+#ktime .kgear{transform-origin:60px 60px;animation:kgear 40s linear infinite}@keyframes kgear{to{transform:rotate(360deg)}}
+#ktime.stop .kgear{animation-play-state:paused}#ktime .kpause{display:none}#ktime.stop .kpause{display:block}
+#ktime.stop .kdig{fill:#ffb3a8}#ktime:hover{transform:scale(1.05)}#ktime{transition:transform .2s}
+@media(prefers-reduced-motion:reduce){#ktime .kgear{animation:none}}
 #ktop button,#kdock button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:1px solid var(--line);background:rgba(28,26,66,.82);color:#fff;font:inherit;cursor:pointer;border-radius:18px;transition:transform .15s,background .15s;-webkit-tap-highlight-color:transparent}
 #ktop button{width:64px;height:62px;backdrop-filter:blur(6px)}#kdock button{width:78px;min-width:78px;height:74px}
 #ktop button i,#kdock button i{font-style:normal;font-size:28px;line-height:1}#kdock button i{font-size:32px}
@@ -146,7 +150,7 @@ body.kid #svCap .svn{font-size:13px}
 body.kid #svCap .svs{display:none}body.kid #svCap.kopen .svs{display:block}
 body.kid #ncHint{top:78px}
 @media(max-width:900px){body.kid #ktop{top:6px;right:6px;gap:5px}#ktop button{width:52px;height:54px}#ktop button i{font-size:22px}#ktop button span{font-size:10.5px}
- body.kid #ktime{top:68px;left:6px;font-size:18px;padding:6px 10px}body.kid #kdock button{width:68px;min-width:68px;height:66px}
+ body.kid #ktime{top:64px;left:6px;width:92px;height:92px}body.kid #kdock button{width:68px;min-width:68px;height:66px}
  body.kid #card{bottom:92px}body.kid #svCap{width:calc(100% - 16px);bottom:92px}.ktag{font-size:22px}.ktx{font-size:15px}}
 @media(max-width:900px){#ktop button i.pic img{width:32px;height:32px}#kdock button i.pic img{width:44px;height:44px}#ktop button{height:60px}#kdock button{height:78px;width:70px;min-width:70px}}
 @media(max-width:460px){body.kid #ktop{gap:4px;right:4px}#ktop button{width:46px;height:52px;border-radius:14px}#ktop button span{font-size:9.5px}#ktop button i{font-size:20px}#ktop button i.pic img{width:26px;height:26px}#ktop button{height:54px}body.kid #kdock button{width:62px;min-width:62px}}
