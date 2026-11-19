@@ -1,0 +1,7 @@
+{
+  "name": "beit-hamikdash-model",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Serves the Beit HaMikdash 3D model from Neon, so updates need no Vercel deploy",
+  "dependencies": { "pg": "8.13.1" }
+}

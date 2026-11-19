@@ -15,3 +15,10 @@ OUT=/path/t.html node build.js  # בנייה לקובץ אחר בלבד
 - `assets/` – תמונות ספרייט ניסיוניות
 - `lib/` – three.js, OrbitControls, נתוני גיאוגרפיה
 - `HANDOFF_*.md`, `AGENT_BRIEF.md` – תיעוד ומצב עבודה
+
+## אתר חי בוורסל (19.11.2026)
+כתובת: https://beit-hamikdash-model.vercel.app — פרויקט `beit-hamikdash-model` (צוות moshehiks-projects), מוגש מנאון (טבלה `temple_site_files` בנאון של print-center), בלי פריסה לכל עדכון.
+- **עדכון האתר:** `cd site && node publish.mjs` (בונה, מוציא את ההקראות לקבצי mp3, דוחס, מעלה לנאון; מופיע חי תוך כדקה). `--no-build` מעלה את הקובץ האחרון שנבנה.
+- `site/.env` = `DATABASE_URL` של הבעלים (להעלאה, לא ב-git). `site/.env.ro` = משתמש `temple_site_ro` לקריאה בלבד שמוגדר בוורסל (גם לא ב-git).
+- פריסה נוספת בוורסל נחוצה רק אם משנים את `site/api/serve.js` או `vercel.json`: מ-PowerShell עם `NODE_OPTIONS=--require C:/Users/moshe/hostshim.js` ואז `npx vercel deploy --prod --yes --archive=tgz --token <.vercel-token-new> --scope moshehiks-projects` מתיקיית `site`.
+- הצ'אט עם הדמויות פונה ל-print-center; המקור הזה מאושר ב-`EXTRA_ALLOWED_ORIGINS` ב-`lib/templeChat.js` שם.
