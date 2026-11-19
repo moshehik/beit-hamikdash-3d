@@ -59,7 +59,7 @@ const SVL=(()=>{const L=LAYOUT,AX=L.altar.x,AZ=L.altar.z,R=L.rings;return{L,AX,A
  smallE:AX+8.5,smallW:AX-8.5,                                  // הכבשים הקטנים (רוחב אמה) בשני צדי הכבש הגדול
  topS:AZ+13,sovS:AZ+14.5,sovE:AX+14.5,sovW:AX-14.5,sovN:AZ-14.5,// מסדרון הכהנים על ראש המזבח, והסובב (מדרגה בגובה SOV)
  big:[AX+6.4,AZ+5.6],tapuach:[AX-.5,AZ+1.2],second:[AX-7.8,AZ+11.2],third:[AX-7.5,AZ-5.6],   // המערכות והתפוח
- deshen:[AX+L.deshen.dx,L.rampFoot+L.deshen.dz],deshenStand:[AX+L.deshen.dx+2.4,L.rampFoot+L.deshen.dz],   // בית הדשן: מזרח הכבש, צמוד לדופנו, כ-10 אמות צפונה מתחתיתו (המסע אל המקדש 19:40–20:12); deshenStand = נקודת עמידה במזרחו
+ deshen:[AX+L.deshen.dx,L.rampFoot+L.deshen.dz],deshenStand:[AX+L.deshen.dx+2.4,L.rampFoot+L.deshen.dz],   // בית הדשן: מזרח הכבש, צמוד לדופנו, כ-10 אמות צפונה מתחתיתו; deshenStand = נקודת עמידה במזרחו
  yesodNE:[AX+17.5,AZ-17.5],yesodSW:[AX-17.5,AZ+17.5],yesodS:[AX-12,AZ+17],   // עמידה בקרקע ליד הקרן ה"מזרחית־צפונית", ה"דרומית־מערבית" והיסוד הדרומי
  kiyor:[L.kiyor.x,L.kiyor.z],kiyorStand:[L.kiyor.x,L.kiyor.z-3.4],
  ringMorn:[R.x[0],R.z[4]],ringEve:[R.x[3],R.z[4]],             // טבעת שנייה (מן הקצה הצפוני) בקרן צפונית־מערבית / צפונית־מזרחית של בית המטבחיים

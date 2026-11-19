@@ -1,4 +1,7 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api/serve?p=$1" }],
-  "functions": { "api/serve.js": { "maxDuration": 15 } }
+  "rewrites": [
+    { "source": "/stats", "destination": "/api/stats" },
+    { "source": "/(.*)", "destination": "/api/serve?p=$1" }
+  ],
+  "functions": { "api/*.js": { "maxDuration": 15 } }
 }

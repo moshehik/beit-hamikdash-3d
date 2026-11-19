@@ -2,10 +2,8 @@
 // /            -> index.html (gzip stored, <4.5MB Vercel limit)
 // /a/<hash>.mp3 -> narration clips (immutable, content-hashed)
 const zlib = require('zlib');
-const { Pool } = require('pg');
-
-let pool;
-const getPool = () => (pool ||= new Pool({ connectionString: process.env.DATABASE_URL, max: 1, ssl: { rejectUnauthorized: false } }));
+const { pool } = require('../lib/db');
+const getPool = pool;
 
 module.exports = async (req, res) => {
   try {

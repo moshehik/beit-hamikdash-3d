@@ -36,6 +36,10 @@ html = html.replace(/data:audio\/mpeg;base64,([A-Za-z0-9+\/=]+)/g, (_, b64) => {
   files.set(name, { type: 'audio/mpeg', gzip: false, body: buf });
   return '/' + name;
 });
+// visit tracker (only in the published site, not in the offline/local build)
+const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');
+if (!html.includes('</head>')) { console.error('no </head> in built html'); process.exit(1); }
+html = html.replace('</head>', () => '<script>' + tracker + '</script></head>');
 const gz = zlib.gzipSync(Buffer.from(html), { level: 9 });
 if (gz.length > 4_000_000) { console.error('index.html gzip too big for Vercel function limit:', gz.length); process.exit(1); }
 files.set('index.html', { type: 'text/html; charset=utf-8', gzip: true, body: gz });
