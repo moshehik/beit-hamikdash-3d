@@ -270,14 +270,14 @@ function rgDraw(now){now=now||performance.now();const W=MC.width,H=MC.height,c=m
   labs.sort((a,b)=>(b.sel-a.sel)||(b.lb.r-a.lb.r));
   for(const l of labs){const p=m2s(l.lb.lon,l.lb.lat);if(p[0]<-60||p[0]>W+60||p[1]<-40||p[1]>H+40)continue;if(cp&&Math.hypot(p[0]-cp[0],p[1]-cp[1]-sz)<sz*3)continue;
    const w=l.q.nm.length*sz*.62+10;if(!(l.sel||free(p[0]-w/2,p[1]-sz*1.7,w,sz*3.1)))continue;c.globalAlpha=l.t*(cp?.55:1);const lift=(1-l.t)*10;
-   c.font=sz*1.5+'px "Segoe UI Emoji"';c.fillStyle='#000';c.fillText(l.q.sym,p[0],p[1]-sz*.2-lift);rgText(l.q.nm,p[0],p[1]+sz*1.25-lift,sz);c.globalAlpha=1}}
+   c.font=sz*1.5+'px "Segoe UI Emoji"';c.fillStyle='#000';EI.fill(c,l.q.sym,p[0],p[1]-sz*.2-lift,sz*1.7);rgText(l.q.nm,p[0],p[1]+sz*1.25-lift,sz);c.globalAlpha=1}}
  /* שמות מים/נהרות */
  RGW.forEach(w=>{if(MV.z<=w[3])return;const p=m2s(w[1],w[2]);if(p[0]<-60||p[0]>W+60||p[1]<-20||p[1]>H+20)return;const fs=Math.max(11,Math.min(20,sz*.62)),ww=w[0].length*fs*.6;if(free(p[0]-ww/2,p[1]-fs,ww,fs*1.3))rgText(w[0],p[0],p[1],fs,'#0d3b66','#e8f4fb')});
  /* שפת הים הדרומית־מערבית: ישויות שממשיכות מעבר לקצה המפה (רומא/קרתגו) */
  if(MT.e&&MT.l)pols.forEach((q,i)=>{if(!q.west)return;const a=m2s(MB.lon0,q.wlat),x=Math.max(12,a[0]+8),y=a[1];if(x>W-60||y<18||y>H-18)return;const t=rgClamp((el-500-i*90)/420,0,1);if(t<=0&&!rgRM())return;
   const fs=Math.max(13,Math.min(17,sz*.8)),w=q.nm.length*fs*.62+46;c.save();c.globalAlpha=rgRM()?1:t;c.shadowColor='rgba(0,0,0,.3)';c.shadowBlur=5;c.fillStyle=q.col;c.strokeStyle='#fff';c.lineWidth=3;
   const rx=x,ry=y-fs*.9,rw=w,rh=fs*1.9;c.beginPath();c.moveTo(rx+rh/2,ry);c.lineTo(rx+rw-rh/2,ry);c.arc(rx+rw-rh/2,ry+rh/2,rh/2,-1.5708,1.5708);c.lineTo(rx+rh/2,ry+rh);c.arc(rx+rh/2,ry+rh/2,rh/2,1.5708,4.7124);c.closePath();c.fill();c.shadowBlur=0;c.stroke();
-  c.font=fs+'px "Segoe UI Emoji"';c.fillStyle='#000';c.textAlign='center';c.fillText('◀',rx+rh/2+2,ry+rh*.72);c.font=`800 ${fs}px "Segoe UI",Arial`;c.fillStyle='#3b2a14';c.fillText(q.sym+' '+q.nm,rx+rw/2+rh*.25,ry+rh*.72);c.restore();rgChips.push([rx,ry,rw,rh,q])});
+  c.font=fs+'px "Segoe UI Emoji"';c.fillStyle='#000';c.textAlign='center';EI.fill(c,'◀',rx+rh/2+2,ry+rh*.72,fs*1.25);c.font=`800 ${fs}px "Segoe UI",Arial`;c.fillStyle='#3b2a14';{const cx=rx+rw/2+rh*.25,ky=EI.keyOf(q.sym);if(ky&&EI.has(ky)){const wf=c.measureText(q.sym+' '+q.nm).width,ws=c.measureText(q.sym+' ').width;c.textAlign='left';c.fillText(q.nm,cx-wf/2+ws,ry+rh*.72);EI.fill(c,q.sym,cx-wf/2+ws*.42,ry+rh*.72,fs*1.25);c.textAlign='center'}else c.fillText(q.sym+' '+q.nm,cx,ry+rh*.72)}c.restore();rgChips.push([rx,ry,rw,rh,q])});
  /* סמלי ערים: קופצים קלות בכניסה ובבחירה */
  rgPins=[];if(MT.c){const cs=rgCities(curPer);c.textAlign='center';
   cs.forEach((s,i)=>{const p=m2s(s.lon,s.lat);if(p[0]<-30||p[1]<-40||p[0]>W+30||p[1]>H+30)return;const sel=rgCity===s,t0=rgClamp((el-300-i*90)/420,0,1),tp=rgRM()?1:rgBack(t0);if(t0<=0&&!rgRM())return;
@@ -286,7 +286,7 @@ function rgDraw(now){now=now||performance.now();const W=MC.width,H=MC.height,c=m
    if(!sel&&!free(p[0]-r,y-r*1.6,r*2,r*2.2))return;rgPins.push([p[0],p[1],s]);
    c.save();c.globalAlpha=Math.min(1,tp);c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=6;c.shadowOffsetY=2;c.fillStyle='#fff';c.strokeStyle=sel?'#ff9800':'#e0a92e';c.lineWidth=sel?4:2.5;c.beginPath();c.arc(p[0],y-r*1.0,r,0,6.2832);c.fill();c.shadowBlur=0;c.shadowOffsetY=0;c.stroke();
    c.beginPath();c.moveTo(p[0]-r*.45,y-r*.35);c.lineTo(p[0],y+r*.35);c.lineTo(p[0]+r*.45,y-r*.35);c.fillStyle='#fff';c.fill();
-   c.font=Math.round(r*1.15)+'px "Segoe UI Emoji"';c.fillStyle='#000';c.textBaseline='middle';c.fillText(s.e,p[0],y-r*.95);c.textBaseline='alphabetic';c.restore();
+   c.font=Math.round(r*1.15)+'px "Segoe UI Emoji"';c.fillStyle='#000';c.textBaseline='middle';EI.fill(c,s.e,p[0],y-r*.95,r*1.5,true);c.textBaseline='alphabetic';c.restore();
    if(MT.l&&(sel||MV.z>70)){const fs=Math.max(11,sz*.66),w=s.n.length*fs*.6;if(sel||free(p[0]-w/2,p[1]+3,w,fs*1.4))rgText(s.n,p[0],p[1]+fs+3,fs,'#3e2723','#fff')}})}
  c.globalAlpha=1}
 

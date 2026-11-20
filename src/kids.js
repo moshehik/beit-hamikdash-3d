@@ -208,7 +208,7 @@ function kDraw(now){now=now||performance.now();const W=kc.width,H=kc.height,c=kx
  labs.sort((a,b)=>(b.sel-a.sel)||(b.lb.r-a.lb.r));
  const cp=kCity?km2s(kCity.lon,kCity.lat):null;
  for(const l of labs){const p=km2s(l.lb.lon,l.lb.lat),lift=4*l.r.hov+(1-l.t)*10;if(cp&&Math.hypot(p[0]-cp[0],p[1]-cp[1]-sz)<sz*3.2)continue;c.globalAlpha=l.t*(cp?.6:1);
-  if(l.r.tribe){const w=l.r.name.length*sz*.62+10;if(!(l.sel||free(p[0]-w/2,p[1]-sz*1.7,w,sz*3.1)))continue;c.font=sz*1.5+'px "Segoe UI Emoji"';c.fillStyle='#000';c.fillText(l.r.t[1],p[0],p[1]-sz*.2-lift);kText(l.r.name,p[0],p[1]+sz*1.25-lift,sz)}
+  if(l.r.tribe){const w=l.r.name.length*sz*.62+10;if(!(l.sel||free(p[0]-w/2,p[1]-sz*1.7,w,sz*3.1)))continue;c.font=sz*1.5+'px "Segoe UI Emoji"';c.fillStyle='#000';EI.fill(c,l.r.t[1],p[0],p[1]-sz*.2-lift,sz*1.7);kText(l.r.name,p[0],p[1]+sz*1.25-lift,sz)}
   else{const w=l.r.name.length*sz*.6;if(l.sel||free(p[0]-w/2,p[1]-sz,w,sz*1.4))kText(l.r.name,p[0],p[1]-lift,sz*.95)}c.globalAlpha=1}
  const ss=KV.z>150;
  KWATER.forEach(w=>{if(KV.z<=170&&w[0]!='ים הגדול')return;const p=km2s(w[1],w[2]),fs=Math.max(11,sz*.6),ww=w[0].length*fs*.6;if(free(p[0]-ww/2,p[1]-fs,ww,fs*1.3))kText(w[0],p[0],p[1],fs,'#01579b','#e1f5fe')});
@@ -219,7 +219,7 @@ function kDraw(now){now=now||performance.now();const W=kc.width,H=kc.height,c=kx
   if(!sel&&!free(p[0]-r,y-r*1.6,r*2,r*2.2))return;
   c.save();c.globalAlpha=Math.min(1,tp);c.shadowColor='rgba(0,0,0,.35)';c.shadowBlur=6;c.shadowOffsetY=2;c.fillStyle='#fff';c.strokeStyle=sel?'#ff9800':'#e0a92e';c.lineWidth=sel?4:2.5;c.beginPath();c.arc(p[0],y-r*1.0,r,0,6.2832);c.fill();c.shadowBlur=0;c.shadowOffsetY=0;c.stroke();
   c.beginPath();c.moveTo(p[0]-r*.45,y-r*.35);c.lineTo(p[0],y+r*.35);c.lineTo(p[0]+r*.45,y-r*.35);c.fillStyle='#fff';c.fill();
-  c.font=Math.round(r*1.15)+'px "Segoe UI Emoji"';c.fillStyle='#000';c.textBaseline='middle';c.fillText(s.e,p[0],y-r*.95);c.textBaseline='alphabetic';c.restore();
+  c.font=Math.round(r*1.15)+'px "Segoe UI Emoji"';c.fillStyle='#000';c.textBaseline='middle';EI.fill(c,s.e,p[0],y-r*.95,r*1.5,true);c.textBaseline='alphabetic';c.restore();
   if(sel||KV.z>210){const fs=Math.max(11,sz*.66),w=s.n.length*fs*.6;if(sel||free(p[0]-w/2,p[1]+3,w,fs*1.4))kText(s.n,p[0],p[1]+fs+3,fs,'#3e2723','#fff')}});
  c.globalAlpha=1}
 let kPins=[];
