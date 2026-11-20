@@ -7,7 +7,7 @@
    • מצורעים: "בדד ישב מחוץ למחנה מושבו", בגדים קרועים, ראש פרוע, "ועל שפם יעטה", קורא "טמא טמא" – ויקרא יג:מה–מו; ערי חומה מקודשות מפני ששולחים מהן מצורעים – משנה כלים א:ז.
    • דשן: "והוציא את הדשן אל מחוץ למחנה אל מקום טהור" – ויקרא ו:ד; שער האשפות – נחמיה ב:יג, ג:יג–יד. פסכתר – כלי לפינוי הדשן (כמו בסיור תמיד של שחר).
    • שערי העיר: שער הצאן, שער הגיא, שער האשפות, שער העין – נחמיה ב–ג. */
-const CITY2=(()=>{
+const CITY2=(typeof LITE!='undefined'&&LITE)?{update(){},count(){return{lite:1}},pri:[],pieces:[]}:(()=>{
  const g=mkP('pCity2',4);
  let _s=24681357;const R=()=>(_s=_s*16807%2147483647)/2147483647,rr=(a,b)=>a+(b-a)*R(),pick=a=>a[R()*a.length|0];
  const col=h=>new T.Color(h),WH=col(0xffffff);
@@ -53,8 +53,7 @@ const CITY2=(()=>{
     trim.add(dp[0],gy+4.1,dp[1],3.5,.5,.9,ry,TRIM);trim.add(dp[0],gy+.15,dp[1],3.2,.3,1.2,ry,TRIM);        // משקוף ואסקופה
     const wy=Math.min(topY-2.2,gy+Math.max(3.2,H*.55)),nF=Math.max(1,Math.min(3,Math.round(q.sx/9)));
     for(let k=0;k<nF;k++){const lx=-q.sx/2+q.sx*(k+.5)/nF;if(Math.abs(lx-dx)<2.8)continue;const p=W(q,lx,front*(q.sz/2+.08));win.add(p[0],wy,p[1],1.3,1.8,.45,ry,WIN);trim.add(p[0],wy+1.15,p[1],2,.35,.75,ry,TRIM)}
-    for(let k=0;k<Math.min(2,nF);k++){const lx=-q.sx/2+q.sx*(k+.5)/Math.min(2,nF),p=W(q,lx,-front*(q.sz/2+.08));win.add(p[0],wy,p[1],1.3,1.8,.45,ry,WIN);trim.add(p[0],wy+1.15,p[1],2,.35,.75,ry,TRIM)}
-    for(const sd of[-1,1]){if(R()<.35)continue;const p=W(q,sd*(q.sx/2+.08),rr(-q.sz*.2,q.sz*.2));win.add(p[0],wy,p[1],.45,1.8,1.3,ry,WIN);trim.add(p[0],wy+1.15,p[1],.75,.35,2,ry,TRIM)}
+    if(R()<.5){const p=W(q,rr(-q.sx*.25,q.sx*.25),-front*(q.sz/2+.08));win.add(p[0],wy,p[1],1.3,1.8,.45,ry,WIN);trim.add(p[0],wy+1.15,p[1],2,.35,.75,ry,TRIM)}   // חלון אחורי אחד לפעמים (הקל על כרטיסים חלשים)
     if(R()<.28&&q.sx>12&&q.sz>12){const rp=W(q,rr(-q.sx*.18,q.sx*.18),rr(-q.sz*.18,q.sz*.18));top.add(rp[0],topY+2.1,rp[1],q.sx*.36,2.8,q.sz*.36,ry,c);top.add(rp[0],topY+3.7,rp[1],q.sx*.36+.7,.5,q.sz*.36+.7,ry,c.clone().multiplyScalar(1.12));   // חדר גג
      const rd=W({x:rp[0],z:rp[1],ry},0,q.sz*.18+.05);door.add(rd[0],topY+1.8,rd[1],1.6,2.4,.4,ry,pick(dcol))}}
    [door,win,trim,top].forEach(b=>b.done(grp))});

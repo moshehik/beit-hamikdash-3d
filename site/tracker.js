@@ -33,7 +33,7 @@
     var gl = false; try { var cv = document.createElement('canvas'); gl = !!(cv.getContext('webgl2') || cv.getContext('webgl')); } catch (e) {}
     var nc = navigator.connection || {};
     var tz = null; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
-    ev('view', { ref: trunc(document.referrer, 200), q: trunc(location.search, 100), w: innerWidth, h: innerHeight, dpr: window.devicePixelRatio || 1, lang: navigator.language, mem: navigator.deviceMemory || null, net: nc.effectiveType || null, touch: 'ontouchstart' in window, gl: gl, tz: tz });
+    ev('view', { ref: trunc(document.referrer, 200), q: trunc(location.search, 100), w: innerWidth, h: innerHeight, dpr: window.devicePixelRatio || 1, lang: navigator.language, mem: navigator.deviceMemory || null, net: nc.effectiveType || null, touch: 'ontouchstart' in window, gl: gl, tz: tz, lite: (function () { try { return localStorage.getItem('bh_lite') === '1'; } catch (e) { return false; } })() });
     window.addEventListener('load', function () {
       setTimeout(function () {
         try { var p = performance.timing; ev('perf', { load: p.loadEventEnd - p.navigationStart, dcl: p.domContentLoadedEventEnd - p.navigationStart }); } catch (e) {}

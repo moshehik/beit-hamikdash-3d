@@ -2807,15 +2807,17 @@ let _s=11;const rand=()=>(_s=_s*16807%2147483647)/2147483647;
 const COL=[],ZN=[],LBL=[],ROOFS=[],GRP={},cols=[],PGS=[];
 
 /* ---------- renderer / scene ---------- */
+/* גרסה קלה (20.11.2026): בלי ירושלים החיה (עוברי אורח, דוכנים, בתים מפורטים), רזולוציה 1 ובקשת מצב חסכוני מהכרטיס. נדלקת אוטומטית אחרי איבוד הקשר WebGL, מכפתור "גרסה קלה" בהודעת השגיאה, או בכתובת ‎?lite=1‎ (ביטול: ‎?lite=0‎). */
+const LITE=(()=>{try{if(/[?&]lite=1/.test(location.search))localStorage.setItem('bh_lite','1');if(/[?&]lite=0/.test(location.search))localStorage.removeItem('bh_lite');return localStorage.getItem('bh_lite')==='1'}catch(e){return false}})();
 /* יצירת ה-WebGL בעמידות: אם הדפדפן לא מצליח (חסרות הקשרי WebGL, כרטיס עמוס) – ניסיון בלי החלקה/במצב חסכוני, והודעה ברורה לילד + כפתור ניסיון חוזר;
    ואם ההקשר הולך לאיבוד באמצע (זיכרון כרטיס) – הודעה, והדף נטען מחדש אם לא התאושש. */
 function glNote(txt,retry){let d=document.getElementById('glnote');if(!d){d=document.createElement('div');d.id='glnote';d.style.cssText='position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(20,18,50,.94);color:#ffe9a0;font:700 22px/1.5 inherit;text-align:center;padding:24px';document.body.appendChild(d)}
- d.innerHTML='<div style="font-size:54px">🕍</div><div></div>'+(retry?'<button style="font:inherit;font-size:20px;border:0;border-radius:26px;padding:12px 28px;background:linear-gradient(160deg,#ffd66b,#d9902a);color:#241a05;cursor:pointer">🔄 לנסות שוב</button>':'');
- d.children[1].textContent=txt;const b=d.querySelector('button');if(b)b.onclick=()=>location.reload();d.style.display='flex'}
-const renderer=(()=>{let r=null,err=null;for(const o of [{antialias:true},{antialias:false},{antialias:false,powerPreference:'low-power'}]){try{r=new T.WebGLRenderer(Object.assign({canvas:$('c')},o));break}catch(e){err=e}}
+ d.innerHTML='<div style="font-size:54px">🕍</div><div></div>'+(retry?'<button style="font:inherit;font-size:20px;border:0;border-radius:26px;padding:12px 28px;background:linear-gradient(160deg,#ffd66b,#d9902a);color:#241a05;cursor:pointer">🔄 לנסות שוב</button>':'')+(retry&&!LITE?'<button id="glLite" style="font:inherit;font-size:17px;border:1px solid #d9a83a;border-radius:26px;padding:9px 22px;background:transparent;color:#ffe9a0;cursor:pointer">🪶 גרסה קלה (מתאימה למחשב חלש)</button>':'');
+ d.children[1].textContent=txt;const b=d.querySelector('button');if(b)b.onclick=()=>location.reload();const lb=d.querySelector('#glLite');if(lb)lb.onclick=()=>{try{localStorage.setItem('bh_lite','1')}catch(e){}location.reload()};d.style.display='flex'}
+const renderer=(()=>{let r=null,err=null;for(const o of (LITE?[{antialias:false,powerPreference:'low-power'}]:[{antialias:true},{antialias:false},{antialias:false,powerPreference:'low-power'}])){try{r=new T.WebGLRenderer(Object.assign({canvas:$('c')},o));break}catch(e){err=e}}
  if(!r){const ld=document.getElementById('load');if(ld)ld.style.display='none';glNote('התלת־ממד לא נפתח. סגרו לשוניות אחרות ונסו שוב',true);throw err}return r})();
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
-{let lostT=0;$('c').addEventListener('webglcontextlost',e=>{e.preventDefault();glNote('רגע, התמונה מתאוששת…',false);clearTimeout(lostT);lostT=setTimeout(()=>glNote('התלת־ממד נעצר. לוחצים ונטען מחדש',true),6000)});
+renderer.setPixelRatio(LITE?1:Math.min(devicePixelRatio,1.5));
+{let lostT=0;$('c').addEventListener('webglcontextlost',e=>{e.preventDefault();glNote('רגע, התמונה מתאוששת…',false);clearTimeout(lostT);lostT=setTimeout(()=>{try{if(!LITE)localStorage.setItem('bh_lite','1')}catch(x){}glNote('התלת־ממד נעצר. לוחצים ונטען מחדש (בגרסה קלה)',true)},6000)});
  $('c').addEventListener('webglcontextrestored',()=>{clearTimeout(lostT);const d=document.getElementById('glnote');if(d)d.style.display='none'})}
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=false;
 renderer.outputEncoding=T.sRGBEncoding;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=.78;
@@ -4378,7 +4380,7 @@ scene.fog.near=1800;scene.fog.far=6200;camera.far=9500;camera.updateProjectionMa
    • מצורעים: "בדד ישב מחוץ למחנה מושבו", בגדים קרועים, ראש פרוע, "ועל שפם יעטה", קורא "טמא טמא" – ויקרא יג:מה–מו; ערי חומה מקודשות מפני ששולחים מהן מצורעים – משנה כלים א:ז.
    • דשן: "והוציא את הדשן אל מחוץ למחנה אל מקום טהור" – ויקרא ו:ד; שער האשפות – נחמיה ב:יג, ג:יג–יד. פסכתר – כלי לפינוי הדשן (כמו בסיור תמיד של שחר).
    • שערי העיר: שער הצאן, שער הגיא, שער האשפות, שער העין – נחמיה ב–ג. */
-const CITY2=(()=>{
+const CITY2=(typeof LITE!='undefined'&&LITE)?{update(){},count(){return{lite:1}},pri:[],pieces:[]}:(()=>{
  const g=mkP('pCity2',4);
  let _s=24681357;const R=()=>(_s=_s*16807%2147483647)/2147483647,rr=(a,b)=>a+(b-a)*R(),pick=a=>a[R()*a.length|0];
  const col=h=>new T.Color(h),WH=col(0xffffff);
@@ -4424,8 +4426,7 @@ const CITY2=(()=>{
     trim.add(dp[0],gy+4.1,dp[1],3.5,.5,.9,ry,TRIM);trim.add(dp[0],gy+.15,dp[1],3.2,.3,1.2,ry,TRIM);        // משקוף ואסקופה
     const wy=Math.min(topY-2.2,gy+Math.max(3.2,H*.55)),nF=Math.max(1,Math.min(3,Math.round(q.sx/9)));
     for(let k=0;k<nF;k++){const lx=-q.sx/2+q.sx*(k+.5)/nF;if(Math.abs(lx-dx)<2.8)continue;const p=W(q,lx,front*(q.sz/2+.08));win.add(p[0],wy,p[1],1.3,1.8,.45,ry,WIN);trim.add(p[0],wy+1.15,p[1],2,.35,.75,ry,TRIM)}
-    for(let k=0;k<Math.min(2,nF);k++){const lx=-q.sx/2+q.sx*(k+.5)/Math.min(2,nF),p=W(q,lx,-front*(q.sz/2+.08));win.add(p[0],wy,p[1],1.3,1.8,.45,ry,WIN);trim.add(p[0],wy+1.15,p[1],2,.35,.75,ry,TRIM)}
-    for(const sd of[-1,1]){if(R()<.35)continue;const p=W(q,sd*(q.sx/2+.08),rr(-q.sz*.2,q.sz*.2));win.add(p[0],wy,p[1],.45,1.8,1.3,ry,WIN);trim.add(p[0],wy+1.15,p[1],.75,.35,2,ry,TRIM)}
+    if(R()<.5){const p=W(q,rr(-q.sx*.25,q.sx*.25),-front*(q.sz/2+.08));win.add(p[0],wy,p[1],1.3,1.8,.45,ry,WIN);trim.add(p[0],wy+1.15,p[1],2,.35,.75,ry,TRIM)}   // חלון אחורי אחד לפעמים (הקל על כרטיסים חלשים)
     if(R()<.28&&q.sx>12&&q.sz>12){const rp=W(q,rr(-q.sx*.18,q.sx*.18),rr(-q.sz*.18,q.sz*.18));top.add(rp[0],topY+2.1,rp[1],q.sx*.36,2.8,q.sz*.36,ry,c);top.add(rp[0],topY+3.7,rp[1],q.sx*.36+.7,.5,q.sz*.36+.7,ry,c.clone().multiplyScalar(1.12));   // חדר גג
      const rd=W({x:rp[0],z:rp[1],ry},0,q.sz*.18+.05);door.add(rd[0],topY+1.8,rd[1],1.6,2.4,.4,ry,pick(dcol))}}
    [door,win,trim,top].forEach(b=>b.done(grp))});
