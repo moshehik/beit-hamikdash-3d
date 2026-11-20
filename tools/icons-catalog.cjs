@@ -216,6 +216,12 @@ const SHEETS = [
     E('✔', 'a chunky bright blue checkmark'),
     T('olat-behema', 5, 'a metal butcher hook next to a fluffy cream fleece (a sheepskin) being pulled off, the whole object small and fully inside the cell'),
   ] },
+  { name: 'R2-fixes', cols: 2, refs: ['styleref', 'goldenaltar', 'altar'], refNote: 'Image 1 shows FINISHED example icons of the exact target style (soft glossy claymation / plasticine, cute, rounded, simplified) that every new icon must match. Image 2: render of the small golden incense altar inside the sanctuary. Image 3: render of the big stepped altar.', items: [
+    T('tamid-shachar', 11, 'a golden sun half rising behind two layered dark blue hills, ONE isolated rounded icon with NO rectangular background'),
+    T('tamid-shachar', 19, 'the small golden incense altar (a square golden box with four small horns on its top corners, no dome or helmet) being swept with a small brush, with a little ash dust'),
+    T('olat-behema', 5, 'a metal butcher hook next to a fluffy cream sheepskin fleece, the whole object fully inside the cell with generous margins'),
+    T('olat-behema', 9, 'the whole whitewashed stepped altar block with its four horns, with pieces of offering meat on logs burning in bright flames on top' + ALTAR),
+  ] },
   { name: 'E9-people', items: [
     E('🙂', 'a friendly smiling round face'),
     E('🧑', 'a friendly person in a simple tunic and a head cloth (an Israelite)'),
