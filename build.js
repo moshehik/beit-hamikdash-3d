@@ -8,12 +8,13 @@ const app=pre.concat(svc,[r('src/ui.js'),r('src/kidui.js'),r('src/remote.js')].c
 const html=r('src/template.html').replace('{{THREE}}',()=>r('lib/three.min.js')).replace('{{ORBIT}}',()=>r('lib/orbit.js')).replace('{{APP}}',()=>app);
 // CHUNKS_OUT=<file.json> node build.js -> (לפרסום באתר החי) מפצל לקבצי JS נפרדים שנשמרים במטמון הדפדפן: vendor / img / data / app, ו-html בלי סקריפטים (<!--@CHUNKS@-->)
 if(process.env.CHUNKS_OUT){
- const names=['nikud_map','geodata','regions','app','lishkhot','jerusalem','jerusalem2','sukkot_arava','map_images','world_img','map','kids','npcs','instruments','figures_tex','figures','people','crowd','life','personas','npc_chat','narr','story','story_olat_haof','landing_icons','landing_svg','ui_icons','ui_icons2','emoji_icons','audio','world3d','services'].filter(n=>fs.existsSync(p.join(d,'src',n+'.js'))&&!(process.env.SAFE&&['world3d','world_img'].includes(n)));
+ const STAGE=process.env.STAGE==null?3:+process.env.STAGE;   // שלבי בדיקה מול הסינון (20.11.2026)
+ const names=['nikud_map','geodata','regions','app','lishkhot','jerusalem','jerusalem2','sukkot_arava','map_images','world_img','map','kids','npcs','instruments','figures_tex','figures','people','crowd','life','personas','npc_chat','narr','story','story_olat_haof','landing_icons','landing_svg','ui_icons','ui_icons2','emoji_icons','audio','world3d','services'].filter(n=>fs.existsSync(p.join(d,'src',n+'.js'))&&!(STAGE<2&&['world3d','world_img'].includes(n)));
  const IMG=['landing_icons','ui_icons','ui_icons2'],LAZY=['map_images','world_img'],DATA=['nikud_map','geodata','regions','narr','landing_svg'];   // מודולים של נתונים טהורים (נבדקו: רצים לבד) – מועברים לפני הקוד
  const NLN=String.fromCharCode(10),J=a=>a.map(n=>r('src/'+n+'.js')).join(NLN);
  const code=names.filter(n=>!IMG.includes(n)&&!DATA.includes(n)&&!LAZY.includes(n));
  const mi=names.includes('map_images')?r('src/map_images.js').split(String.fromCharCode(10)):[],miMeta=mi.filter(l=>l.startsWith('const MAP_IMG_META')),miImg=mi.filter(l=>!l.startsWith('const MAP_IMG_META'));   // תמונות המפה (925KB) נטענות ברקע אחרי העלייה; המטא-דאטה הקטן נשאר ב-data
- const tail=[r('src/ui.js'),r('src/kidui.js')].concat(process.env.SAFE?[]:[r('src/remote.js')]).concat(fs.existsSync(p.join(d,'src','nikud_dom.js'))?[r('src/nikud_dom.js')]:[]);
+ const tail=[r('src/ui.js'),r('src/kidui.js')].concat(STAGE<1?[]:[STAGE>=3?r('src/remote.js'):r('src/remote.js').replace(/\/\/VOICE-BEGIN[\s\S]*?\/\/VOICE-END/g,'')]).concat(fs.existsSync(p.join(d,'src','nikud_dom.js'))?[r('src/nikud_dom.js')]:[]);
  const chunks=[{name:'vendor',code:r('lib/three.min.js')+NLN+r('lib/orbit.js')},{name:'img',code:J(IMG.filter(n=>names.includes(n)))},{name:'data',code:J(DATA.filter(n=>names.includes(n)))+NLN+miMeta.join(NLN)},{name:'app',code:J(code)+NLN+svc.join(NLN)+NLN+tail.join(NLN)},{name:'mapimg',lazy:true,code:miImg.join(NLN)+NLN+(names.includes('world_img')?r('src/world_img.js'):'')+NLN+';window.__mapImgsLoaded&&window.__mapImgsLoaded();'}];
  let shell=r('src/template.html');
  const A='<script>{{THREE}}</script>',B='<script>{{ORBIT}}</script>',C='<script>{{APP}}</script>';

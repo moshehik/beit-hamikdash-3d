@@ -24,9 +24,11 @@ if (!process.env.DATABASE_URL && !process.argv.includes('--out')) { console.erro
 
 // Build as separate cacheable JS chunks (vendor / img / data / app): the browser caches each by content hash (immutable),
 // so repeat visits and small updates download almost nothing. index.html stays tiny and shows the loader at once.
+const si = process.argv.indexOf('--stage');
+const STAGE = process.argv.includes('--safe') ? 0 : (si > 0 ? +process.argv[si + 1] : 3);   // 0 = like before 20.11 PM, 1 = + clicker, 2 = + zoom-out/route, 3 = + voice
 const tmp = path.join(os.tmpdir(), 'bh-chunks.json');
 if (!process.argv.includes('--no-build')) {
-  execFileSync(process.execPath, [path.join(here, '..', 'build.js')], { env: { ...process.env, CHUNKS_OUT: tmp, ...(process.argv.includes('--safe') ? { SAFE: '1' } : {}) }, stdio: 'inherit' });
+  execFileSync(process.execPath, [path.join(here, '..', 'build.js')], { env: { ...process.env, CHUNKS_OUT: tmp, STAGE: String(STAGE) }, stdio: 'inherit' });
 }
 const built = JSON.parse(fs.readFileSync(tmp, 'utf8'));
 
@@ -35,7 +37,7 @@ const etag = (b) => crypto.createHash('sha1').update(b).digest('hex').slice(0, 2
 const CHUNKED = process.argv.includes('--chunks');   // external cacheable chunks: OFF by default (see below)
 const tags = [], lazy = [];   // lazy chunks (map images) are fetched in the background after the page has loaded
 for (const ch of built.chunks) {
-  if (process.argv.includes('--safe') && ch.name === 'app') ch.code = ch.code.split('{pos:[18500,27500,27500],tgt:[18500,0,3500],fixed:true,dur:5.5}').join("C('parva',20,12,5)").split('{pos:[1750,1350,1500],tgt:[1750,60,-57]}').join('view(AZ.booths[0].fx,AZ.booths[0].fz,terrH(AZ.booths[0].fx,AZ.booths[0].fz)+3,40,16,250)').split('   /* זום־אאוט קולנועי: ירושלים ← פלוסין (מצרים) והנדווין (הודו) – src/world3d.js */').join('');
+  if (STAGE < 2 && ch.name === 'app') ch.code = ch.code.split('{pos:[18500,27500,27500],tgt:[18500,0,3500],fixed:true,dur:5.5}').join("C('parva',20,12,5)").split('{pos:[1750,1350,1500],tgt:[1750,60,-57]}').join('view(AZ.booths[0].fx,AZ.booths[0].fz,terrH(AZ.booths[0].fx,AZ.booths[0].fz)+3,40,16,250)').split('   /* זום־אאוט קולנועי: ירושלים ← פלוסין (מצרים) והנדווין (הודו) – src/world3d.js */').join('');
   let code = ch.code.replace(/data:audio\/mpeg;base64,([A-Za-z0-9+\/=]+)/g,(_, b64) => {
     const buf = Buffer.from(b64, 'base64');
     const name = `a/${crypto.createHash('sha1').update(buf).digest('hex').slice(0, 16)}.mp3`;

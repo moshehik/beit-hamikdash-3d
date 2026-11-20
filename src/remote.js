@@ -54,6 +54,7 @@ const REMOTE=(()=>{
   if(h){e.preventDefault();e.stopImmediatePropagation()}
  },true);
  /* ----- קול ----- */
+//VOICE-BEGIN
  const norm=s=>(s||'').replace(/[֑-ׇ]/g,'').replace(/[.,!?"'׳״\-–:;()]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
  const CMD=[
   [/(עצור|עצרו|תעצור|לעצור|עצירה|סטופ|stop|מספיק|חכה|^די$|^די | די )/,'stop'],
@@ -85,8 +86,11 @@ const REMOTE=(()=>{
  function stopVoice(){want=false;if(rec){try{rec.stop()}catch(e){}}sync()}
  const LBL={forward:'קדימה',back:'אחורה',left:'שמאלה',right:'ימינה',stop:'עצירה',around:'הסתובבות',up:'מבט למעלה',down:'מבט למטה',fast:'מהר',slow:'לאט',next:'הבא',prev:'הקודם',pause:'השהיה',play:'המשך',walkOn:'טיול',walkOff:'מבט על'};
  function sync(){const b=$$('rmMic');if(!b)return;b.classList.toggle('on',want);b.setAttribute('aria-pressed',want?'true':'false');b.querySelector('span').textContent=want?'מקשיב… אמרו: קדימה / אחורה / ימינה / שמאלה / עצור':'פקודות קול'}
+//VOICE-END
  /* ----- כפתור ----- */
  const css=document.createElement('style');css.textContent='#rmMic{position:fixed;left:12px;bottom:12px;z-index:45;display:flex;align-items:center;gap:8px;background:rgba(32,24,12,.82);color:#f6e6bd;border:1px solid #c9a24a;border-radius:22px;padding:8px 14px;font:600 14px system-ui,sans-serif;cursor:pointer;direction:rtl}#rmMic.on{background:#9a2a1a;border-color:#ff9a7a;color:#fff}#rmMic i{font-style:normal;font-size:18px}#rmChip{position:fixed;left:12px;bottom:58px;z-index:45;background:rgba(0,0,0,.75);color:#fff;border-radius:12px;padding:6px 12px;font:14px system-ui,sans-serif;direction:rtl;opacity:0;transition:opacity .3s;pointer-events:none;max-width:70vw}@media(max-width:600px){#rmMic span{display:none}}';document.head.appendChild(css);
  const chip=document.createElement('div');chip.id='rmChip';chip.setAttribute('role','status');document.body.appendChild(chip);
+//VOICE-BEGIN
  if(SRC){const b=document.createElement('button');b.id='rmMic';b.type='button';b.setAttribute('aria-label','פקודות קול');b.innerHTML='<i>🎤</i><span>פקודות קול</span>';b.onclick=()=>want?stopVoice():startVoice();document.body.appendChild(b)}
- return{cmd,A,startVoice,stopVoice,mode,get auto(){return auto},get listening(){return want}}})();
+//VOICE-END
+ return{A,mode,get cmd(){return typeof cmd=='function'?cmd:null},get startVoice(){return typeof startVoice=='function'?startVoice:null},get stopVoice(){return typeof stopVoice=='function'?stopVoice:null},get auto(){return auto},get listening(){return typeof want!='undefined'&&want}}})();
