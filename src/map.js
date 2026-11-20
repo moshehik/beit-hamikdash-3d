@@ -339,7 +339,7 @@ function mapRefresh(){document.querySelectorAll('#mper button').forEach((b,i)=>b
  if(mapOpen){if(curPer!=rgPrev){rgPrev=curPer;rgSel=null;rgCity=null;rgHov=null;rgSet(curPer,true);rgCityStrip()}mapInfo();rgQ();
   const on=document.querySelector('#mper button.on');if(on&&on.scrollIntoView)try{on.scrollIntoView({inline:'center',block:'nearest'})}catch(e){}}}
 function sizeMap(){const r=MC.parentElement.getBoundingClientRect();MC.width=Math.max(200,Math.round(r.width));MC.height=Math.max(200,Math.round(r.height));rgLay.width=rgOv.width=MC.width;rgLay.height=rgOv.height=MC.height;rgVer++;RGLIM[0]=rgMinZ();rgClampV();rgDraw()}
-function openMap(on){mapOpen=on;$('mapov').style.display=on?'flex':'none';
+function openMap(on){if(on&&typeof stopTour=='function')stopTour();mapOpen=on;$('mapov').style.display=on?'flex':'none';
  if(on){sizeMap();mapPlaces();if(!openMap.once){openMap.once=1;fitView(0,0,0)}rgPrev=curPer;rgSel=null;rgCity=null;rgCur={m:{},pols:[]};rgSet(curPer,true);rgCityStrip();mapInfo();
   document.querySelectorAll('#mper button').forEach((b,i)=>b.classList.toggle('on',i==curPer));rgIdleOn();rgQ()}else{clearInterval(rgIdleT);rgFly=null}}
 

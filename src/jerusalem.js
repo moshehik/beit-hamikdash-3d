@@ -44,8 +44,26 @@ LF_SYN.forEach(a=>LF_X(a[0]-50,a[0]+50,a[1]-50,a[1]+50));LF_HALL.forEach(a=>LF_X
 LF_MIK.forEach(c=>LF_X(c[0]-c[2]*6.5,c[0]+c[2]*6.5,c[1]-c[3]*8,c[1]+c[3]*8));LF_WELL.forEach(a=>LF_X(a[0]-10,a[0]+10,a[1]-10,a[1]+10));
 LF_X(LF_M1[0]-80,LF_M1[0]+80,LF_M1[1]-85,LF_M1[1]+85);LF_X(-655,-565,-330,-250);LF_MILL.forEach(a=>LF_X(a[0]-45,a[0]+45,a[1]-45,a[1]+45));
 LF_X(LF_PRESS[0]-45,LF_PRESS[0]+45,LF_PRESS[1]-40,LF_PRESS[1]+40);LF_X(LF_HANAN[0]-55,LF_HANAN[0]+55,LF_HANAN[1]-35,LF_HANAN[1]+35);
+/* ===== ירושלים החיה (jerusalem2.js): רחובות, שבילים, שערים ואתרים מחוץ לעיר. כאן רק ההגדרות, כדי שהבתים האקראיים לא ייפלו עליהם ===== */
+const STREETS=[
+ {n:'upper',p:[[-1010,-110],[-860,-105],[-700,-100],[-520,-100]],w:14},                                   // הרחוב הראשי של העיר העליונה (שוק)
+ {n:'valley',p:[[-335,-380],[-345,-250],[-350,-120],[-345,30],[-340,160],[-345,280],[-330,400]],w:12,mk:1,ex:30},    // רחוב גיא הטיופויון (שוק ובעלי מלאכה)
+ {n:'spine',p:[[-780,-100],[-790,120],[-770,330],[-720,560],[-640,800],[-520,1020]],w:10,mk:1,ex:20},
+ {n:'valleygate',p:[[-1140,-90],[-1100,150],[-1060,400],[-900,430],[-770,420]],w:9},
+ {n:'north',p:[[-170,-330],[-120,-560],[-80,-900],[-20,-1260],[0,-1500]],w:10},
+ {n:'pilgrim',p:PILGRIM,w:12,mk:2},                                                                          // שביל עולי הרגל מן השילוח
+ {n:'ash',p:[[-262,262],[-240,520],[-215,740],[-225,1000],[-235,1200],[-225,1340],[-210,1450],[-140,1600],[-50,1700]],w:8},   // דרך הדשן אל מחוץ לעיר
+ {n:'lower',p:[[-560,450],[-420,520],[-250,520]],w:8,mk:1,ex:20},
+ {n:'olives',p:[[300,0],[430,40],[580,10],[720,-60],[840,-140]],w:4,foot:1},
+ {n:'kidron',p:[[330,300],[370,620],[320,1000]],w:4,foot:1},
+ {n:'lepers',p:[[-1060,400],[-1250,450],[-1450,500],[-1590,520]],w:4,foot:1},
+ {n:'tannery',p:[[330,120],[430,200],[540,250]],w:4,foot:1}];
+const GATES=[[-225,1340,13,'שער האשפות (נחמיה ב:יג, ג:יג)'],[-1060,400,13,'שער הגיא (נחמיה ב:יג)'],[220,1120,13,'שער העין (נחמיה ג:טו)'],[0,-1520,13,'השער הצפוני']];   // [x,z,רדיוס הפתח,שם]
+const WALLS=[],HOUSES=[];
+const CITY_SITES={lepers:[-1600,520],ash:[-40,1710],tannery:[560,255]};
+EX.push([-1665,-1535,455,585],[-85,5,1665,1755],[505,615,215,295]);
 function scatter(x0,x1,z0,z1,n,w0,w1,h0,h1,ok){const out=[];let t=0;while(out.length<n&&t++<n*14){const x=x0+rand()*(x1-x0),z=z0+rand()*(z1-z0);
-  if(EX.some(e=>x>e[0]&&x<e[1]&&z>e[2]&&z<e[3])||near(x,z,PILGRIM,14)||near(x,z,MAINST,12)||near(x,z,LF_AQ,22)||(ok&&!ok(x,z)))continue;
+  if(EX.some(e=>x>e[0]&&x<e[1]&&z>e[2]&&z<e[3])||near(x,z,PILGRIM,14)||near(x,z,MAINST,12)||near(x,z,LF_AQ,22)||STREETS.some(s=>near(x,z,s.p,s.w/2+(s.ex||11)))||(ok&&!ok(x,z)))continue;
   const w=w0+rand()*(w1-w0),d=w0+rand()*(w1-w0),h=h0+rand()*(h1-h0);
   out.push({x,y:terrH(x,z)-2,z,sx:w,sy:h+2,sz:d,ry:(rand()-.5)*.6,c:palette[rand()*5|0].clone().multiplyScalar(.82+rand()*.28)})}return out}
 function tube(g,a,b,w,hh,mat,y0){box(g,(a[0]+b[0])/2,y0,(a[1]+b[1])/2,Math.abs(b[0]-a[0])+w,hh,Math.abs(b[1]-a[1])+w,mat,{ns:1})}
@@ -54,11 +72,11 @@ const mkP=(n,min,max=99)=>{const g=new T.Group();g.userData={min,max};gE.add(g);
 const gUp=mkP('pUp',4),gLow=mkP('pLow',0),gOph=mkP('pOph',4),gNew=mkP('pNew',5),gTyr=mkP('pTyr',4),gW1=mkP('pW1',4),gWN=mkP('pWN',0,3),gW2=mkP('pW2',4),gW3=mkP('pW3',6,6),gPal=mkP('pPal',5),gAnt=mkP('pAnt',5),gBar=mkP('pBar',0,4),gAkr=mkP('pAkr',3,4),gBeth=mkP('pBeth',2),gHer=mkP('pHer',5),gHas=mkP('pHas',4);
 /* ---------- שכונות (אינסטנסים) ---------- */
 const matH=new T.MeshStandardMaterial({color:0xb4a98e,roughness:.95});
-inst(gUp,scatter(-1350,-350,-300,1280,700,13,30,7,17),matH);                              // העיר העליונה
-inst(gLow,scatter(-120,330,330,1300,520,10,22,6,12,(x,z)=>terrH(x,z)>-200),matH);        // עיר דוד והעיר התחתית
+{const h=scatter(-1350,-350,-300,1280,700,13,30,7,17);inst(gUp,h,matH);HOUSES.push([gUp,h])}                              // העיר העליונה
+{const h=scatter(-120,330,330,1300,520,10,22,6,12,(x,z)=>terrH(x,z)>-200);inst(gLow,h,matH);HOUSES.push([gLow,h])}        // עיר דוד והעיר התחתית
 inst(gOph,scatter(-250,250,265,420,24,30,60,12,22),matH);                                  // האופל
-inst(gNew,scatter(-560,320,-1000,-380,230,13,30,7,14),matH);                               // בית חדתא (העיר החדשה)
-inst(gTyr,scatter(-420,-275,-250,260,130,10,22,6,12),matH);                                // השוק בגיא הטיופויון
+{const h=scatter(-560,320,-1000,-380,230,13,30,7,14);inst(gNew,h,matH);HOUSES.push([gNew,h])}                               // בית חדתא (העיר החדשה)
+{const h=scatter(-420,-275,-250,260,130,10,22,6,12);inst(gTyr,h,matH);HOUSES.push([gTyr,h])}                                // השוק בגיא הטיופויון
 {const tr=[];rep(380,()=>{const x=520+rand()*900,z=-500+rand()*900,h=terrH(x,z);if(h>-150&&!EX.some(e=>x>e[0]&&x<e[1]&&z>e[2]&&z<e[3]))tr.push({x,y:h-.5,z,sx:7,sy:5,sz:7,c:new T.Color().setHSL(.22,.3,.3+rand()*.12)})});
  rep(70,()=>{const x=330+rand()*120,z=-100+rand()*500;tr.push({x,y:terrH(x,z)-.5,z,sx:6,sy:5,sz:6,c:new T.Color().setHSL(.24,.35,.3)})});
  inst(gE,tr,new T.MeshStandardMaterial({color:0xffffff,roughness:1}),new T.SphereGeometry(.5,7,5))}                    // זיתים בהר הזיתים ובקדרון
@@ -66,9 +84,9 @@ inst(gTyr,scatter(-420,-275,-250,260,130,10,22,6,12),matH);                     
 /* ---------- חומות: ראשונה (עיר עליונה ועיר דוד), שנייה (אל אנטוניה), שלישית (אגריפס) ---------- */
 function wallPath(pts,hgt,th,every,col,g=gE){const P=pts.map(p=>[p[0]*2,p[1]*2]),it=[],tw=[];let acc=0;
  for(let i=0;i<P.length-1;i++){const a=P[i],b=P[i+1],L=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.max(1,Math.ceil(L/14)),ry=-Math.atan2(b[1]-a[1],b[0]-a[0]);
-  for(let k=0;k<n;k++){const t=(k+.5)/n,x=a[0]+(b[0]-a[0])*t,z=a[1]+(b[1]-a[1])*t,sg=L/n+.4,y=terrH(x,z)-4;it.push({x,y,z,sx:sg,sy:hgt+4,sz:th,ry,c:col});acc+=sg;
-   if(acc>=every){acc=0;tw.push({x,y,z,sx:22,sy:hgt+16,sz:22,ry,c:col})}}}
- inst(g,it,matH);inst(g,tw,matH)}
+  for(let k=0;k<n;k++){const t=(k+.5)/n,x=a[0]+(b[0]-a[0])*t,z=a[1]+(b[1]-a[1])*t,sg=L/n+.4,y=terrH(x,z)-4;const gate=GATES.some(q=>Math.hypot(q[0]-x,q[1]-z)<q[2]+4);if(!GATES.some(q=>Math.hypot(q[0]-x,q[1]-z)<q[2]))it.push({x,y,z,sx:sg,sy:hgt+4,sz:th,ry,c:col});acc+=sg;
+   if(acc>=every){acc=0;if(!gate)tw.push({x,y,z,sx:22,sy:hgt+16,sz:22,ry,c:col})}}}
+ inst(g,it,matH);inst(g,tw,matH);WALLS.push([g,it,hgt,th])}
 const cW1=new T.Color(.86,.8,.66),cW2=new T.Color(.8,.74,.6),cW3=new T.Color(.92,.86,.72);
 wallPath([[125,125],[125,200],[125,400],[110,560],[40,700],[-20,720],[-60,690]],20,8,60,cW2,gWN);wallPath([[-125,125],[-70,300],[-90,500],[-60,690]],20,8,60,cW2,gWN);   // חומת עיר דוד (נחמיה/הסלווקים)
 wallPath([[-480,-30],[-380,-50],[-280,-40],[-190,-20],[-130,-30]],26,10,64,cW1,gW1);

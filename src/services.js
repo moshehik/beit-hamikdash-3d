@@ -306,6 +306,8 @@ const SV=(()=>{
   const f=Math.max(.25,(h0-.9)/L);return V3(t.x+ex*f,t.y+ey*f,t.z+ez*f)}
  function flyTo(p,t,dur){tw=null;S.camTw={t:0,dur:Math.max(.01,dur),p0:camera.position.clone(),t0:controls.target.clone(),p1:p,t1:t}}
  function followOff(A){const a=A.yaw+2.5;return V3(Math.sin(a)*16,9,Math.cos(a)*16)}
+ const RET_MS=4000;let _retB=null,_retOn=false;   /* אחרי שהמשתמש הזיז את המצלמה: מבט חופשי ו-4 שניות אחר כך חזרה מונפשת אל הכהן */
+ function retChip(on){if(on===_retOn)return;_retOn=on;if(!_retB){_retB=document.createElement('button');_retB.id='svRet';_retB.type='button';_retB.textContent='🎯 חוזרים אל הכהן… (לחצו לחזרה מיידית)';_retB.onclick=()=>{if(S){S.drag=false;S.ut=0}};document.body.appendChild(_retB)}_retB.classList.toggle('on',on)}
  function applyCam(c,jump){if(walk)return;
   if(S.camMode=='free')return;
   if(S.camMode=='follow'){if(c&&c.follow&&S.actors[c.follow])S.follow=c.follow;if(c&&c.follow)S.fboost=1.6;if(jump){S.fd=null;S.fAz=null;const A=S.actors[S.follow];if(A){const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,.01)}}return}   /* סיור רציף: אין קפיצה לתחנה – המצלמה רק ממשיכה אחרי הכהן */
@@ -315,7 +317,9 @@ const SV=(()=>{
   if(S.camTw){const w=S.camTw;w.t+=dt/w.dur;const k=Math.min(1,w.t),e=ease(k);camera.position.lerpVectors(w.p0,w.p1,e);controls.target.lerpVectors(w.t0,w.t1,e);if(k>=1)S.camTw=null;return}
   if(S.camMode=='follow'){const A=S.actors[S.follow];if(!A)return;
    /* מצלמת מעקב רציפה: גולשת אחרי הכהן, מסתובבת לאט אל אחורי כיוון ההליכה, ומתקרבת כשקיר חוסם (ומתרחקת חזרה כשמתפנה) */
-   const t=V3(A.x,A.y+3,A.z),tg=controls.target,now=performance.now(),inter=S.ut&&now-S.ut<2500;
+   const t=V3(A.x,A.y+3,A.z),tg=controls.target,now=performance.now(),inter=S.drag||(S.ut&&now-S.ut<RET_MS);
+   if(inter){retChip(true);S.away=true;return}
+   if(S.away){S.away=false;retChip(false);const o0=camera.position.clone().sub(tg),dist=Math.min(60,Math.max(9,o0.length())),fo=followOff(A).normalize().multiplyScalar(dist);S.fd=null;flyTo(t.clone().add(fo),t,2);return}
    if(S.fboost>0)S.fboost-=dt;const k=1-Math.exp(-dt*(S.fboost>0?6:3.5)),d=t.clone().sub(tg).multiplyScalar(k);tg.add(d);camera.position.add(d);
    if(!inter&&A.speed>1.2){const o=camera.position.clone().sub(tg),az=Math.atan2(o.x,o.z),w=A.yaw+2.7,az2=az+angD(az,w)*(1-Math.exp(-dt*.55)),r=Math.hypot(o.x,o.z);camera.position.x=tg.x+Math.sin(az2)*r;camera.position.z=tg.z+Math.cos(az2)*r}
    const o=camera.position.clone().sub(tg),L=o.length();if(inter||!S.fd||L<2)S.fd=Math.max(4,L);
@@ -337,7 +341,8 @@ const SV=(()=>{
   const p=document.createElement('div');p.id='svc';p.className='panel';p.style.display='none';
   p.innerHTML='<div class="svh"><b>🕎 סדרי העבודה</b><span id="svMin" class="svx" title="מזער">▁</span><span id="svX" class="svx">✕</span></div><div id="svList"></div><div id="svPlay" style="display:none"></div>';
   document.body.appendChild(p);ui.panel=p;
-  const c=document.createElement('div');c.id='svCap';c.className='panel';c.style.display='none';c.innerHTML='<div class="svn" id="svCapN"></div><div id="svCapT"></div><div class="svs" id="svCapS"></div>';document.body.appendChild(c);ui.cap=c;ui.capT=$('svCapT');
+  const c=document.createElement('div');c.id='svCap';c.className='panel';c.style.display='none';c.innerHTML='<button type="button" id="svCapMin" aria-label="מזער או הרחב כיתוב"></button><div class="svn" id="svCapN"></div><div id="svCapT"></div><div class="svs" id="svCapS"></div>';document.body.appendChild(c);ui.cap=c;ui.capT=$('svCapT');
+  {const b=$('svCapMin'),LSg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},LSs=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};const paint=m=>{c.classList.toggle('cmin',m);b.textContent=m?'💬 כיתוב':'▁';b.title=m?'הצג את הכיתוב':'מזער את הכיתוב'};paint(LSg('bh_capmin')==='1');b.onclick=e=>{e.stopPropagation();const m=!c.classList.contains('cmin');paint(m);LSs('bh_capmin',m?'1':'0')}}
   $('svX').onclick=()=>show(false);
   $('svMin').onclick=()=>{const m=p.classList.toggle('min');$('svMin').textContent=m?'▢':'▁'};
   const L=$('svList'),cats=['תמידין','קרבנות','מנחות','אחר'];
@@ -356,7 +361,7 @@ const SV=(()=>{
   const kidBtn=()=>{const b=$('svKid');b.classList.toggle('off',!KID);b.title=KID?'שפת ילדים (סיפור) – לחצו למעבר ללשון המקורות':'לשון המקורות – לחצו למעבר לשפת ילדים'};kidBtn();
   $('svKid').onclick=()=>{KID=!KID;try{localStorage.setItem('bh_kid',KID?'1':'0')}catch(e){}kidBtn();if(S){const st=S.sc.steps[S.idx];$('svCapT').textContent=stText(st);if(S.phase=='run'&&!AUD.speaking)S.minT=1.4+stText(st).length*.03}};
   document.querySelectorAll('input[name=svcm]').forEach(r=>r.onchange=()=>{if(!S||!r.checked)return;S.camMode=r.value;S.camTw=null;if(r.value=='follow')applyCam(null,false),applyFollowNow();else if(r.value=='script')applyCam(S.sc.steps[S.idx].cam,false)});
-  renderer.domElement.addEventListener('pointerdown',()=>{if(S){S.camTw=null;S.ut=performance.now()}});renderer.domElement.addEventListener('wheel',()=>{if(S)S.ut=performance.now()},{passive:true});window.addEventListener('pointerup',()=>{if(S&&S.ut)S.ut=performance.now()});kBuild()}
+  renderer.domElement.addEventListener('pointerdown',()=>{if(S){S.camTw=null;S.ut=performance.now();S.drag=true}});renderer.domElement.addEventListener('wheel',()=>{if(S)S.ut=performance.now()},{passive:true});window.addEventListener('pointerup',()=>{if(S){S.drag=false;if(S.ut)S.ut=performance.now()}});kBuild()}
  /* ================= ממשק ילדים – עיצוב מחדש (18.11.2026): מסך כרטיסי סדרים, סרגל התקדמות (נקודות לחיצות), כפתורי סמל גדולים, סמל הפעולה ליד הכהן וסיכום בסוף.
    נראה רק ב-body.kid (kidui.js); במצב מבוגרים נשאר הפאנל הישן (#svList/#svPlay). אין טקסט הסברי חדש – רק שמות קצרים וסמלים; תגיות הפעולה (KTAG) מ-kidui.js.
    נטפרי: אייקון PNG רק דרך blob: (UI_ICONS[מזהה-סדר] ← src/ui_icons.js, אם קיים), גיבוי: אימוג'י. */
@@ -424,10 +429,14 @@ const SV=(()=>{
  function uiOpenScript(){$('svList').style.display='none';$('svPlay').style.display='block';$('svT').textContent=S.sc.name;$('svSrc').textContent=S.sc.src||'';ui.cap.style.display='block';$('svMore').style.display='none';ui.panel.classList.remove('min');$('svMin').textContent='▁';kOpen();
   const st=$('svSteps');st.innerHTML='';S.sc.steps.forEach((s,i)=>{const b=document.createElement('button');b.className='svst';b.textContent=(i+1)+'. '+(s.title||s.text.slice(0,38)+(s.text.length>38?'…':''));b.onclick=()=>{goTo(i);S.playing=true;uiState()};st.appendChild(b)});
   S.speed=+$('svSpd').value;document.querySelectorAll('input[name=svcm]').forEach(r=>r.checked=r.value==S.camMode);AUD.btn();uiState()}
- function uiBack(){if(!ui.panel)return;$('svList').style.display='block';$('svPlay').style.display='none';ui.cap.style.display='none';kBack()}
+ function uiBack(){retChip(false);if(!ui.panel)return;$('svList').style.display='block';$('svPlay').style.display='none';ui.cap.style.display='none';kBack()}
  function uiState(){if(!S)return;$('svPP').textContent=S.phase=='end'?'↻':S.playing?'⏸':'▶';kState()}
  function uiStep(){const st=S.sc.steps[S.idx];if(typeof LIFE!='undefined'&&LIFE.tourStep)LIFE.tourStep(S.sc.id,S.idx);$('svCapN').textContent='שלב '+(S.idx+1)+' מתוך '+S.sc.steps.length;$('svCapT').textContent=stText(st);$('svCapS').textContent=st.src?'מקור: '+st.src:'';
   document.querySelectorAll('.svst').forEach((b,i)=>b.classList.toggle('on',i==S.idx));const on=document.querySelector('.svst.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest'});uiState();uiProg();kStep()}
  function uiProg(){if(!S)return;const n=S.sc.steps.length;const f=(S.idx+(S.phase=='run'?Math.min(1,S.t/Math.max(.1,S.minT)):1))/n;$('svProg').style.width=(100*f)+'%';kProg()}
- return{rampY,update,open,close,show,build,get S(){return S},goTo,SVL}
+  function pauseT(){if(S&&S.playing){S.playing=false;uiState()}}
+ function playT(){if(S&&!S.playing){if(S.phase=='end'){goTo(0)}S.playing=true;uiState()}}
+ function stepBy(d){if(!S)return;const n=S.sc.steps.length;goTo(Math.max(0,Math.min(n-1,S.idx+d)));S.playing=true;uiState()}
+ function stopT(){if(ui.panel&&ui.panel.style.display!='none')show(false);AUD.stop()}   /* יציאה מלאה מהסיור: עוצר, סוגר ומחזיר את הממשק */
+ return{rampY,update,open,close,show,build,get S(){return S},goTo,SVL,pause:pauseT,play:playT,step:stepBy,stop:stopT,get isOpen(){return !!ui.panel&&ui.panel.style.display!='none'}}
 })();

@@ -91,8 +91,9 @@ function walkTo(x,z,yd,fl){const f1=fl===undefined?floorY(x,z):floorY(x,z,fl),d=
  if(d<2||d>260||!pathClear(x,z)){teleport(x,z,yd,fl);return}
  let da=yd*Math.PI/180-yaw;da=Math.atan2(Math.sin(da),Math.cos(da));wt={t:0,dur:Math.min(3.2,Math.max(.9,d/42)),x0:px,z0:pz,a0:yaw,da,x1:x,z1:z,fl:f1}}
 function teleport(x,z,yd,fl){wt=null;px=x;pz=z;yaw=yd*Math.PI/180;pitch=0;pfl=fl===undefined?floorY(x,z):floorY(x,z,fl);py=pfl+EYE}
-function setWalk(on){walk=on;controls.enabled=!on;$('bWalk').textContent=on?'🛰️ חזרה למבט־על':'🚶 טיול ברגל';$('lookb').style.display=on?'flex':'none';$('hint').style.display=on?'block':'none';
- if(on){$('hint').textContent='W A S D · Shift מהר · גרירה להסתכלות · R/F או גלגלת: מעלה/מטה · Z ישר · Esc ליציאה';
+function stopTour(){try{if(typeof SV!='undefined'&&SV.isOpen)SV.stop()}catch(e){}}   /* מעבר למצב אחר באתר עוצר את הסיור וההקראה */
+function setWalk(on){if(on)stopTour();walk=on;controls.enabled=!on;$('bWalk').textContent=on?'🛰️ חזרה למבט־על':'🚶 טיול ברגל';$('lookb').style.display=on?'flex':'none';$('hint').style.display=on?'block':'none';
+ if(on){$('hint').textContent='לחיצה על נקודה בקרקע – הולכים אליה · W A S D · Shift מהר · גרירה להסתכלות · R/F או גלגלת: מעלה/מטה · Z ישר · Esc ליציאה';
   const w=pendingWalk||(()=>{const t=controls.target;return[t.x,t.z+10,0]})();let[x,z,y,fl]=w;teleport(x,z,y,fl);camera.rotation.order='YXZ'}
  else{const f=new T.Vector3(Math.sin(yaw),0,-Math.cos(yaw));camera.rotation.set(0,0,0);const fy=(Math.abs(px)<252&&Math.abs(pz)<252&&pfl<0)?0:floorY(px,pz,pfl>0&&floorY(px,pz)<-5?pfl:undefined);controls.target.set(px,fy,pz);camera.position.set(px-f.x*60,fy+45,pz-f.z*60);controls.update()}}
 $('bWalk').onclick=()=>setWalk(!walk);
@@ -102,6 +103,17 @@ let drag=false,lx=0,ly=0;const cvs=renderer.domElement;
 cvs.addEventListener('pointerdown',e=>{if(walk){drag=true;lx=e.clientX;ly=e.clientY;cvs.setPointerCapture(e.pointerId)}});
 cvs.addEventListener('pointermove',e=>{if(walk&&drag){yaw+=(e.clientX-lx)*.0042;pitch=Math.max(-1.3,Math.min(1.3,pitch-(e.clientY-ly)*.0042));lx=e.clientX;ly=e.clientY}});
 cvs.addEventListener('pointerup',()=>drag=false);
+/* בטיול ברגל: לחיצה (בלי גרירה) על נקודה בקרקע – הולכים אליה; עוצרים לפני מכשול. מקשי ההליכה מבטלים. */
+let cw=null;cvs.addEventListener('pointerdown',e=>{cw={x:e.clientX,y:e.clientY,t:performance.now()}},true);
+cvs.addEventListener('pointerup',e=>{const s=cw;cw=null;if(!walk||!s||e.button>0||Math.hypot(e.clientX-s.x,e.clientY-s.y)>6||performance.now()-s.t>800)return;clickWalk(e)});
+const _wm=(()=>{const g=new T.Mesh(new T.RingGeometry(.9,1.25,32),new T.MeshBasicMaterial({color:0x7dffb0,transparent:true,opacity:.9,depthTest:false,side:T.DoubleSide}));g.rotation.x=-Math.PI/2;g.renderOrder=20;g.visible=false;scene.add(g);return g})();let _wmT=0;
+function wMark(x,z,ok){_wm.position.set(x,floorY(x,z,pfl)+.25,z);_wm.material.color.set(ok?0x7dffb0:0xffb347);_wmT=performance.now();_wm.visible=true;(function an(){const u=(performance.now()-_wmT)/1400;if(u>=1||!walk){_wm.visible=false;return}_wm.scale.setScalar(1+u*1.4);_wm.material.opacity=.9*(1-u);requestAnimationFrame(an)})()}
+function clickWalk(e){camera.updateMatrixWorld();const r=cvs.getBoundingClientRect(),v=new T.Vector3(((e.clientX-r.left)/r.width)*2-1,-((e.clientY-r.top)/r.height)*2+1,.5).unproject(camera),o=camera.position,d=v.sub(o).normalize();
+ let prev=0,hx=null,hz=null;for(let s=1.5;s<520;s+=s<60?.75:2){const x=o.x+d.x*s,y=o.y+d.y*s,z=o.z+d.z*s;if(!inBounds(x,z))break;const f=floorY(x,z,pfl);if(y<=f+.15){let a=prev,b=s;for(let i=0;i<8;i++){const m=(a+b)/2;if(o.y+d.y*m<=floorY(o.x+d.x*m,o.z+d.z*m,pfl)+.15)b=m;else a=m}hx=o.x+d.x*b;hz=o.z+d.z*b;break}prev=s}
+ if(hx==null)return;let dx=hx-px,dz=hz-pz,D=Math.hypot(dx,dz);if(D<1.5)return;if(D>300){dx*=300/D;dz*=300/D;D=300}
+ const n=Math.ceil(D/1.5);let f=floorY(px,pz,pfl),ex=px,ez=pz,ef=f,stopped=false;for(let i=1;i<=n;i++){const x=px+dx*i/n,z=pz+dz*i/n;if(!inBounds(x,z)||blocked(x,z,f)){stopped=true;break}const nf=floorY(x,z,f);if(Math.abs(nf-f)>3.5){stopped=true;break}f=nf;ex=x;ez=z;ef=nf}
+ const L=Math.hypot(ex-px,ez-pz);if(L<1.5){wMark(hx,hz,false);return}wMark(ex,ez,!stopped);
+ let da=Math.atan2(dx,-dz)-yaw;da=Math.atan2(Math.sin(da),Math.cos(da));wt={t:0,dur:Math.min(14,Math.max(.6,L/20)),x0:px,z0:pz,a0:yaw,da,x1:ex,z1:ez,fl:ef}}
 cvs.addEventListener('wheel',e=>{if(walk){e.preventDefault();pitch=Math.max(-1.5,Math.min(1.5,pitch-Math.sign(e.deltaY)*.12))}},{passive:false});
 [['lkU','KeyR'],['lkD','KeyF']].forEach(([i,k])=>{const b=$(i);['pointerdown'].forEach(ev=>b.addEventListener(ev,e=>{keys[k]=1;e.preventDefault()}));['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=0))});
 const blocked=(x,z,f)=>{for(const c of COL)if(!(c[6]&&!c[6].visible)&&f+1<c[5]&&f+4>c[4]&&x>c[0]-RAD&&x<c[1]+RAD&&z>c[2]-RAD&&z<c[3]+RAD)return true;return false};
@@ -153,7 +165,7 @@ const clock=new T.Clock();let fr=0;
 function loop(){requestAnimationFrame(loop);if(mapOpen||kidOpen)return;const dt=Math.min(.05,clock.getDelta()),t=clock.elapsedTime;
  if(tw){tw.t+=dt/tw.dur;const k=Math.min(1,tw.t),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;camera.position.lerpVectors(tw.p0,tw.p1,e);controls.target.lerpVectors(tw.t0,tw.t1,e);if(k>=1)tw=null}
  SV.update(dt);if(walk)stepWalk(dt);else controls.update();
- LIFE.update(dt,t);CROWD.update(t,dt);ambUpdate&&ambUpdate(t,dt);
+ LIFE.update(dt,t);CROWD.update(t,dt);if(typeof CITY2!='undefined')CITY2.update(dt,t);ambUpdate&&ambUpdate(t,dt);
  fires.forEach((f,i)=>{f.scale.set(1+.15*Math.sin(t*9+i),1+.3*Math.sin(t*7+i*2),1+.15*Math.cos(t*8+i));f.rotation.y=t*2+i});
  smoke.forEach(s=>{const p=(t*.045+s.userData.p)%1;s.position.set(-26+Math.sin(p*9+s.userData.p*20)*1.6*p,YA+16+p*120,-43+Math.cos(p*7)*1.4*p);const sc=6+p*26;s.scale.set(sc,sc,1);s.material.opacity=.55*(1-p)*Math.min(1,p*8)});
  updLabels();if(++fr%4==0)drawMap();
@@ -174,8 +186,8 @@ $('per').onchange=e=>setPeriod(e.target.value);
    if(!bu){svgFb(ic,k);done();return}
    const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{ic.textContent='';ic.classList.add('im');ic.appendChild(im);done()};im.onerror=()=>{svgFb(ic,k);done()};im.src=bu});
   setTimeout(()=>L.classList.add('icons'),1500)}
- L.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go;if(k!='about')hide();act[k]()});
+ L.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{const k=b.dataset.go;if(k!='tours'&&k!='about')stopTour();if(k!='about')hide();act[k]()});
  $('ldMus').onclick=()=>{AUD.setMusic(!AUD.music)};
- $('bHome').onclick=()=>{L.style.display='flex';setTimeout(()=>L.classList.remove('out'),30)}}
+ $('bHome').onclick=()=>{stopTour();L.style.display='flex';setTimeout(()=>L.classList.remove('out'),30)}}
 SV.build();$('bSvc').onclick=()=>SV.show(true);$('load').style.display='none';goto(P[1]);setPeriod(5);loop();
 window.__dbg={scene,camera,controls,goto,P,setWalk,teleport,floorY,get walk(){return walk}};

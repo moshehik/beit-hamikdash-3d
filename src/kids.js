@@ -266,7 +266,7 @@ function kPickReg(r,fly){if(!r){kSel=null;kCity=null;kInfo();kQ();return}kCity=n
 function kReset(){kSel=null;kCity=null;const a={lon:KV.lon,lat:KV.lat,z:KV.z};kFit();const b={lon:KV.lon,lat:KV.lat,z:KV.z};KV.lon=a.lon;KV.lat=a.lat;KV.z=a.z;kInfo();kFlyTo(b.lon,b.lat,b.z);kQ()}
 function kSetLayer(i){if(i==kLayer)return;kPrev=kLayer;kLayer=i;kLayerAt=performance.now();kSel=null;kCity=null;kHov=null;kFly=null;kCityStrip();kInfo();kQ()}
 function kSize(){const r=kc.parentElement.getBoundingClientRect();kc.width=Math.max(200,Math.round(r.width));kc.height=Math.max(200,Math.round(r.height));kFit();kDraw()}
-function openKids(on){kidOpen=on;$('kidov').style.display=on?'flex':'none';if(on){kSize();kLayerAt=performance.now();kPrev=null;kCityStrip();kInfo();kIdleOn();kQ()}else{clearInterval(kIdleT);kFly=null}}
+function openKids(on){if(on&&typeof stopTour=='function')stopTour();kidOpen=on;$('kidov').style.display=on?'flex':'none';if(on){kSize();kLayerAt=performance.now();kPrev=null;kCityStrip();kInfo();kIdleOn();kQ()}else{clearInterval(kIdleT);kFly=null}}
 function kPick(x,y){for(let i=kPins.length-1;i>=0;i--){const p=kPins[i];if(Math.hypot(p[0]-x,p[1]-y)<26||Math.hypot(p[0]-x,p[1]-y+18)<24)return{city:p[2]}}
  const m=ks2m(x,y),rs=kRegs(kLayer);for(let i=rs.length-1;i>=0;i--)for(const p of rs[i].rings)if(inPoly(p,m[0],m[1])&&inPoly(KGEOM.land,m[0],m[1]))return{reg:rs[i]};return null}
 const KG=mapGest(kc,KV,[50,1100],()=>{kFly=null;kDraw()},(x,y)=>{const h=kPick(x,y);if(h&&h.city)kPickCity(h.city);else if(h)kPickReg(h.reg,false);else kPickReg(null)},(x,y)=>{const h=kPick(x,y),r=h&&h.reg||null;if(r!==kHov){kHov=r;kc.style.cursor=h?'pointer':'grab';kQ()}});

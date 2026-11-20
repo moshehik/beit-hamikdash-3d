@@ -61,14 +61,20 @@ const AUD=(()=>{
   if(!keepDuck)setDuck(1)}
  const BU={};   /* הקראות כ-blob: ולא כ-data-URI (נטפרי) */
  function blobUrl(k,u){if(BU[k])return BU[k];try{const i=u.indexOf(','),b=atob(u.slice(i+1)),n=b.length,a=new Uint8Array(n);for(let j=0;j<n;j++)a[j]=b.charCodeAt(j);return BU[k]=URL.createObjectURL(new Blob([a],{type:'audio/mpeg'}))}catch(e){return u}}
+ /* מקשי מדיה במקלדת/אוזניות/מסך נעילה: מחוברים לסיור (לא רק לרכיב האודיו), כדי שהכל יישאר מסונכרן */
+ function msState(s){try{if(navigator.mediaSession)navigator.mediaSession.playbackState=s}catch(e){}}
+ function msInit(){const ms=navigator.mediaSession;if(!ms||msInit.d)return;msInit.d=1;const H=(a,f)=>{try{ms.setActionHandler(a,f)}catch(e){}};const tour=()=>typeof SV!='undefined'&&SV.isOpen&&SV.S;
+  H('play',()=>{if(tour())SV.play();else resume()});H('pause',()=>{if(tour())SV.pause();else pause()});H('stop',()=>{if(tour())SV.pause();else{stop();msState('paused')}});
+  H('previoustrack',()=>{if(tour())SV.step(-1)});H('nexttrack',()=>{if(tour())SV.step(1)})}
+ function msMeta(key){try{if(!navigator.mediaSession||typeof MediaMetadata=='undefined')return;const S=typeof SV!='undefined'&&SV.S;const st=S&&S.sc&&S.sc.steps[S.idx];navigator.mediaSession.metadata=new MediaMetadata({title:(S&&S.sc?S.sc.name:'הקראה')+(S?' · שלב '+(S.idx+1):''),artist:'בית המקדש השני',album:'סדרי העבודה'})}catch(e){}}
  function narr(key,rate,onEnd){stop(true);clearTimeout(duckT);const e=NR[key];if(!narrWanted||!e){setDuck(1);onEnd&&onEnd();return false}
-  const a=new Audio(blobUrl(key,e[0]));a.playbackRate=Math.max(.5,Math.min(2,rate||1));const c={a,key,end:onEnd};cur=c;
+  const a=new Audio(blobUrl(key,e[0]));a.playbackRate=Math.max(.5,Math.min(2,rate||1));const c={a,key,end:onEnd};cur=c;msInit();msMeta(key);msState('playing');
   const fin=()=>{if(cur!==c)return;cur=null;clearTimeout(duckT);duckT=setTimeout(()=>{if(!cur)setDuck(1)},350);onEnd&&onEnd()};a.onended=fin;a.onerror=fin;
   setDuck(.2);const pr=a.play();if(pr&&pr.catch)pr.catch(()=>fin());return true}
  const has=key=>!!NR[key];
  const dur=key=>NR[key]?NR[key][1]:0;
- function pause(){if(cur&&!cur.a.paused)cur.a.pause()}
- function resume(){if(cur&&cur.a.paused){const pr=cur.a.play();if(pr&&pr.catch)pr.catch(()=>{})}}
+ function pause(){if(cur&&!cur.a.paused)cur.a.pause();msState('paused')}
+ function resume(){if(cur&&cur.a.paused){const pr=cur.a.play();if(pr&&pr.catch)pr.catch(()=>{})}if(cur)msState('playing')}
  function rate(r){if(cur)cur.a.playbackRate=Math.max(.5,Math.min(2,r))}
  function setNarr(on){narrWanted=on;LS.set('bh_narr',on?'1':'0');if(!on)stop();btn()}
  /* אתחול: לחיצה ראשונה בדף מפעילה מנגינה (מדיניות הדפדפן) */

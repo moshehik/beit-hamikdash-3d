@@ -47,7 +47,7 @@ const side=document.createElement('div');side.id='kidbar';side.appendChild(mkMus
 body.appendChild(top);
 
 /* ---------- שעון מכני עגול + תצוגה דיגיטלית במרכז: לחיצה עוצרת/ממשיכה את הזמן; גרירה סביב השעון מסובבת את הזמן ---------- */
-const NS='http://www.w3.org/2000/svg',kt=document.createElement('div');kt.id='ktime';kt.setAttribute('role','button');kt.setAttribute('aria-label','שעון: לחצו לעצור או להמשיך את הזמן, גררו כדי לסובב');
+const NS='http://www.w3.org/2000/svg',kt=document.createElement('div');kt.id='ktime';kt.setAttribute('role','button');kt.setAttribute('aria-label','שעון: לחצו לבחירת שעה ומהירות, גררו כדי לסובב');kt.setAttribute('aria-haspopup','dialog');kt.setAttribute('aria-expanded','false');
 const sv=(tag,at,par)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);(par||svg).appendChild(e);return e};
 const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox','0 0 120 120');kt.appendChild(svg);
 {const df=sv('defs',{});const g1=sv('linearGradient',{id:'kcB',x1:0,y1:0,x2:1,y2:1},df);sv('stop',{offset:0,'stop-color':'#ffe9a0'},g1);sv('stop',{offset:.5,'stop-color':'#d9a83a'},g1);sv('stop',{offset:1,'stop-color':'#8a6420'},g1);
@@ -77,9 +77,44 @@ kt.addEventListener('pointerdown',e=>{cdrag={a0:ang(e),h0:curH(),moved:false,las
 kt.addEventListener('pointermove',e=>{if(!cdrag)return;const a=ang(e);let d=a-cdrag.last;if(d>180)d-=360;if(d<-180)d+=360;cdrag.last=a;cdrag.acc+=d;
  if(!cdrag.moved&&Math.abs(cdrag.acc)<4)return;cdrag.moved=true;if(auto())setAuto(false);   /* גרירה: זמן ידני – 30° = שעה */
  const h=((cdrag.h0+cdrag.acc/30)%24+24)%24;const tm=$('tm');if(tm){tm.value=h;tm.dispatchEvent(new Event('input'))}showH(h)});
-const end=e=>{if(!cdrag)return;const c=cdrag;cdrag=null;try{kt.releasePointerCapture(e.pointerId)}catch(x){}if(!c.moved)setAuto(!auto())};   /* לחיצה: עצירה/המשך */
+const end=e=>{if(!cdrag)return;const c=cdrag;cdrag=null;try{kt.releasePointerCapture(e.pointerId)}catch(x){}if(!c.moved)toggleTP()};   /* לחיצה: חלונית שעה ומהירות (עצירה/המשך בתוכה) */
 kt.addEventListener('pointerup',end);kt.addEventListener('pointercancel',()=>{cdrag=null});
-kt.addEventListener('keydown',e=>{if(e.key==' '||e.key=='Enter'){e.preventDefault();setAuto(!auto())}});kt.tabIndex=0;
+kt.addEventListener('keydown',e=>{if(e.key==' '||e.key=='Enter'){e.preventDefault();toggleTP()}else if(e.key=='Escape')closeTP()});kt.tabIndex=0;
+/* ---------- חלונית שעה ומהירות: צפה, מחוברת לשעון (חץ), נפתחת בלחיצה ---------- */
+const pop=document.createElement('div');pop.id='ktpop';pop.setAttribute('role','dialog');pop.setAttribute('aria-label','בחירת שעה ומהירות הזמן');
+pop.innerHTML='<div class="tph"><b>🕐 שעה ומהירות</b><button type="button" id="ktpx" aria-label="סגור">✕</button></div>'
+ +'<div class="tpnow"><span class="tpd" id="ktpd">00:00</span><span class="tpl" id="ktpl"></span><span class="tps" id="ktps"></span></div>'
+ +'<div class="tpctl"><div class="tpsec">בחרו שעה ביום</div><input type="range" id="ktpr" min="0" max="23.99" step="0.05" aria-label="שעה ביום"><div class="tpscale"><span>00</span><span>06</span><span>12</span><span>18</span><span>24</span></div>'
+ +'<div class="tpgrid" id="ktpg"></div><div class="tpstep"><button type="button" id="ktpm"><i>⏪</i>שעה אחורה</button><button type="button" id="ktpp"><i>⏩</i>שעה קדימה</button></div>'
+ +'<div class="tpsec">מהירות הזמן</div><div class="tpsp" id="ktpsp"></div></div>'
+ +'<div class="tpn" id="ktpn">בסיור סדרי העבודה הזמן נקבע לפי שלב הסיור. אחרי שיוצאים מהסיור אפשר לבחור שוב.</div>';
+body.appendChild(pop);pop.addEventListener('keydown',e=>{e.stopPropagation();if(e.key=='Escape')closeTP()});
+const HRS=[['🌌','חצות',0],['🌅','שחר',5],['🌄','זריחה',6],['☀️','בוקר',9],['🌞','צהריים',12],['🌤️','אחה״צ',15],['🌇','שקיעה',18],['🌙','לילה',21]];
+const SPD=[['stop','⏸️','עצור',0],['s','🐢','איטי',.05],['n','▶️','רגיל',.1],['f','⏩','מהיר',.3],['x','🚀','מהיר מאוד',1]];
+const part=h=>h<4.5?'לילה':h<6?'עלות השחר':h<11?'בוקר':h<14?'צהריים':h<17?'אחר הצהריים':h<18.5?'שקיעה':h<20?'ערב':'לילה';
+const hhmm=h=>{h=((h%24)+24)%24;const a=Math.floor(h),m=Math.floor((h-a)*60);return pad(a)+':'+pad(m)};
+const rng=$('ktpr'),chips=[],spChips=[];let sliding=false,tpOpen=false;
+const setHr=h=>{if(typeof LIFE!='undefined'&&LIFE.setHour)LIFE.setHour(h);else{const tm=$('tm');if(tm){tm.value=((h%24)+24)%24;tm.dispatchEvent(new Event('input'))}}};
+HRS.forEach(([e,l,h])=>{const b=document.createElement('button');b.type='button';b.innerHTML='<i>'+e+'</i>'+l+'<small>'+hhmm(h)+'</small>';b.onclick=()=>setHr(h);$('ktpg').appendChild(b);chips.push([b,h])});
+SPD.forEach(([id,e,l,r])=>{const b=document.createElement('button');b.type='button';b.innerHTML='<i>'+e+'</i>'+l;
+ b.onclick=()=>{if(id=='stop'){setAuto(false);return}const s=$('dayRate');if(s){s.value=String(r);s.dispatchEvent(new Event('change'))}setAuto(true)};$('ktpsp').appendChild(b);spChips.push([b,id,r])});
+$('ktpm').onclick=()=>setHr(curH()-1);$('ktpp').onclick=()=>setHr(curH()+1);
+rng.addEventListener('pointerdown',()=>{sliding=true});addEventListener('pointerup',()=>{sliding=false});addEventListener('pointercancel',()=>{sliding=false});
+rng.addEventListener('input',()=>setHr(+rng.value));
+$('ktpx').onclick=()=>closeTP();
+function tpSync(){
+ const h=curH(),held=typeof LIFE!='undefined'&&LIFE.held,run=auto()&&!held;
+ $('ktpd').textContent=hhmm(h);$('ktpl').textContent=part(h);$('ktps').textContent=held?'לפי הסיור':run?'רץ':'עצור';
+ pop.classList.toggle('stopped',!run);pop.classList.toggle('held',held);
+ if(!sliding)rng.value=((h%24)+24)%24;
+ chips.forEach(([b,x])=>{const d=Math.abs(h-x);b.classList.toggle('on',Math.min(d,24-d)<.26)});
+ const rate=$('dayRate')?+$('dayRate').value:.1;
+ spChips.forEach(([b,id,r])=>b.classList.toggle('on',id=='stop'?!auto():auto()&&Math.abs(r-rate)<.001))}
+function tpLoop(){if(!tpOpen)return;tpSync();requestAnimationFrame(tpLoop)}
+function openTP(){if(tpOpen)return;tpOpen=true;pop.classList.add('on');kt.setAttribute('aria-expanded','true');tpLoop()}
+function closeTP(){if(!tpOpen)return;tpOpen=false;pop.classList.remove('on');kt.setAttribute('aria-expanded','false')}
+function toggleTP(){tpOpen?closeTP():openTP()}
+document.addEventListener('pointerdown',e=>{if(tpOpen&&!pop.contains(e.target)&&!kt.contains(e.target))closeTP()},true);
 (function tick(){showH(curH());const run=auto()&&!(typeof LIFE!='undefined'&&LIFE.held);kt.classList.toggle('stop',!run);requestAnimationFrame(tick)})();
 
 /* ---------- מעגן מקומות: תמונה + מילה ---------- */
