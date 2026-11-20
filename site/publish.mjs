@@ -1,4 +1,4 @@
-// node publish.mjs [--no-build]  -> builds the model, splits narration out of the HTML, gzips, uploads to Neon.
+// node publish.mjs [--no-build] [--out <dir>]  -> builds the model as cacheable JS chunks (j/*.js) + tiny index.html + narration clips (a/*.mp3), gzips, uploads to Neon (or writes to <dir> for a local test).
 // No git, no Vercel build, no deploy: the live site picks it up within ~60s (edge cache).
 // Needs DATABASE_URL in site/.env (gitignored) or in the environment.
 import fs from 'node:fs';
@@ -20,29 +20,54 @@ if (!process.env.DATABASE_URL) {
     const m = l.match(/^DATABASE_URL=(.*)$/); if (m) process.env.DATABASE_URL = m[1].replace(/^["']|["']$/g, '');
   }
 }
-if (!process.env.DATABASE_URL) { console.error('DATABASE_URL missing (site/.env)'); process.exit(1); }
+if (!process.env.DATABASE_URL && !process.argv.includes('--out')) { console.error('DATABASE_URL missing (site/.env)'); process.exit(1); }
 
-const tmp = path.join(os.tmpdir(), 'bh-publish.html');
+// Build as separate cacheable JS chunks (vendor / img / data / app): the browser caches each by content hash (immutable),
+// so repeat visits and small updates download almost nothing. index.html stays tiny and shows the loader at once.
+const tmp = path.join(os.tmpdir(), 'bh-chunks.json');
 if (!process.argv.includes('--no-build')) {
-  execFileSync(process.execPath, [path.join(here, '..', 'build.js')], { env: { ...process.env, OUT: tmp }, stdio: 'inherit' });
+  execFileSync(process.execPath, [path.join(here, '..', 'build.js')], { env: { ...process.env, CHUNKS_OUT: tmp, ...(process.argv.includes('--safe') ? { SAFE: '1' } : {}) }, stdio: 'inherit' });
 }
-let html = fs.readFileSync(tmp, 'utf8');
+const built = JSON.parse(fs.readFileSync(tmp, 'utf8'));
 
 const files = new Map(); // path -> {type, gzip, body}
 const etag = (b) => crypto.createHash('sha1').update(b).digest('hex').slice(0, 20);
-html = html.replace(/data:audio\/mpeg;base64,([A-Za-z0-9+\/=]+)/g, (_, b64) => {
-  const buf = Buffer.from(b64, 'base64');
-  const name = `a/${crypto.createHash('sha1').update(buf).digest('hex').slice(0, 16)}.mp3`;
-  files.set(name, { type: 'audio/mpeg', gzip: false, body: buf });
-  return '/' + name;
-});
+const CHUNKED = process.argv.includes('--chunks');   // external cacheable chunks: OFF by default (see below)
+const tags = [], lazy = [];   // lazy chunks (map images) are fetched in the background after the page has loaded
+for (const ch of built.chunks) {
+  if (process.argv.includes('--safe') && ch.name === 'app') ch.code = ch.code.split('{pos:[18500,27500,27500],tgt:[18500,0,3500],fixed:true,dur:5.5}').join("C('parva',20,12,5)").split('{pos:[1750,1350,1500],tgt:[1750,60,-57]}').join('view(AZ.booths[0].fx,AZ.booths[0].fz,terrH(AZ.booths[0].fx,AZ.booths[0].fz)+3,40,16,250)').split('   /* זום־אאוט קולנועי: ירושלים ← פלוסין (מצרים) והנדווין (הודו) – src/world3d.js */').join('');
+  let code = ch.code.replace(/data:audio\/mpeg;base64,([A-Za-z0-9+\/=]+)/g,(_, b64) => {
+    const buf = Buffer.from(b64, 'base64');
+    const name = `a/${crypto.createHash('sha1').update(buf).digest('hex').slice(0, 16)}.mp3`;
+    files.set(name, { type: 'audio/mpeg', gzip: false, body: buf });
+    return '/' + name;
+  });
+  if (!code) continue;
+  if (!CHUNKED) { tags.push('<script>' + code + '</script>'); console.log(`  inline ${ch.name}: ${(code.length / 1e6).toFixed(2)}MB`); continue; }   // default: scripts inline in index.html (Moshe's network filter broke external /j/*.js on 20.11.2026)
+  const buf = Buffer.from(code);
+  const name = `j/${ch.name}.${crypto.createHash('sha1').update(buf).digest('hex').slice(0, 12)}.js`;
+  const gzc = zlib.gzipSync(buf, { level: 9 });
+  files.set(name, { type: 'text/javascript; charset=utf-8', gzip: true, body: gzc });
+  if (ch.lazy) lazy.push(name); else tags.push('<script src="/' + name + '"></script>');
+  console.log(`  chunk ${ch.name}: ${(buf.length / 1e6).toFixed(2)}MB -> ${(gzc.length / 1e6).toFixed(2)}MB gzip`);
+}
+let html = built.shell;
 // visit tracker (only in the published site, not in the offline/local build)
 const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');
-if (!html.includes('</head>')) { console.error('no </head> in built html'); process.exit(1); }
+if (!html.includes('</head>') || !html.includes('<!--@CHUNKS@-->')) { console.error('no </head> or chunk marker in built html'); process.exit(1); }
 html = html.replace('</head>', () => '<script>' + tracker + '</script></head>');
+if (lazy.length) tags.push('<script>addEventListener("load",function(){setTimeout(function(){' + lazy.map((n) => 'var s=document.createElement("script");s.src="/' + n + '";document.head.appendChild(s);').join('') + '},300)})</script>');
+html = html.replace('<!--@CHUNKS@-->', () => tags.join(String.fromCharCode(10)));
 const gz = zlib.gzipSync(Buffer.from(html), { level: 9 });
-if (gz.length > 4_000_000) { console.error('index.html gzip too big for Vercel function limit:', gz.length); process.exit(1); }
 files.set('index.html', { type: 'text/html; charset=utf-8', gzip: true, body: gz });
+
+const outIdx = process.argv.indexOf('--out');   // local test: write the files to a directory instead of Neon
+if (outIdx > 0) {
+  const dir = process.argv[outIdx + 1];
+  for (const [p, f] of files) { const fp = path.join(dir, p); fs.mkdirSync(path.dirname(fp), { recursive: true }); fs.writeFileSync(fp, f.gzip ? zlib.gunzipSync(f.body) : f.body); }
+  console.log('written to', dir, files.size, 'files; index.html gzip', (gz.length / 1e3).toFixed(0) + 'KB');
+  process.exit(0);
+}
 
 const c = new Client({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } });
 await c.connect();
@@ -59,7 +84,7 @@ try {
   const keep = [...files.keys()];
   const del = await c.query("delete from temple_site_files where path <> all($1::text[]) and updated_at < now() - interval '1 day'", [keep]);
   await c.query('commit');
-  console.log(`published: index.html ${(gz.length / 1e6).toFixed(2)}MB gzip, ${keep.length - 1} audio clips, ${del.rowCount} old files removed (older than 1 day)`);
+  console.log(`published: index.html ${(gz.length / 1e3).toFixed(0)}KB gzip, ${tags.length} js chunks, ${keep.length - 1 - tags.length} audio clips, ${del.rowCount} old files removed (older than 1 day)`);
 } catch (e) {
   await c.query('rollback').catch(() => {});
   throw e;

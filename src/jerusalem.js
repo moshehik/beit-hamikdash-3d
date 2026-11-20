@@ -8,7 +8,7 @@ function terrH(x,z){const mx=x/2,mz=z/2;
  e+=40*(1-smth(100,800,mz))*gs(mx,20,110+60*smth(0,800,mz));                           // רכס הר הבית–אופל–עיר דוד
  e+=55*gs(mx,50,300,6)*gs(mz,-420,250,6)+115*gs(mx,650,260)*gs(mz,-20,700);           // בית חדתא (העיר החדשה), הר הזיתים
  e+=65*gs(mx,-415,260,6)*gs(mz,230,450,6)-35*gs(mx,200,45)*smth(-500,-200,mz);         // הגבעה המערבית (העיר העליונה), נחל קדרון
- let h=(e-740)*2;
+ let h=(e-740)*2;h-=150*smth(2680,2730,x)*gs(z,-60,420,4);   /* הצוק במדבר: מדרון תלול אל נחל (דרך השעיר המשתלח – יומא ו:ד–ו) */
  for(const f of FLAT){const d=Math.hypot(x-f[0],z-f[1]);if(d<f[2]*1.8)h+=(f[3]-h)*(1-smth(f[2]*.6,f[2]*1.8,d))}
  if(Math.abs(x)<252&&Math.abs(z)<252)h=Math.min(h,-3);return h}
 
@@ -158,6 +158,32 @@ function arcade(g,xs,zc,dd,yb,mat,pw){const gy=x=>terrH(x,zc);
 // הבית הכנסת והכיכר: צוק הגבול, בית המועצה, הארמון החשמונאי
 {const y=terrH(-520,-60);box(gHas,-520,y,-60,44,16,32,M.stone);lbl('בית המועצה',-520,y+22,-60,'pHas',900,0);box(gHas,-600,y,-190,74,24,52,M.stone);lbl('ארמון בית חשמונאי',-600,y+30,-190,'pHas',1000,0);
  rep(18,i=>cyl(gHas,-640+i*12,y,-120,1,12,M.marble,8));lbl('הסטיו',-540,y+14,-120,'pHas',800,0)}
+/* ===== דרך השעיר המשתלח: מגשר הר המשחה אל הצוק במדבר; עשר סוכות לאורך הדרך (משנה יומא ו:ד–ח; רמב״ם עבודת יום הכיפורים ג:ו–ח)
+   "עשר סוכות מירושלים ועד צוק, תשעים רִיס – שבעה וחצי לכל מיל" (יומא ו:ד) ≈ 12 מיל ≈ 24,000 אמה; בדגם המרחק מכווץ (כ-1,300 אמה בין הסוכה הראשונה לצוק), והמיקום משוער. */
+const AZAZEL=(()=>{const ZB=-57.5,pz=x=>ZB+(x<800?0:70*Math.sin((x-800)/340)),path=[];for(let x=722;x<=2680;x+=70)path.push([x,pz(x)]);path.push([2684,pz(2684)]);
+ const booths=[];for(let i=0;i<10;i++){const x=1380+i*131,z=pz(x);booths.push({x,z:z-15,fx:x,fz:z-5})}
+ const seg=(x0,x1)=>{const r=path.filter(p=>p[0]>x0&&p[0]<x1);r.push([x1,pz(x1)]);return r};
+ return{pz,path,booths,seg,cliff:[2684,pz(2684)]}})();
+{const rr_=(a,b)=>a+(b-a)*rand();const A=AZAZEL,rock=new T.MeshStandardMaterial({color:0x9a8660,roughness:1}),leaf=new T.MeshStandardMaterial({color:0x6f8f3c,roughness:1}),dirt=0xb59765;
+ /* שביל עפר מן הגשר אל הצוק */
+ {const cu=new T.CatmullRomCurve3(A.path.map(p=>new T.Vector3(p[0],0,p[1]))),N=Math.ceil(cu.getLength()/10),pos=[],idx=[];
+  for(let i=0;i<=N;i++){const t=i/N,c=cu.getPoint(t),tg=cu.getTangent(t),ln=Math.hypot(tg.x,tg.z)||1,nx=-tg.z/ln,nz=tg.x/ln;[-1,1].forEach(sg=>{const x=c.x+sg*nx*3,z=c.z+sg*nz*3;pos.push(x,terrH(x,z)+1.1,z)});if(i<N){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2)}}
+  const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();
+  const m=new T.Mesh(g,new T.MeshStandardMaterial({color:dirt,roughness:1,side:T.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));m.receiveShadow=true;gE.add(m)}
+ /* עשר סוכות: ארבעה עמודים, גג ענפים, קיר אחורי, שולחן עם כד מים ולחם ("הרי מזון והרי מים") */
+ const HEB=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ז׳','ח׳','ט׳','י׳'];
+ A.booths.forEach((b,i)=>{const y=terrH(b.x,b.z),g=new T.Group();g.position.set(b.x,y,b.z);gE.add(g);
+  [[-3.2,-2.6],[3.2,-2.6],[-3.2,2.6],[3.2,2.6]].forEach(([dx,dz])=>{const p=new T.Mesh(new T.CylinderGeometry(.22,.26,5.2,6),M.wood);p.position.set(dx,2.6,dz);p.castShadow=true;g.add(p)});
+  const roof=new T.Mesh(new T.BoxGeometry(8.6,.45,7.2),leaf);roof.position.set(0,5.4,0);roof.rotation.z=.05;roof.castShadow=true;g.add(roof);
+  const back=new T.Mesh(new T.BoxGeometry(7,4.2,.35),leaf);back.position.set(0,2.4,-2.7);g.add(back);
+  const tb=new T.Mesh(new T.BoxGeometry(3,1,1.3),M.wood);tb.position.set(0,.6,-1.4);tb.castShadow=true;g.add(tb);
+  const jar=new T.Mesh(new T.CylinderGeometry(.35,.28,.9,10),new T.MeshStandardMaterial({color:0xb06a3a,roughness:.8}));jar.position.set(-.8,1.55,-1.4);g.add(jar);
+  const loaf=new T.Mesh(new T.SphereGeometry(.32,8,6),new T.MeshStandardMaterial({color:0xd9a860,roughness:1}));loaf.scale.set(1.3,.6,1);loaf.position.set(.7,1.3,-1.4);g.add(loaf);
+  lbl('סוכה '+HEB[i],b.x,y+9,b.z,'pHer',700,0)});
+ /* הצוק: סלעים על שפת המדרון ובבסיסו */
+ {const cz=A.cliff[1];lbl('הצוק במדבר – מקום שילוח השעיר',2686,terrH(2684,cz)+22,cz,'pHer',1800,1);
+  rep(34,k=>{const x=2686+rr_(-4,10),z=cz+rr_(-300,300),y=terrH(x,z),s=rr_(3,9),m=new T.Mesh(new T.DodecahedronGeometry(s,0),rock);m.position.set(x,y+s*.3,z);m.rotation.set(rr_(0,3),rr_(0,3),0);m.scale.set(1,.7,1);m.castShadow=true;gE.add(m)});
+  rep(50,k=>{const x=2735+rr_(0,90),z=cz+rr_(-300,300),y=terrH(x,z),s=rr_(2,7),m=new T.Mesh(new T.DodecahedronGeometry(s,0),rock);m.position.set(x,y+s*.3,z);m.rotation.set(rr_(0,3),rr_(0,3),0);m.scale.set(1,.7,1);m.castShadow=true;gE.add(m)})}}
 // גשר פרה אדומה: הר הבית – הר המשחה
 {box(gE,486,-3,ZC,472,3,11,M.terr);[-5,5].forEach(o=>{box(gE,486,0,ZC+o,472,2.6,.9,M.stone,{ns:1});box(gE,486,2.6,ZC+o,472,.4,1.5,M.wood,{ns:1})});   // משטח מרוצף ומעקות אבן גבוהים עם כיפה מעץ (כמו בסרטון)
  const xs=[];for(let k=0;k<15;k++)xs.push(253.5+32*k);arcade(gE,xs,ZC,9,-3,M.stone,7);   // 14 קשתות (בעמקים – כמה קומות) כמו בסרטון

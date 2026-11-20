@@ -18,7 +18,7 @@
  /* שחקנים */
  const AZ=AZAZEL,BK=AZ.booths.map((b,i)=>'b'+(i+1));
  const ACTORS={hn:{kind:'o',color:0xefe9da},hg:'g',hy:'y',k1:'k',k2:'k',k3:'k',k4:'k',sg:'k',e1:{kind:'k',hair:0xcfcfcf},e2:{kind:'k',hair:0xbcbcbc},ai:{kind:'o',color:0x7a9a6a},ch:'k'};BK.forEach(b=>ACTORS[b]={kind:'o',color:0xa88a5a});
- const START={};Object.keys(ACTORS).forEach(a=>START[a]={at:ND.parva.slice(0,2),face:'s',hidden:1});
+ const START={};Object.keys(ACTORS).forEach(a=>START[a]={at:ND.parva.slice(0,2),face:'s',hidden:1});START.hn={at:ND.parh.slice(0,2),face:'s'};
  BK.forEach((b,i)=>{START[b]={at:[AZ.booths[i].fx,AZ.booths[i].fz-1],face:'s'}});
  const show=(who,key,face)=>{const out=[];if(!SHOWN.has(who)){SHOWN.add(who);POS[who]=key;out.push({who,vis:true,at:ND[key].slice(0,2),face:face||'w'})}return out};
  const walkTo=(who,key,a1,b1)=>{let sp=null,face=null;[a1,b1].forEach(v=>{if(typeof v=='string')face=v;else if(typeof v=='number'){if(v>=3&&v<20)sp=v;else face=v}});   // מהירות: מספר 3–20; כיוון: מחרוזת או מספר אחר
@@ -77,7 +77,7 @@
   41:()=>({a:seq(tev(HP,'parva')),c:C('parva',20,12,5)}),
   42:()=>({a:seq(wait(1.2),pose(HP,'both'),wait(1)),c:C('parva',20,12,5)}),
   43:()=>({a:seq(pose(HP,'both'),anim(HP,'press',1.4),wait(1)),c:C('parva',20,12,5)}),
-  44:()=>({a:[wait(1.5)],c:C('parva',20,12,5)}),
+  44:()=>({a:[wait(1.5)],c:{pos:[18500,27500,27500],tgt:[18500,0,3500],fixed:true,dur:5.5}}),   /* זום־אאוט קולנועי: ירושלים ← פלוסין (מצרים) והנדווין (הודו) – src/world3d.js */
   45:()=>({a:seq(walkTo(HP,'bull','w',270)),c:C('bull',90,16,7)}),
   46:()=>({a:seq(anim(HP,'press',2.2),wait(.5)),c:C('bull',60,11,4)}),
   47:()=>({a:seq(place('k3','bull','w'),pose(HP,'up'),wait(2)),c:C('bull',60,11,4)}),
@@ -130,7 +130,7 @@
   94:()=>({a:seq(place('k1','lots','w'),place('k2','lots','w'),par(anim('k1','kneel',2),anim('k2','kneel',2),anim(HP,'kneel',2)),par(anim('k1','rise',1),anim('k2','rise',1),anim(HP,'rise',1))),c:C('lots',60,16,7)}),
   95:()=>({a:seq(place('ai','lots','w'),{move:'g2',to:[ND.lots[0]+1.5,ND.lots[1]],speed:2},wait(1)),c:C('lots',60,11,5)}),
   96:()=>{const pts=[[10,ZC_],[250,ZC_]].concat(AZ.seg(250,AZ.booths[0].fx-8)),gp=pts.map(p=>({move:'g2',to:p,speed:34}));
-   return{a:seq(place('e1','lots','e'),place('e2','lots','e'),place('sg','lots','e'),par({who:'ai',walk:pts,speed:34,face:90},gp,{who:'e1',walk:pts,speed:34,face:90},{who:'e2',walk:pts,speed:34,face:90},{who:'sg',walk:pts,speed:34,face:90}),wait(1)),c:view(AZ.booths[0].fx,AZ.booths[0].fz,terrH(AZ.booths[0].fx,AZ.booths[0].fz)+3,40,16,250)}},
+   return{a:seq(place('e1','lots','e'),place('e2','lots','e'),place('sg','lots','e'),par({who:'ai',walk:pts,speed:34,face:90},gp,{who:'e1',walk:pts,speed:34,face:90},{who:'e2',walk:pts,speed:34,face:90},{who:'sg',walk:pts,speed:34,face:90}),wait(1)),c:{pos:[1750,1350,1500],tgt:[1750,60,-57]}}},
   97:()=>{const acts=[];let x0=AZ.booths[0].fx-8;AZ.booths.forEach((b,i)=>{const pts=AZ.seg(x0,b.fx).concat([[b.fx,b.fz+2]]);x0=b.fx;acts.push(par({who:'ai',walk:pts,speed:34,face:90},pts.map(p=>({move:'g2',to:[p[0]+3,p[1]],speed:34}))),pose('b'+(i+1),'both'),wait(1.1),pose('b'+(i+1),'idle'))});
    return{a:seq(acts),c:view(AZ.booths[3].fx,AZ.booths[3].fz,terrH(AZ.booths[3].fx,AZ.booths[3].fz)+3,60,24,230)}},
   98:()=>{const b=AZ.booths[9],pts=AZ.seg(b.fx,2640),gp=pts.map(p=>({move:'g2',to:[p[0]+3,p[1]],speed:30}));
@@ -171,10 +171,12 @@
   129:()=>({a:seq(place('e1','parva','e'),place('e2','parva','e'),place('k3','parva','e'),par(walkTo(HP,'gate',4,90),walkTo('e1','gate',4,90),walkTo('e2','gate',4,90),walkTo('k3','gate',4,90))),c:view(-20,ZC_,YA+4,70,30,90)}),
   130:()=>({a:[wait(2)],c:view(-20,ZC_,YA+4,80,40,90)})
  };
- const FIXED=new Set([69,70,71,72,77,78,81]);
+ const FIXED=new Set([70,71,72,77,78]);
+ const RET={45:3.8,96:3.2};   /* שלבים שבהם המצלמה עושה מעבר ארוך (חזרה מהזום־אאוט / שוט־על של המסע) ואחריו חוזרת לעקוב */
+ const WORLDS={44:'garb',96:'ris',97:'ris',98:'ris',99:'ris'};
  const steps=[];const TIMES=[];
  const GA={gold:'hg',white:'hy'};
- const mk=(d)=>{const n=d[0],garb=d[6],want=garb=='gold'?'hg':garb=='white'?'hy':'hn';
+ const mk=(d)=>{const n=d[0],garb=d[6],want=garb=='gold'?'hg':garb=='white'?'hy':(d[7]||n<=27||n>=128)?'hn':cur_hp;
   let a=[];
   /* החלפת בגדים: הדמות הקודמת נעלמת והחדשה מופיעה באותו מקום */
   if(cur_hp!=want){const key=POS[HP]||'parva';a.push({who:cur_hp,vis:false});a.push({who:want,vis:true,at:ND[key].slice(0,2),face:'s'});cur_hp=want;SHOWN.add(want)}
@@ -183,7 +185,7 @@
   const fix=x=>{if(Array.isArray(x))return x.map(fix);if(x&&typeof x=='object'){if(x.__par)return x.__par.map(fix);const o={};for(const k in x){let v=x[k];if((k=='who'||k=='to')&&v=='hp')v=cur_hp;o[k]=(v&&typeof v=='object')?fix(v):v}return o}return x};
   a=a.concat(fix(sp.a));
   const q=d[3]?' — "'+d[3]+'"':'';
-  return{text:d[1]+': '+d[2]+q+(n==97?' (בדגם הדרך מכווצת – בפועל כ-12 מיל, כ-24,000 אמה; מיקום הסוכות והצוק משוער.)':''),src:d[4],cam:Object.assign({},sp.c||{},{follow:(n>=96&&n<=99)?'ai':cur_hp},FIXED.has(n)?{fixed:true}:{}),actions:a}};
+  return{text:d[1]+': '+d[2]+q+(n==97?' (בדגם הדרך מכווצת – בפועל כ-12 מיל, כ-24,000 אמה; מיקום הסוכות והצוק משוער.)':''),src:d[4],cam:Object.assign({},sp.c||{},{follow:(n>=96&&n<=99)?'ai':cur_hp},FIXED.has(n)?{fixed:true}:{},RET[n]?{fixed:true,dur:RET[n]}:{}),actions:a,world:WORLDS[n]||null,hold:n==44?2.5:undefined}};
  /* שלב פתיחה: שבעת הימים שלפני */
  steps.push({text:'שבעת ימים לפני יום הכיפורים מפרישים את הכהן הגדול מביתו ללשכת פרהדרין, ומכינים כהן גדול אחר תחתיו – שמא יארע בו פסול. מזים עליו אפר פרה בשלישי ובשביעי, מלמדים אותו את סדר העבודה וזקני בית דין מוסרים לו את עיקרי הדינים; בערב היום מעבירים לפניו את הקרבנות וסעודתו מצומצמת.',src:'משנה יומא א:א–ז; ב:א',cam:view(ND.parh[0],ND.parh[1],YA+2,24,10,170),actions:[{who:'hn',vis:true,at:ND.parh.slice(0,2),face:'s'},wait(2)]});
  SHOWN.add('hn');POS['hn']='parh';POS[HP]='parh';TIMES.push(18);

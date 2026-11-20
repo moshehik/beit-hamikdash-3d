@@ -266,7 +266,7 @@ const SV=(()=>{
   S={sc,actors:{},items:{},idx:0,t:0,playing:true,speed:1,run:null,camMode:'follow',follow:sc.main||Object.keys(sc.actors)[0],camTw:null,phase:'run',hold:0,err:null,fr:0};
   Object.keys(sc.actors).forEach(k=>{S.actors[k]=makeActor(k,sc.actors[k],[...poses[k]])});
   uiOpenScript();goTo(0)}
- function close(keepUI){AUD.stop();if(S){for(const k in S.items)killItem(k);for(const k in S.actors)root.remove(S.actors[k].root);S=null}if(!keepUI)uiBack()}
+ function close(keepUI){try{typeof WORLD!='undefined'&&WORLD.hook(null)}catch(e){}AUD.stop();if(S){for(const k in S.items)killItem(k);for(const k in S.actors)root.remove(S.actors[k].root);S=null}if(!keepUI)uiBack()}
  function resetState(){for(const k in S.items)killItem(k);const st=S.sc.start||{};
   for(const k in S.actors){const A=S.actors[k],s=st[k]||{at:[0,0]};A.lean=A.dip=A.roll=A.speed=0;A.hand.R.rotation.set(0,0,0);A.hand.L.rotation.set(0,0,0);['R','L'].forEach(h=>A.held[h]=null);A.explicit=s.at[2]!=null;
    A.x=s.at[0];A.z=s.at[1];A.y=ptY(s.at);A.yaw=dirYaw(s.face!=null?s.face:0);setPose(A,s.pose||'idle');A.root.visible=!s.hidden}
@@ -277,9 +277,14 @@ const SV=(()=>{
  /* שפת ילדים (בקשת משה 17.11): ברירת מחדל – הסיפור מ-STORY['<id>-<שלב>'] (src/story*.js); המתג 👶 (localStorage bh_kid) מחליף ללשון המקורות (step.text). ההקראה בקול תמיד מקריאה את גרסת הילדים כשקיימת. */
  let KID=true;try{KID=localStorage.getItem('bh_kid')!=='0'}catch(e){}
  function stText(st){const k=S.sc.id+'-'+S.idx;return KID&&typeof STORY!=='undefined'&&STORY[k]?STORY[k]:(st.text||'')}
- function startStep(jump){const st=S.sc.steps[S.idx];S.t=0;S.phase='run';S.hold=0;
+ /* הדמות "הראשית" של השלב: מי שהולכת הכי רחוק / עושה את רוב הפעולות (לא מחשיבים דמויות נסתרות) */
+ function leadActor(actions){const sc={},visit=a=>{if(Array.isArray(a)){a.forEach(visit);return}if(!a||typeof a!='object')return;if(a.seq)visit(a.seq);
+   if(a.who&&S.actors[a.who]){let w=0;if(a.walk){let p=null,L=0;for(const q of a.walk){if(p)L+=Math.hypot(q[0]-p[0],q[1]-p[1]);p=q}w=3+L*.05}else if(a.anim||a.take||a.give||a.drop||a.pose)w=1;else if(a.face||a.vis)w=.1;sc[a.who]=(sc[a.who]||0)+w}};
+  visit(actions);let best=null,bs=0;for(const k in sc){const A=S.actors[k];if(sc[k]>bs&&A&&A.root&&A.root.visible!==false){bs=sc[k];best=k}}return best}
+ function startStep(jump){const st=S.sc.steps[S.idx];S.t=0;S.phase='run';S.hold=0;try{typeof WORLD!='undefined'&&WORLD.hook(st)}catch(e){}
   try{S.run=top(st.actions||[]);S.run.init()}catch(e){fail(e)}
   const chars=stText(st).length;S.minT=1.4+chars*.03;S.holdT=st.hold!=null?st.hold:.8;narrStart();
+  if(S.camMode=='follow'&&!(st.cam&&st.cam.follow)){const L=leadActor(st.actions||[]);if(L&&L!==S.follow){S.follow=L;S.fboost=1.6}}   /* מצלמת מעקב: עוברת אל הדמות הפעילה בשלב (לא נשארת על main) */
   uiStep();if(st.cam!==undefined&&st.cam!==null)applyCam(st.cam,jump);else if(jump)applyCam(null,true);
   if(jump)updateActors(0)}
  /* הקראה בקול: השלב לא מסתיים לפני שההקראה נגמרה (הפעולות והקול רצים יחד); במהירות מעל 2× או כשהקול כבוי – תזמון לפי אורך הטקסט */
@@ -311,6 +316,7 @@ const SV=(()=>{
  function applyCam(c,jump){if(walk)return;
   if(S.camMode=='free')return;
   if(S.camMode=='follow'){if(c&&c.follow&&S.actors[c.follow])S.follow=c.follow;
+  {const A0=S.actors[S.follow];if(A0&&!jump&&!(c&&c.fixed)&&camera.position.distanceTo(V3(A0.x,A0.y,A0.z))>120){S.fd=null;S.fAz=null;const t0=V3(A0.x,A0.y+3,A0.z);flyTo(t0.clone().add(followOff(A0)),t0,.5);return}}   /* הדמות רחוקה מאוד (למשל אחרי שלב בדרך המדבר) – מעבר מהיר ולא מסע ארוך של המצלמה */
   if(c&&c.fixed&&(c.pos||c.at)){const[p,t]=camFrom(c);S.fd=null;S.fAz=null;flyTo(p,t,jump?.01:(c.dur||1.8));return}   /* fixed: מצלמה קבועה גם במצב עוקב (למשל בתוך קודש הקדשים, מאחורי הפרוכת) – אחר כך ממשיכה אחרי הדמות */
   if(c&&c.follow)S.fboost=1.6;if(jump){S.fd=null;S.fAz=null;const A=S.actors[S.follow];if(A){const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,.01)}}return}   /* סיור רציף: אין קפיצה לתחנה – המצלמה רק ממשיכה אחרי הכהן */
   if(c&&(c.pos||c.at)){const[p,t]=camFrom(c);flyTo(p,t,jump?.01:(c.dur||1.8))}else if(c&&c.follow){S.follow=c.follow}

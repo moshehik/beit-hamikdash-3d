@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="he" dir="rtl"><meta charset="utf-8"><title>בדיקת שלט</title>
+<style>body{font:16px system-ui;margin:20px;background:#111;color:#eee}#log{white-space:pre;font:14px Consolas,monospace;direction:ltr;text-align:left}b{color:#e8c068}</style>
+<h2>לחצו על הכפתורים בשלט (קודם לחצו פעם אחת על הדף)</h2><div id="log">מחכה ללחיצות…</div>
+<audio id="a" loop></audio>
+<script>
+const L=document.getElementById('log');const rows=[];
+function add(s){rows.unshift(s);L.textContent=rows.slice(0,40).join('\n');window.__rows=rows}
+for(const t of['keydown','keyup'])addEventListener(t,e=>{add(t+'  key='+JSON.stringify(e.key)+'  code='+e.code+'  keyCode='+e.keyCode+(e.repeat?' (repeat)':''));if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','PageUp','PageDown',' '].includes(e.key))e.preventDefault()},true);
+for(const t of['mousedown','wheel','contextmenu'])addEventListener(t,e=>add(t+' button='+e.button+(e.deltaY?' dy='+e.deltaY:'')),true);
+try{for(const a of['play','pause','previoustrack','nexttrack','seekbackward','seekforward','stop'])navigator.mediaSession.setActionHandler(a,()=>add('MEDIA '+a));}catch(e){add('mediaSession: '+e.message)}
+// a silent playing audio makes Chrome route the media keys to this page
+try{const c=new AudioContext(),o=c.createOscillator(),g=c.createGain();g.gain.value=0.0001;o.connect(g);const d=c.createMediaStreamDestination();g.connect(d);o.start();const a=document.getElementById('a');a.srcObject=d.stream;addEventListener('click',()=>{c.resume();a.play().catch(()=>{});navigator.mediaSession.playbackState='playing'},{once:true})}catch(e){}
+</script></html>

@@ -14,13 +14,13 @@ const COSL=.82,MC=$('mapc'),mx2=MC.getContext('2d');
 const MV={lon:35,lat:32,z:20},MT={e:1,c:1,l:1};let mapOpen=false,curPer=5;
 
 /* ---------- תמונות מוטמעות -> blob: URL (נטפרי: blob מקומי עובר; data: בתוך HTML/CSS נחסם) ---------- */
-const MPU={};
-function mapPic(k){if(k in MPU)return MPU[k];let r=null;
- try{const u=typeof MAP_IMG!='undefined'&&MAP_IMG[k];if(u){const s=atob(u),a=new Uint8Array(s.length);for(let j=0;j<s.length;j++)a[j]=s.charCodeAt(j);r=URL.createObjectURL(new Blob([a],{type:'image/jpeg'}))}}catch(e){r=null}
+const MPU={};const _mapImgCbs=[];function onMapImgs(f){if(typeof MAP_IMG!='undefined')f();else _mapImgCbs.push(f)}window.__mapImgsLoaded=()=>{_mapImgCbs.splice(0).forEach(f=>{try{f()}catch(e){}})};
+function mapPic(k){if(k in MPU)return MPU[k];if(typeof MAP_IMG=='undefined')return null;let r=null;
+ try{const u=typeof MAP_IMG!='undefined'&&MAP_IMG[k];if(u){const s=atob(u),a=new Uint8Array(s.length);for(let j=0;j<s.length;j++)a[j]=s.charCodeAt(j);r=URL.createObjectURL(new Blob([a],{type:'image/webp'}))}}catch(e){r=null}
  return MPU[k]=r}
 /* אלמנט תמונה: צבע+אימוג'י כרקע; ה-<img> מכסה אותו, ואם נכשל (או חסרה תמונה) נשאר הרקע */
 function mapImg(k,col,emo){const d=document.createElement('div');d.className='mpic';d.style.setProperty('--c',col||'#f6c26b');
- const u=mapPic(k);if(u){const im=new Image();im.alt='';im.draggable=false;im.onerror=()=>{im.remove();d.textContent=emo||''};d.appendChild(im);im.src=u}else d.textContent=emo||'';return d}
+ const u=mapPic(k);if(u){const im=new Image();im.alt='';im.draggable=false;im.onerror=()=>{im.remove();d.textContent=emo||''};d.appendChild(im);im.src=u}else{d.textContent=emo||'';if(k)onMapImgs(()=>{const u2=mapPic(k);if(u2){const im=new Image();im.alt='';im.draggable=false;im.onerror=()=>{im.remove();d.textContent=emo||''};d.textContent='';d.appendChild(im);im.src=u2}})}return d}
 function mapPk(n){const m=(typeof MAP_IMG_META!='undefined'&&MAP_IMG_META.places||[]).find(x=>x[1].indexOf(n)==0);return m?m[0]:null}   /* מפתח תמונת מקום לפי שם (הסדר ב-P יכול להשתנות) */
 const mShort=d=>{d=(d||'').replace(/\s+/g,' ').trim();let s=d.split(/(?<=[.!?])\s/)[0]||d;if(s.length>110){const c=s.slice(0,110),i=Math.max(c.lastIndexOf(', '),c.lastIndexOf(' – '),c.lastIndexOf(': '));s=(i>40?c.slice(0,i):c.replace(/\s\S*$/,''))+'…'}return s};
 const MYR=i=>{const a=PR[i][0],b=PR[i][1];return b<=0?(-a)+'–'+(-b)+' לפנה״ס':(-a)+' לפנה״ס–'+b};   /* שנה קצרה לכרטיס (מתוך PR) */
@@ -182,9 +182,9 @@ const rgInAtom=(id,lon,lat)=>{const b=MGEOM.atoms[id].bb;return lon>=b[0]&&lon<=
 
 /* ---------- תמונת הרקע (blob:) – נפילה: רקע שטוח מהנתונים ---------- */
 let rgBaseC=null,rgBaseOk=false;
-(function(){const u=mapPic('base_m');if(!u)return;const im=new Image();im.onload=()=>{try{const w=im.naturalWidth,h=im.naturalHeight,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0);
+onMapImgs(function(){const u=mapPic('base_m');if(!u)return;const im=new Image();im.onload=()=>{try{const w=im.naturalWidth,h=im.naturalHeight,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0);
   const f=Math.round(w*.03);for(const g of[[0,0,f,0],[w,0,w-f,0],[0,0,0,f],[0,h,0,h-f]]){const gr=x.createLinearGradient(g[0],g[1],g[2],g[3]);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,1)');x.globalCompositeOperation='destination-in';x.fillStyle=gr;x.fillRect(0,0,w,h)}
-  x.globalCompositeOperation='source-over';rgBaseC=c;rgBaseOk=true;rgQ()}catch(e){rgBaseC=null}};im.onerror=()=>{rgBaseC=null};im.src=u})();
+  x.globalCompositeOperation='source-over';rgBaseC=c;rgBaseOk=true;rgQ()}catch(e){rgBaseC=null}};im.onerror=()=>{rgBaseC=null};im.src=u});
 
 /* ---------- אנימציית מעבר בין תקופות: כל אטום משנה צבע/שקיפות בגל שמתפשט מירושלים ---------- */
 const RGJ=[35.2,31.8],RGDUR=480;

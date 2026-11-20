@@ -136,9 +136,9 @@ function kShade(h,a){const n=parseInt(h.slice(1),16),f=v=>kClamp(Math.round(a>=0
 
 /* ---------- תמונת הרקע (blob:) – נפילה: רקע שטוח מהנתונים ---------- */
 const KSEA='#7abbe7',KSAND='#cfad68';   /* ממוצע צבעי הים/יבשה בתמונת הרקע (tools: ראו verify) – לצביעת מה שמחוץ לתמונה */let kBaseC=null,kBaseOk=false;
-(function(){const u=mapPic('base_k');if(!u)return;const im=new Image();im.onload=()=>{try{const w=im.naturalWidth,h=im.naturalHeight,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0);
+onMapImgs(function(){const u=mapPic('base_k');if(!u)return;const im=new Image();im.onload=()=>{try{const w=im.naturalWidth,h=im.naturalHeight,c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.drawImage(im,0,0);
   const f=Math.round(w*.05);for(const g of[[0,0,f,0],[w,0,w-f,0],[0,0,0,f],[0,h,0,h-f]]){const gr=x.createLinearGradient(g[0],g[1],g[2],g[3]);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,1)');x.globalCompositeOperation='destination-in';x.fillStyle=gr;x.fillRect(0,0,w,h)}
-  x.globalCompositeOperation='source-over';kBaseC=c;kBaseOk=true;kQ()}catch(e){kBaseC=null}};im.onerror=()=>{kBaseC=null};im.src=u})();
+  x.globalCompositeOperation='source-over';kBaseC=c;kBaseOk=true;kQ()}catch(e){kBaseC=null}};im.onerror=()=>{kBaseC=null};im.src=u});
 
 /* ---------- אזורים (regs) לכל שכבה ---------- */
 const krev=a=>{const o=[];for(let i=a.length-2;i>=0;i-=2)o.push(a[i],a[i+1]);return o};

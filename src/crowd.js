@@ -305,6 +305,16 @@ let STOOL=null;
  const SLAUGH=[-40,-11,-92,-62],AZE=[-62,-5,-124,8],ISR=[1.8,11.4,-127,12.5],NASH=[19,155,-122,7],PLZ=[173,207,-128,16],PLZ2=[60,200,48,160];
  const SAN_GAZIT=()=>{const L=[];[[5.2,15],[7.9,23],[10.5,33]].forEach(([Rr,n],ri)=>{for(let i=0;i<n;i++){const ph=PI*(.06+.88*i/(n-1));L.push([-25.5-Rr*Math.cos(ph),-134+Rr*Math.sin(ph),ph-PI/2+PI,YA+1.18,ri==2&&i==16])}});return L};   // 71 כיסאות (lishkhot.js, אחרי סיבוב 180°)
  const SAN_CHEL=()=>{const L=[];[[5.2,15],[7.9,23],[10.5,33]].forEach(([Rr,n],ri)=>{for(let i=0;i<n;i++){const ph=PI*(.06+.88*i/(n-1));L.push([-80-Rr*Math.cos(ph),22+Rr*Math.sin(ph),ph-PI/2+PI,1.18,ri==2&&i==16])}});return L};   // חצי גורן בחיל הדרומי (z 22..33), פניהם למרכז
+ /* קידוש ידיים ורגליים מן הכיור (משנה תמיד ב:א, יומא ג:ג–ו): חלונות הזמן שבהם הכהנים ניגשים לכיור – המים זורמים מן הברזים (life.js) */
+ const WASH_ALL=[[4.65,5.2],[6.15,6.6],[9.4,9.8],[14.4,14.8]],WASH_YK=[[4.4,5.0],[7.9,8.3],[10.4,10.8],[13.0,13.4],[16.3,16.7]];   // ביום הכיפורים: חמש טבילות ועשרה קידושים (יומא ג:ו)
+ function washNow(dayId,h){return(dayId=='yk'?WASH_YK:WASH_ALL).some(w=>h>=w[0]&&h<w[1])}
+ /* עוצמת שלוש המדורות (0..1): [מערכה גדולה, מערכה שנייה לקטורת, מערכה שלישית לקיום האש] – לפי שעה ויום (משנה תמיד א:ב; יומא ב:ב–ד; מידות ב:ה; ויקרא ו:ה–ו) */
+ function fireK(dayId,h){const sm=(a,b,x)=>{x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)};
+  const hx=((h%24)+24)%24;let big;
+  if(hx<4.5)big=.5;else if(hx<5.4)big=.5-.2*sm(4.5,4.9,hx);else if(hx<6.4)big=.3+.7*sm(5.4,6.4,hx);else if(hx<19)big=1;else big=1-.5*sm(19,20,hx);   // בלילה – אברים ופדרים נאכלים על המזבח; לפני עלות השחר מדשנים וחוזרים ומסדרים את המערכה
+  const dm={chol:.85,shabbat:.85,rc:.95,'erev-pesach':1,pesach:1,shavuot:1,rh:1,yk:.9,sukkot:1}[dayId];big*=hx>=6.4&&hx<19?(dm==null?.9:dm):1;
+  const ket=Math.max(sm(5,5.5,hx)-sm(7.2,7.8,hx),sm(14.3,14.8,hx)-sm(17,17.6,hx),dayId=='yk'?sm(10.3,10.7,hx)-sm(12,12.4,hx):0);
+  return[big,ket,1]}
  function plan(dayId,h){
   const D=DAYS[dayId]||DAYS.chol,S={day:dayId,D,h,specs:[],caps:[],song:false,vis:{k:false,g:false,y:false},bow:'',walkHold:null};
   const add=s=>{S.specs.push(s);return s},cap=(id,t,src,prio)=>S.caps.push({id,t,src,prio:prio||5});
@@ -338,6 +348,9 @@ let STOOL=null;
    cap('dashen','אחיו של תורם הדשן ממהרים, מקדשים ידיים ורגליים, עולים עם המגרפות; מעלים באפר על התפוח ואחר כך גזרי עץ לסדר אש המערכה','משנה תמיד ב:א–ג',2)}
   if(inW(h,5.0,5.9)){add({id:'lamb',t:'route',pop:'K',grp:'A',kind:'kohen',n:3,route:'lamb',spd:2,lane:.5,anim:'walk',prop:'lamb',reg:1,loop:0,start:0,job:'מביא טלה לתמיד מלשכת הטלאים',who:'כהן – מביא את טלה התמיד (תמיד ג:ג)'});
    cap('lots','הממונה: באו והפיסו – מי שוחט, מי זורק, מי מדשן מזבח הפנימי והמנורה, מי מעלה אברים לכבש; ואז: צאו וראו אם הגיע זמן השחיטה (ברקאי / האיר המזרח)','משנה תמיד ג:א–ג',2)}
+  if(washNow(dayId,h)){S.wash=true;const kp=[[-58,-26.4],[-58,-33.4],[-61.4,-30]].map(p=>[p[0],p[1],yawTo(p[0],p[1],-58,-30)]);   // סביב הכיור (x=-58, z=-30)
+   add({id:'kiyor-w',t:'stand',pop:'K',grp:'A',kind:'kohen',n:3,pts:kp,anim:'sway',reg:2,job:'מקדש ידיו ורגליו מן הכיור',who:'כהן – מקדש ידיים ורגליים מן הברזים של הכיור'});
+   cap('kiyor','הכהנים מקדשים ידיהם ורגליהם מן הכיור (שנים עשר ברזים) – ידיו הימנית על הרגל הימנית והשמאלית על השמאלית – לפני כל עבודה במקדש'+(yk?'; כהן גדול טובל חמש טבילות ומקדש עשרה קידושים בימי הכיפורים':''),'משנה תמיד ב:א; יומא ג:ג,ו',3)}
   // תמיד של שחר: שוחטים ומעלים אברים (תמיד ג:א)
   if(inW(h,5.2,7.0)){add({id:'tm-sl',t:'stand',pop:'K',grp:'A',kind:'kohen',n:7,rect:[-39,-24,-86,-66],face:'altar',anim:'sway',reg:2,job:'שוחט/מקבל/זורק את דם התמיד',who:'כהן בעבודת התמיד של שחר – שחיטה וקבלת הדם'});
    add({id:'tm-limb',t:'route',pop:'K',grp:'A',kind:'kohen',n:5,route:'limbs',spd:2.2,lane:.5,anim:'walk',prop:'lamb',reg:1,spread:1,job:a=>a.dir>0?'מעלה את אברי התמיד לכבש':'יורד מן הכבש',who:'כהן – מעלה אברים לכבש',});
@@ -396,6 +409,13 @@ let STOOL=null;
   // יום הכיפורים
   if(yk){const stand=inW(h,6.5,17.5)?q(cr[3]):0;
    if(stand)add({id:'yk-stand',t:'stand',pop:'Y',grp:'A',kind:'yisrael',n:stand,rect:AZE,ex:[[-44,-8,-61,5.5]],face:'altar',anim:'sway',bow:1,reg:4,job:'עומד בעזרה כל היום; כורע ומשתחווה כששומע את השם המפורש',who:'ישראל העומדים בעזרה ביום הכיפורים (משנה יומא ו:ב)'});
+   if(inW(h,8.4,9.3)){add({id:'yk-par',t:'stand',pop:'K',grp:'A',kind:'kohen',n:5,rect:[-60,-46,-52,-36],face:'east',anim:'sway',reg:2,job:'עומד בין האולם למזבח – כהן גדול סומך שתי ידיו על הפר ומתודה',who:'כהן – עומד עם כהן גדול בווידוי על הפר (יומא ג:ח)'});
+    cap('ykpar','כהן גדול סומך שתי ידיו על ראש פר החטאת ומתודה: "אנא השם, עויתי פשעתי חטאתי לפניך, אני וביתי" – והכהנים והעם עונים "ברוך שם כבוד מלכותו לעולם ועד"','משנה יומא ג:ח; ו:ב',2)}
+   if(inW(h,9.3,10.3)){add({id:'yk-lots',t:'stand',pop:'K',grp:'A',kind:'kohen',n:6,rect:[-39,-24,-86,-66],face:'altar',anim:'sway',prop:'lamb',propP:.34,reg:2,job:'שני השעירים עומדים לפני כהן גדול; מטילים גורל – אחד לה׳ ואחד לעזאזל',who:'כהן – מסייע בגורל שני השעירים (יומא ד:א)'});
+    cap('yklots','שני שעירים עומדים לפני כהן גדול בצפון המזבח; מטילים גורלות בקלפי – "לה׳" ו"לעזאזל" – וקושרים לשון של זהורית על ראש המשתלח','משנה יומא ג:ט–י; ד:א',2)}
+   if(inW(h,10.6,11.4)){add({id:'yk-ulam',t:'route',pop:'K',grp:'A',kind:'kohen',n:3,route:'ulam',spd:1.6,lane:1.2,anim:'walk',loop:0,start:0,reg:1,job:'מלווה את כהן גדול אל ההיכל עם מחתת גחלים וכף קטורת',who:'כהן – מלווה את כהן גדול בכניסה לקודש הקדשים (יומא ה:א)'});
+    cap('ykket','כהן גדול נוטל מחתה של גחלים מן המזבח ומלוא חפניו קטורת דקה, נכנס לקודש הקדשים ומעלה את הקטורת עד שהבית מתמלא עשן','משנה יומא ד:ד–ה:א; ויקרא טז:יב–יג',2)}
+   if(inW(h,12.3,13.3))cap('yksa','השעיר המשתלח נמסר לאיש עתי – מוליכים אותו אל המדבר, וגדולי ירושלים מלווים אותו עד סוף עשר סוכות','משנה יומא ו:ב–ד; ויקרא טז:כא–כב',3);
    const vid=inW(h,8.6,8.8)||inW(h,9.3,9.5)||inW(h,10.1,10.3);if(vid){S.bow='prost'}
    cap('yk1','הכהנים והעם העומדים בעזרה – כששומעים את השם המפורש יוצא מפי כהן גדול הם כורעים, משתחווים ונופלים על פניהם ואומרים "ברוך שם כבוד מלכותו לעולם ועד"','משנה יומא ו:ב',1);
    if(inW(h,11.3,12.2)){S.walkHold={y:1};cap('yk2','כהן גדול קורא בתורה בעזרה בעמידה (אחרי מות ואך בעשור), וחזן הכנסת מוסר את הספר לראש הכנסת, לסגן ולכהן גדול','משנה יומא ז:א',2)}
@@ -529,7 +549,7 @@ let STOOL=null;
  /* רשימת ישויות חיות (לבדיקות tools/audit-people.mjs): כל דמות במופעים/יחידות + שחקני people.js */
  function entities(){const L=[];ALL.forEach(a=>{L.push({uid:a.uid,id:a.sp.id,x:a.x,y:a.y,z:a.z,mode:a.mode,why:(a.life&&!a.sp.why)?0:1,seated:!!a.sp.seated,sc:a.s,pop:a.sp.pop||a.sp.make})});
   ACTORS.forEach(c=>{if(c.state!='away')L.push({uid:'act:'+c.id+':'+c.gen,id:c.id,x:c.x,y:c.y,z:c.z,mode:c.state,why:1,seated:false,sc:1,pop:'actor',moving:c.moving})});return L}
- return{update,validate,plan,get S(){return S},set S(v){S=v},DAYS,DLIST,POOLS,ROUTES,blocked:(x,z,f,r)=>{if(!GRID)buildGrid();return blocked(x,z,f,r)},levelY,SAN_GAZIT,SAN_CHEL,get count(){let n=0;for(const k in POOLS)n+=POOLS[k].hi;return n},setQ:v=>{Qv=v;KEY=''},
+ return{washNow,fireK,update,validate,plan,get S(){return S},set S(v){S=v},DAYS,DLIST,POOLS,ROUTES,blocked:(x,z,f,r)=>{if(!GRID)buildGrid();return blocked(x,z,f,r)},levelY,SAN_GAZIT,SAN_CHEL,get count(){let n=0;for(const k in POOLS)n+=POOLS[k].hi;return n},setQ:v=>{Qv=v;KEY=''},
   actor,hid,entities,get held(){return HELD},get ready(){return READY&&NAVR},get now(){return NOW},portals:()=>Object.values(NP).map(p=>({id:p.id,x:p.x,z:p.z})),
   setBoost:v=>{BOOSTF=v},setBudget:(ms,pc,fm)=>{FILLMS=ms;PCAPMAX=pc||4;if(fm)FIELDMS=fm},buildCrowdGeometry,
   nav:{ok:nOK,y:navY,fields:NF,pathFromPortal,pathOut,snapCell,get W(){return NW},get Y(){return NYa},N:NN,X0:NX0,Z0:NZ0,get ready(){return NAVR}}}

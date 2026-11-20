@@ -1,6 +1,11 @@
 /* ================= בקרה, מצלמה, טיול, ממשק ================= */
 const controls=new THREE.OrbitControls(camera,renderer.domElement);
 controls.enableDamping=true;controls.dampingFactor=.08;controls.maxDistance=6500;controls.minDistance=4;controls.maxPolarAngle=Math.PI*.495;controls.screenSpacePanning=false;
+/* גרירת עכבר/אצבע במבט־על מזיזה את המיקום (פאן על הקרקע); סיבוב המבט – כפתור ימני / שתי אצבעות (משה, 20.11.2026) */
+{const el=renderer.domElement,pmin=controls.minPolarAngle,pmax=controls.maxPolarAngle;let down=0;   /* בסיבוב המבט – רק ימינה/שמאלה; ההטיה למעלה/למטה נעולה (משה, 20.11.2026) */
+ el.addEventListener('pointerdown',()=>{if(typeof walk!='undefined'&&walk)return;if(!down++){const a=controls.getPolarAngle();controls.minPolarAngle=a;controls.maxPolarAngle=a}},true);
+ const up=()=>{if(down>0&&!--down){controls.minPolarAngle=pmin;controls.maxPolarAngle=pmax}};el.addEventListener('pointerup',up,true);el.addEventListener('pointercancel',up,true)}
+try{controls.mouseButtons={LEFT:THREE.MOUSE.PAN,MIDDLE:THREE.MOUSE.DOLLY,RIGHT:THREE.MOUSE.ROTATE};controls.touches={ONE:THREE.TOUCH.PAN,TWO:THREE.TOUCH.DOLLY_ROTATE!==undefined?THREE.TOUCH.DOLLY_ROTATE:THREE.TOUCH.DOLLY_PAN}}catch(e){}
 camera.position.set(330,330,470);controls.target.set(-20,0,-40);
 
 /* ---------- שעה ביום ---------- */
@@ -76,8 +81,8 @@ function goto(p){const [name,desc,src,cam,tg,wk,cut]=p;showCard(name,desc,src);
  if(walk){if(wk)walkTo(wk[0],wk[1],wk[2],wk[3]);
   else if(tg){const dx=tg[0]-px,dz=tg[2]-pz,d=Math.hypot(dx,dz)||1,s=Math.min(10,d),sx=tg[0]-dx/d*s,sz=tg[2]-dz/d*s,ok=inBounds(sx,sz)&&!blocked(sx,sz,floorY(px,pz,pfl));walkTo(ok?sx:tg[0],ok?sz:tg[2],Math.atan2(dx,-dz)*180/Math.PI)}
   return}
- fly(cam,tg);pendingWalk=wk}
-let pendingWalk=null;
+ fly(cam,tg);pendingWalk=wk;pendingTg=tg}
+let pendingWalk=null,pendingTg=null;
 function showCard(t,d,s){$('cT').textContent=t;$('cD').textContent=d;$('cS').textContent='מקור: '+s;$('card').style.display='block'}
 $('cardX').onclick=()=>$('card').style.display='none';
 $('bAbout').onclick=()=>$('about').style.display='flex';
@@ -93,15 +98,20 @@ function walkTo(x,z,yd,fl){const f1=fl===undefined?floorY(x,z):floorY(x,z,fl),d=
 function teleport(x,z,yd,fl){wt=null;px=x;pz=z;yaw=yd*Math.PI/180;pitch=0;pfl=fl===undefined?floorY(x,z):floorY(x,z,fl);py=pfl+EYE}
 function stopTour(){try{if(typeof SV!='undefined'&&SV.isOpen)SV.stop()}catch(e){}}   /* מעבר למצב אחר באתר עוצר את הסיור וההקראה */
 function setWalk(on){if(on)stopTour();walk=on;controls.enabled=!on;$('bWalk').textContent=on?'🛰️ חזרה למבט־על':'🚶 טיול ברגל';$('lookb').style.display=on?'flex':'none';$('hint').style.display=on?'block':'none';
- if(on){$('hint').textContent='לחיצה על נקודה בקרקע – הולכים אליה · W A S D · Shift מהר · גרירה להסתכלות · R/F או גלגלת: מעלה/מטה · Z ישר · Esc ליציאה';
-  const w=pendingWalk||(()=>{const t=controls.target;return[t.x,t.z+10,0]})();let[x,z,y,fl]=w;teleport(x,z,y,fl);camera.rotation.order='YXZ'}
+ if(on){$('hint').textContent='לחיצה על נקודה בקרקע – הולכים אליה · W A S D · Shift מהר · גרירה – מזיזה את המיקום · כפתור ימני / Shift+גרירה – הסתכלות · R/F או גלגלת: מעלה/מטה · Z ישר · Esc ליציאה · שלט: PageUp/PageDown פנייה, כפתור ריבוע הליכה/עצירה · 🎤 פקודות קול: קדימה, אחורה, ימינה, שמאלה, עצור';
+  const pw=(pendingWalk&&pendingTg&&Math.hypot(controls.target.x-pendingTg[0],controls.target.z-pendingTg[2])<40)?pendingWalk:null;pendingWalk=null;   /* נקודת ההליכה של תחנה תקפה רק אם עדיין מסתכלים עליה */
+  const w=pw||(()=>{const t=controls.target,c=camera.position,dx=t.x-c.x,dz=t.z-c.z;return[t.x,t.z,Math.hypot(dx,dz)>1?Math.atan2(dx,-dz)*180/Math.PI:0,t.y>8?t.y:undefined]})();   /* מעבר ממבט־על לטיול: נשארים באותו מקום (מרכז המבט) ובאותו כיוון מבט */let[x,z,y,fl]=w;teleport(x,z,y,fl);camera.rotation.order='YXZ'}
  else{const f=new T.Vector3(Math.sin(yaw),0,-Math.cos(yaw));camera.rotation.set(0,0,0);const fy=(Math.abs(px)<252&&Math.abs(pz)<252&&pfl<0)?0:floorY(px,pz,pfl>0&&floorY(px,pz)<-5?pfl:undefined);controls.target.set(px,fy,pz);camera.position.set(px-f.x*60,fy+45,pz-f.z*60);controls.update()}}
 $('bWalk').onclick=()=>setWalk(!walk);
 addEventListener('keydown',e=>{keys[e.code]=1;if(e.code=='Escape'){if(mapOpen)openMap(false);else if(kidOpen)openKids(false);else if(walk)setWalk(false)}if(e.code=='KeyH'){['side','ctl','mini'].forEach(i=>{const d=$(i);d.style.display=d.style.display=='none'?'':'none'})}});
 addEventListener('keyup',e=>keys[e.code]=0);
-let drag=false,lx=0,ly=0;const cvs=renderer.domElement;
-cvs.addEventListener('pointerdown',e=>{if(walk){drag=true;lx=e.clientX;ly=e.clientY;cvs.setPointerCapture(e.pointerId)}});
-cvs.addEventListener('pointermove',e=>{if(walk&&drag){yaw+=(e.clientX-lx)*.0042;pitch=Math.max(-1.3,Math.min(1.3,pitch-(e.clientY-ly)*.0042));lx=e.clientX;ly=e.clientY}});
+let drag=false,lx=0,ly=0,dragLook=false;const cvs=renderer.domElement;
+cvs.addEventListener('pointerdown',e=>{if(walk){drag=true;dragLook=e.button==2||e.shiftKey;lx=e.clientX;ly=e.clientY;cvs.setPointerCapture(e.pointerId)}});
+cvs.addEventListener('contextmenu',e=>{if(walk)e.preventDefault()});
+cvs.addEventListener('pointermove',e=>{if(walk&&drag){const ddx=e.clientX-lx,ddy=e.clientY-ly;lx=e.clientX;ly=e.clientY;
+  if(dragLook){yaw+=ddx*.0042;pitch=Math.max(-1.3,Math.min(1.3,pitch-ddy*.0042))}
+  else if(ddx||ddy){/* גרירה = הזזת המיקום (תופסים את הקרקע): גרירה למטה – מתקדמים, ימינה – זזים שמאלה */wt=null;const k=.05*(e.shiftKey?3:1),fw=ddy*k,sd=-ddx*k,mx=Math.sin(yaw)*fw+Math.cos(yaw)*sd,mz=-Math.cos(yaw)*fw+Math.sin(yaw)*sd,f0=floorY(px,pz,pfl);
+   const bad=(x,z,f)=>{const nf=floorY(x,z,f);return blocked(x,z,f)||!inBounds(x,z)||nf-f>3.5||f-nf>6};let nx=px+mx;if(!bad(nx,pz,f0))px=nx;const nz=pz+mz;if(!bad(px,nz,floorY(px,pz,f0)))pz=nz}}});
 cvs.addEventListener('pointerup',()=>drag=false);
 /* בטיול ברגל: לחיצה (בלי גרירה) על נקודה בקרקע – הולכים אליה; עוצרים לפני מכשול. מקשי ההליכה מבטלים. */
 let cw=null;cvs.addEventListener('pointerdown',e=>{cw={x:e.clientX,y:e.clientY,t:performance.now()}},true);
@@ -166,7 +176,7 @@ function loop(){requestAnimationFrame(loop);if(mapOpen||kidOpen)return;const dt=
  if(tw){tw.t+=dt/tw.dur;const k=Math.min(1,tw.t),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;camera.position.lerpVectors(tw.p0,tw.p1,e);controls.target.lerpVectors(tw.t0,tw.t1,e);if(k>=1)tw=null}
  SV.update(dt);if(walk)stepWalk(dt);else controls.update();
  LIFE.update(dt,t);CROWD.update(t,dt);if(typeof CITY2!='undefined')CITY2.update(dt,t);ambUpdate&&ambUpdate(t,dt);
- fires.forEach((f,i)=>{f.scale.set(1+.15*Math.sin(t*9+i),1+.3*Math.sin(t*7+i*2),1+.15*Math.cos(t*8+i));f.rotation.y=t*2+i});
+ fires.forEach((f,i)=>{const kk=f.userData.k==null?1:f.userData.k;f.scale.set((1+.15*Math.sin(t*9+i))*kk,(1+.3*Math.sin(t*7+i*2))*kk,(1+.15*Math.cos(t*8+i))*kk);f.rotation.y=t*2+i});
  smoke.forEach(s=>{const p=(t*.045+s.userData.p)%1;s.position.set(-26+Math.sin(p*9+s.userData.p*20)*1.6*p,YA+16+p*120,-43+Math.cos(p*7)*1.4*p);const sc=6+p*26;s.scale.set(sc,sc,1);s.material.opacity=.55*(1-p)*Math.min(1,p*8)});
  updLabels();if(++fr%4==0)drawMap();
  renderer.render(scene,camera)}
@@ -179,7 +189,7 @@ $('per').onchange=e=>setPeriod(e.target.value);
 {const L=$('landing'),hide=()=>{L.classList.add('out');setTimeout(()=>{if(L.classList.contains('out'))L.style.display='none'},650)};
  const act={model:()=>{},tours:()=>SV.show(true),walk:()=>setWalk(true),map:()=>openMap(true),kids:()=>openKids(true),about:()=>{$('about').style.display='flex'},
   ark:()=>{const c=$('lArk');c.checked=true;c.onchange();const i=P.findIndex(p=>p[0]=='קודש הקדשים');if(i>=0)goto(P[i])}};
- {const toBlob=u=>{try{const i=u.indexOf(','),s=atob(u.slice(i+1)),a=new Uint8Array(s.length);for(let j=0;j<s.length;j++)a[j]=s.charCodeAt(j);return URL.createObjectURL(new Blob([a],{type:'image/png'}))}catch(e){return null}};   /* תמונה מ-blob: ולא data-URI (נטפרי: blob מקומי עובר) */
+ {const toBlob=u=>{try{const i=u.indexOf(','),s=atob(u.slice(i+1)),a=new Uint8Array(s.length);for(let j=0;j<s.length;j++)a[j]=s.charCodeAt(j);return URL.createObjectURL(new Blob([a],{type:'image/webp'}))}catch(e){return null}};   /* תמונה מ-blob: ולא data-URI (נטפרי: blob מקומי עובר) */
   const svgFb=(ic,k)=>{if(typeof LAND_SVG!='undefined'&&LAND_SVG[k]){ic.innerHTML=LAND_SVG[k];ic.classList.add('im')}};   /* נפילה: SVG וקטורי */
   let pend=0;const done=()=>{if(--pend<=0)L.classList.add('icons')};   /* האיורים מוסתרים עד שהוחלפו – בלי הבהוב של האימוג'י */
   L.querySelectorAll('[data-go]').forEach(b=>{const k=b.dataset.go,ic=b.querySelector('.ic');if(!ic)return;pend++;const u=typeof LAND_ICONS!='undefined'&&LAND_ICONS[k],bu=u&&toBlob(u);
