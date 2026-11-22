@@ -38,7 +38,7 @@ const CHUNKED = process.argv.includes('--chunks');   // external <script src> ch
 const INLINE = process.argv.includes('--inline');     // old behaviour: everything inline in index.html (also written as full.html, the boot loader's fallback)
 const BOOT = !INLINE && !CHUNKED;                      // default: tiny index.html + site/boot.js fetching opaque gzip payloads (p/*.bin)
 const NL = String.fromCharCode(10), SEP = NL + '/*@@BHPART@@*/' + NL;
-const codes = {}, inlineTags = [];
+const codes = {}, inlineTags = [], extTags = [];   // extTags: on-demand data pointers (ERETZ), injected in every mode
 const tags = [], lazy = [];   // lazy chunks (map images) are fetched in the background after the page has loaded
 for (const ch of built.chunks) {
   if (STAGE < 2 && ch.name === 'app') ch.code = ch.code.split('{pos:[18500,27500,27500],tgt:[18500,0,3500],fixed:true,dur:5.5}').join("C('parva',20,12,5)").split('{pos:[1750,1350,1500],tgt:[1750,60,-57]}').join('view(AZ.booths[0].fx,AZ.booths[0].fz,terrH(AZ.booths[0].fx,AZ.booths[0].fz)+3,40,16,250)').split('   /* זום־אאוט קולנועי: ירושלים ← פלוסין (מצרים) והנדווין (הודו) – src/world3d.js */').join('');
@@ -49,6 +49,11 @@ for (const ch of built.chunks) {
     return '/' + name;
   });
   if (!code) continue;
+  if (ch.ext) {   // on-demand data (ERETZ terrain): always an external cacheable file, fetched only when the user opens the feature; if a filter mangles it only that feature fails
+    const eb = Buffer.from(code), en = `j/${ch.name}.${crypto.createHash('sha1').update(eb).digest('hex').slice(0, 12)}.js`, ez = zlib.gzipSync(eb, { level: 9 });
+    files.set(en, { type: 'text/javascript; charset=utf-8', gzip: true, body: ez }); extTags.push('<script>window.ERETZ_SRC="/' + en + '"</script>');
+    console.log(`  on-demand ${ch.name}: ${(eb.length / 1e6).toFixed(2)}MB -> ${(ez.length / 1e6).toFixed(2)}MB gzip`); continue;
+  }
   codes[ch.name] = code; inlineTags.push('<script>' + code + '</script>');
   if (!CHUNKED) { tags.push('<script>' + code + '</script>'); console.log(`  inline ${ch.name}: ${(code.length / 1e6).toFixed(2)}MB`); continue; }   // default: scripts inline in index.html (Moshe's network filter broke external /j/*.js on 20.11.2026)
   const buf = Buffer.from(code);
@@ -75,7 +80,7 @@ let html = built.shell;
 // visit tracker (only in the published site, not in the offline/local build)
 const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');
 if (!html.includes('</head>') || !html.includes('<!--@CHUNKS@-->')) { console.error('no </head> or chunk marker in built html'); process.exit(1); }
-html = html.replace('</head>', () => '<script>' + tracker + '</script></head>');
+html = html.replace('</head>', () => '<script>' + tracker + '</script>' + extTags.join('') + '</head>');
 // installable app (opt-in: --pwa): manifest + service worker + icons + install/full-screen buttons. Hashed file names, because serve.js
 // gives every non-HTML file a 1-year immutable cache (also at the Vercel edge), so a fixed /sw.js could never be updated.
 if (process.argv.includes('--pwa')) {
