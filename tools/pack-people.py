@@ -61,7 +61,7 @@ meta = {'cellH': CELL_H, 'kinds': {}}
 sheets = sorted(glob.glob(os.path.join(work, '*-*-*.jpg')))
 groups = {}
 for p in sheets:
-    m = re.match(r'(\w+)-(front|back)-(\w+)\.jpg$', os.path.basename(p))
+    m = re.match(r'(\w+)-(front|back|side)-(\w+)\.jpg$', os.path.basename(p))
     if m: groups.setdefault((m.group(1), m.group(2)), []).append(p)
 for (kind, view), paths in sorted(groups.items()):
     ppl = []

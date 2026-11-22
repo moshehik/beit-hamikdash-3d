@@ -26,24 +26,26 @@ const REALP=(()=>{
    throw new Error('no data source')}).then(d=>decode(d).then(()=>{data=d})).catch(e=>{failed=true;console.warn('REALP load failed',e&&e.message);loading=false;throw e});
   return loading}
  /* ---- חומר ---- */
- const VS=`attribute vec2 corner;attribute vec4 aF;attribute vec4 aB;attribute vec4 aV;   // aV: x=היפוך(±1) yzw=גוון
-  uniform vec2 sF,sB;uniform float uH,uCellH;varying vec2 vUv;varying vec3 vTint;varying float vBk;
+ const VS=`attribute vec2 corner;attribute vec4 aF;attribute vec4 aB;attribute vec4 aS;attribute vec4 aV;   // aF/aB/aS: מלבן התא באטלס (קדמי/אחורי/פרופיל); aV: x=היפוך(±1) yzw=גוון
+  uniform vec2 sF,sB,sS;uniform float uH,uCellH,uSide;varying vec2 vUv;varying vec3 vTint;varying float vBk;
   #include <fog_pars_vertex>
   void main(){mat4 M=instanceMatrix;vec3 c=M[3].xyz;float sy=length(M[1].xyz);
    if(sy<1e-4){gl_Position=vec4(2.,2.,2.,1.);vUv=vec2(0.);vTint=vec3(1.);vBk=0.;return;}
    vec2 f=normalize(M[2].xz+vec2(1e-6));vec2 v=normalize(cameraPosition.xz-c.xz+vec2(1e-5));
-   float bk=dot(f,v)<-.15?1.:0.;vec4 r=bk>.5?aB:aF;vec2 sz=bk>.5?sB:sF;
-   float h=uH*sy*(r.w/uCellH),w=h*(r.z/r.w);vec3 right=vec3(v.y,0.,-v.x);
+   vec3 right=vec3(v.y,0.,-v.x);float d=dot(f,v),sd=dot(f,right.xz);   // d>0: הדמות פונה למצלמה; sd>0: פונה לימין המסך
+   float bk=d<-.5?1.:0.;if(uSide>.5&&abs(d)<=.5)bk=2.;else if(d<0.)bk=1.;   // 0 קדמי, 1 אחורי, 2 פרופיל (פונה ימינה בתמונה)
+   vec4 r=bk>1.5?aS:(bk>.5?aB:aF);vec2 sz=bk>1.5?sS:(bk>.5?sB:sF);
+   float h=uH*sy*(r.w/uCellH),w=h*(r.z/r.w);
    vec3 pos=c+right*(corner.x-.5)*w+vec3(0.,corner.y*h,0.);
-   float u=aV.x>0.?corner.x:1.-corner.x;
+   float u=bk>1.5?(sd>0.?corner.x:1.-corner.x):(aV.x>0.?corner.x:1.-corner.x);
    vUv=vec2((r.x+u*r.z)/sz.x,1.-(r.y+(1.-corner.y)*r.w)/sz.y);vTint=aV.yzw;vBk=bk;
    vec4 mvPosition=viewMatrix*vec4(pos,1.);gl_Position=projectionMatrix*mvPosition;
    #include <fog_vertex>
   }`;
- const FS=`uniform sampler2D tF,tB;uniform vec3 uLight;varying vec2 vUv;varying vec3 vTint;varying float vBk;
+ const FS=`uniform sampler2D tF,tB,tS;uniform vec3 uLight;varying vec2 vUv;varying vec3 vTint;varying float vBk;
   #include <common>
   #include <fog_pars_fragment>
-  void main(){vec4 c=vBk>.5?texture2D(tB,vUv):texture2D(tF,vUv);if(c.a<.42)discard;
+  void main(){vec4 c=vBk>1.5?texture2D(tS,vUv):(vBk>.5?texture2D(tB,vUv):texture2D(tF,vUv));if(c.a<.42)discard;
    vec3 rgb=pow(c.rgb,vec3(2.2))*vTint*uLight;gl_FragColor=vec4(rgb,1.);
    #include <tonemapping_fragment>
    #include <encodings_fragment>
@@ -53,17 +55,17 @@ const REALP=(()=>{
  const mats={};
  function material(kind){if(mats[kind])return mats[kind];const t=texs[kind],d=data.kinds[kind];
   const u=T.UniformsUtils.merge([T.UniformsLib.fog]);   // merge() CLONES texture uniforms (clone => version 0 => never uploaded), so the textures are assigned after it
-  Object.assign(u,{tF:{value:t.front},tB:{value:(t.back||t.front)},sF:{value:new T.Vector2(d.front.w,d.front.h)},sB:{value:new T.Vector2((d.back||d.front).w,(d.back||d.front).h)},uH:{value:1.8},uCellH:{value:data.cellH},uLight:{value:new T.Vector3(1,1,1)}});
+  Object.assign(u,{tF:{value:t.front},tB:{value:(t.back||t.front)},tS:{value:(t.side||t.front)},uSide:{value:t.side?1:0},sS:{value:new T.Vector2((d.side||d.front).w,(d.side||d.front).h)},sF:{value:new T.Vector2(d.front.w,d.front.h)},sB:{value:new T.Vector2((d.back||d.front).w,(d.back||d.front).h)},uH:{value:1.8},uCellH:{value:data.cellH},uLight:{value:new T.Vector3(1,1,1)}});
   return mats[kind]=new T.ShaderMaterial({uniforms:u,vertexShader:VS,fragmentShader:FS,fog:true,side:T.DoubleSide})}
  const heightOf=kind=>{try{const g=CROWD.buildCrowdGeometry(kind);let m=0;[g.robe,g.head].forEach(x=>{x.computeBoundingBox();m=Math.max(m,x.boundingBox.max.y)});return m||1.8}catch(e){return 1.8}};
  let seed=1;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;
  function build(P){
   if(P.real||!data||!data.kinds[P.kind]||!texs[P.kind])return;
-  const d=data.kinds[P.kind],F=d.front,K=d.back||d.front,cap=P.cap;
-  const aF=new Float32Array(cap*4),aB=new Float32Array(cap*4),aV=new Float32Array(cap*4);seed=cap*31+P.kind.length*7;
+  const d=data.kinds[P.kind],F=d.front,K=d.back||d.front,SD=d.side||d.front,cap=P.cap;
+  const aF=new Float32Array(cap*4),aB=new Float32Array(cap*4),aS=new Float32Array(cap*4),aV=new Float32Array(cap*4);seed=cap*31+P.kind.length*7;
   for(let i=0;i<cap;i++){const f=F.cells[(rnd()*F.cells.length)|0],b=K.cells[(rnd()*K.cells.length)|0];
-   aF.set(f.slice(0,4),i*4);aB.set(b.slice(0,4),i*4);const s=.9+rnd()*.2;aV.set([rnd()<.5?1:-1,s*(.96+rnd()*.08),s*(.96+rnd()*.08),s*(.96+rnd()*.08)],i*4)}
-  const g=quad.clone();g.setAttribute('aF',new T.InstancedBufferAttribute(aF,4));g.setAttribute('aB',new T.InstancedBufferAttribute(aB,4));g.setAttribute('aV',new T.InstancedBufferAttribute(aV,4));
+   const sd=SD.cells[(rnd()*SD.cells.length)|0];aF.set(f.slice(0,4),i*4);aB.set(b.slice(0,4),i*4);aS.set(sd.slice(0,4),i*4);const s=.9+rnd()*.2;aV.set([rnd()<.5?1:-1,s*(.96+rnd()*.08),s*(.96+rnd()*.08),s*(.96+rnd()*.08)],i*4)}
+  const g=quad.clone();g.setAttribute('aF',new T.InstancedBufferAttribute(aF,4));g.setAttribute('aB',new T.InstancedBufferAttribute(aB,4));g.setAttribute('aS',new T.InstancedBufferAttribute(aS,4));g.setAttribute('aV',new T.InstancedBufferAttribute(aV,4));
   const mat=material(P.kind);mat.uniforms.uH.value=heightOf(P.kind)*1.03;
   const m=new T.InstancedMesh(g,mat,cap);m.instanceMatrix=P.robe.instanceMatrix;m.frustumCulled=false;m.castShadow=false;m.count=P.robe.count;
   (P.robe.parent||scene).add(m);P.real=m}
@@ -76,7 +78,7 @@ const REALP=(()=>{
   if(v){say('טוען אנשים אמיתיים…');
    load().then(()=>{on=true;apply();say('אנשים אמיתיים',1500);if(!loop)loop=requestAnimationFrame(tick)}).catch(()=>{on=false;const cb=$('realPpl');if(cb)cb.checked=false;say('לא הצלחתי לטעון את תמונות האנשים – נשארים הדמויות הרגילות',4000)})}
   else{on=false;apply();say('דמויות רגילות',1200)}}
- function ui(){if(!(window.REAL_PEOPLE||window.REAL_PEOPLE_URL))return;const row=$('dayType')&&$('dayType').closest('.row');if(!row||$('realPpl'))return;
+ function ui(){if(!(window.REAL_PEOPLE||window.REAL_PEOPLE_URL)||(typeof LITE!='undefined'&&LITE))return;const row=$('dayType')&&$('dayType').closest('.row');if(!row||$('realPpl'))return;
   const d=document.createElement('div');d.className='row';d.innerHTML='<label style="cursor:pointer"><input type="checkbox" id="realPpl"> אנשים "אמיתיים" (תמונות)</label><div style="font-size:11px;color:var(--mut)">תמונות אנשים צילומיות מ-AI במקום הדמויות המצוירות</div>';row.after(d);$('realPpl').onchange=e=>set(e.target.checked)}
  if(document.readyState!='loading')setTimeout(ui,0);else addEventListener('DOMContentLoaded',()=>setTimeout(ui,0));
  return{attach(P,kind){P.kind=kind;LIST.push(P);if(on&&data){build(P);if(P.real){P.real.visible=true;P.robe.visible=P.head.visible=false}}},set,get on(){return on},get ready(){return !!data},get failed(){return failed},list:LIST,load,ui}
