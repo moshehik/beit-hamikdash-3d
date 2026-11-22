@@ -64,7 +64,7 @@ const RHW=(()=>{
   else if(saved){camera.near=saved.near;camera.far=saved.far;controls.maxDistance=saved.max;controls.minDistance=saved.min;camera.updateProjectionMatrix();saved=null}}
  function flash(){if(!fade)return;fade.style.transition='none';fade.style.opacity=1;void fade.offsetWidth;fade.style.transition='opacity .9s ease-out';fade.style.opacity=0}
  function setLand(on,sp){const was=landOn;landOn=on;spec=on?sp:null;
-  if(on&&!built)build();if(on){if(!have())groundFallback();if(typeof ERETZ!='undefined'&&ERETZ&&!ERETZ.on&&ERETZ.show&&!ERETZ._rh){try{ERETZ.show();ERETZ._rh=1}catch(e){}}}
+  if(on&&!built)build();if(on){if(typeof ERETZ!='undefined'&&ERETZ&&!ERETZ.loaded&&ERETZ.load&&!ERETZ._ld){ERETZ._ld=1;try{ERETZ.load()}catch(e){}}if(!have())groundFallback();if(typeof ERETZ!='undefined'&&ERETZ&&!ERETZ.on&&ERETZ.show&&!ERETZ._rh){try{ERETZ.show({fly:false});ERETZ._rh=1}catch(e){}}}
   else if(was&&typeof ERETZ!='undefined'&&ERETZ&&ERETZ._rh){try{ERETZ.hide()}catch(e){}ERETZ._rh=0}
   if(built)RW.visible=on;if(GR)GR.visible=on&&!have();camParams(on);if(was!==on)flash();
   if(on)applyLand(sp)}
@@ -118,6 +118,6 @@ const RHW=(()=>{
  function setTRings(list){if(labR){scene.remove(labR);labR.traverse(o=>{o.geometry&&o.geometry.dispose();o.material&&o.material.dispose()});labR=null}
   if(!list||!list.length)return;labR=new THREE.Group();list.forEach(a=>{const m=new THREE.Mesh(new THREE.RingGeometry(a[2]-Math.max(.5,a[2]*.006),a[2],96),new THREE.MeshBasicMaterial({color:a[4]||'#e8c068',transparent:true,opacity:.85,fog:false,side:THREE.DoubleSide,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(a[0],a[3]==null?9:a[3],a[1]);labR.add(m)});scene.add(labR)}
  function hook(st){const r=st&&st.rh||null;stepT=performance.now();if(landOn&&!(r&&r.land))cutNext=true;
-  setTRings(r&&r.tr);setTLabels(r&&r.lb);if(!r){setLand(false);setHud(null);return}
+  if(r&&(r.hud||r.land)&&!built)build();setTRings(r&&r.tr);setTLabels(r&&r.lb);if(!r){setLand(false);setHud(null);return}
   setLand(!!r.land,r.land||null);setHud(r.hud||null)}
  return{hook,resolve,at,P,PL,cut(){const c=cutNext;cutNext=false;return c},get on(){return landOn},hudSeq:()=>hudSeq}})();

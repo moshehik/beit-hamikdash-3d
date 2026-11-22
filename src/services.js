@@ -342,7 +342,7 @@ const SV=(()=>{
   if(c&&c.follow)S.fboost=1.6;if(jump){S.fd=null;S.fAz=null;const A=S.actors[S.follow];if(A){const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,.01)}}return}   /* סיור רציף: אין קפיצה לתחנה – המצלמה רק ממשיכה אחרי הכהן */
   if(c&&(c.pos||c.at)){const[p,t]=camFrom(c);flyTo(p,t,jump?.01:(c.dur||1.8))}else if(c&&c.follow){S.follow=c.follow}
   else if(jump){const A=S.actors[S.follow],t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,.01)}}
- function updCam(dt){if(walk||!S)return;{const _st=S.sc.steps[S.idx];if(_st&&_st.rh&&_st.rh.land&&!S.camTw)return}   /* שלבי מפת ארץ ישראל: המצלמה נשארת במקומה (אין מעקב אחרי שחקן) */
+ function updCam(dt){if(walk||!S)return;{const _st=S.sc.steps[S.idx];if(_st&&(_st.rh&&_st.rh.land||_st.cam&&_st.cam.still)&&!S.camTw)return}   /* שלבי מפת ארץ ישראל: המצלמה נשארת במקומה (אין מעקב אחרי שחקן) */
   if(S.camTw){const w=S.camTw;w.t+=dt/w.dur;const k=Math.min(1,w.t),e=ease(k);camera.position.lerpVectors(w.p0,w.p1,e);controls.target.lerpVectors(w.t0,w.t1,e);if(k>=1)S.camTw=null;return}
   if(S.camMode=='follow'){const A=S.actors[S.follow];if(!A)return;
    /* מצלמת מעקב רציפה: גולשת אחרי הכהן, מסתובבת לאט אל אחורי כיוון ההליכה, ומתקרבת כשקיר חוסם (ומתרחקת חזרה כשמתפנה) */
