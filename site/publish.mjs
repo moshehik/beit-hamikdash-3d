@@ -45,6 +45,11 @@ for (const ch of built.chunks) {
     return '/' + name;
   });
   if (!code) continue;
+  if (ch.ext) {   // on-demand data (ERETZ terrain): always an external cacheable file, fetched only when the user opens the feature; if a filter mangles it only that feature fails
+    const eb = Buffer.from(code), en = `j/${ch.name}.${crypto.createHash('sha1').update(eb).digest('hex').slice(0, 12)}.js`, ez = zlib.gzipSync(eb, { level: 9 });
+    files.set(en, { type: 'text/javascript; charset=utf-8', gzip: true, body: ez }); tags.push('<script>window.ERETZ_SRC="/' + en + '"</script>');
+    console.log(`  on-demand ${ch.name}: ${(eb.length / 1e6).toFixed(2)}MB -> ${(ez.length / 1e6).toFixed(2)}MB gzip`); continue;
+  }
   if (!CHUNKED) { tags.push('<script>' + code + '</script>'); console.log(`  inline ${ch.name}: ${(code.length / 1e6).toFixed(2)}MB`); continue; }   // default: scripts inline in index.html (Moshe's network filter broke external /j/*.js on 20.11.2026)
   const buf = Buffer.from(code);
   const name = `j/${ch.name}.${crypto.createHash('sha1').update(buf).digest('hex').slice(0, 12)}.js`;

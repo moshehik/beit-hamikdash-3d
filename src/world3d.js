@@ -62,10 +62,10 @@ const WORLD=(()=>{
    if(G){G.visible=gOn;if(plane){const o=Math.max(0,Math.min(1,(y-300)/2200));plane.material.opacity=o;plane.visible=o>0;if(!plane.material.map&&G.userData.tex&&!G.userData.texTried){if(G.userData.tex())G.userData.texTried=1}}}
    if(R)R.visible=rOn;
    /* הרחבת מגבלות הבקרה/מצלמה/ערפל כשהמצלמה גבוהה (קולנוע) */
-   const wantMax=gOn?160000:6500;if(controls.maxDistance!==wantMax&&(wantMax>6500||y<5000))controls.maxDistance=wantMax;
-   const nf=(gOn&&y>1200)?(Math.max(.3,y*.004)+'|'+Math.max(8000,Math.min(260000,y*8))):'.3|8000';
+   const E=typeof ERETZ!='undefined'&&ERETZ.on,wantMax=(gOn||E)?160000:6500;if(controls.maxDistance!==wantMax&&(wantMax>6500||y<5000))controls.maxDistance=wantMax;
+   const nf=E?lastNF:(gOn&&y>1200)?(Math.max(.3,y*.004)+'|'+Math.max(8000,Math.min(260000,y*8))):'.3|8000';
    if(nf!==lastNF){lastNF=nf;const p=nf.split('|');camera.near=+p[0];camera.far=+p[1];camera.updateProjectionMatrix()}
-   if(scene.fog){if(!fog0)fog0=[scene.fog.near,scene.fog.far];if(gOn&&y>300){scene.fog.near=fog0[0]+(y-300)*60;scene.fog.far=fog0[1]+(y-300)*200}else{scene.fog.near=fog0[0];scene.fog.far=fog0[1]}}
+   if(scene.fog&&!E){if(!fog0)fog0=[scene.fog.near,scene.fog.far];if(gOn&&y>300){scene.fog.near=fog0[0]+(y-300)*60;scene.fog.far=fog0[1]+(y-300)*200}else{scene.fog.near=fog0[0];scene.fog.far=fog0[1]}}
    if(gOn&&G.visible){const tt=(performance.now()-t0)/1000;
     movers.forEach(c=>{const u=c.userData,t=(tt*u.sp+u.o)%1,p=u.cv.getPointAt(t),tg=u.cv.getTangentAt(t);c.position.copy(p);c.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),tg)});
     G.traverse(o=>{if(o.userData.pulse){const k=1+.35*Math.sin(tt*3);o.scale.set(k,k,1)}});
