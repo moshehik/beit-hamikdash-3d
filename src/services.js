@@ -146,6 +146,27 @@ const SV=(()=>{
   for(let i=0;i<7;i++){const x=-1.2+(i%4)*.8,z=-.4+Math.floor(i/4)*.8;g.add(mesh(CYL,i%2?GLD:SIL,x,1.2+(i>3?.0:0),z,.28,.1,.28))}g.add(mesh(CYL,GLD,.2,1.32,.1,.3,.1,.3));g.add(mesh(CYL,SIL,.2,1.42,.1,.24,.08,.24));return g};   // שולחן כלי שרת מתכת עם כלים
  B.paskhter=()=>{const g=grp(mesh(new T.LatheGeometry([[0,0],[.9,0],[1.7,.7],[1.95,1.1]].map(p=>new T.Vector2(p[0],p[1])),22),mat(0xb8782e,{metalness:.65,roughness:.35,side:T.DoubleSide,emissive:0x2a1608}),0,.15,0),mesh(new T.TorusGeometry(1.95,.07,6,24),CU,0,1.25,0,1,1,1,Math.PI/2));
   [-1,1].forEach(s=>{for(let i=0;i<5;i++)g.add(mesh(new T.TorusGeometry(.09,.025,4,8),mat(0x555a60),s*(1.95+i*.16),1.15-i*.15,0,1,1,1,i%2?0:Math.PI/2))});return g};   // פסכתר: כלי נחושת עגול ושרשרת בכל אחד משני צדיו
+ /* ---------- אביזרי סיור ראש השנה (RH) ---------- */
+ B.shofar=(o={})=>{const g=new T.Group(),hm=mat(o.cow?0x5a4a3a:0xcdbb94,{roughness:.6,side:T.DoubleSide}),gold=o.silver?mat(0xdde1e6,{metalness:.7,roughness:.28}):GLD,L=o.straight?[[0,0,0],[0,.02,.9],[0,.06,1.8]]:[[0,0,0],[0,.04,.5],[0,.18,1.0],[0,.45,1.4],[0,.85,1.5]],n=L.length-1;
+  for(let i=0;i<n;i++){const r1=.08+.14*(i/n)*(o.cow?1.4:1),r2=.08+.14*((i+1)/n)*(o.cow?1.4:1);g.add(limb(L[i],L[i+1],r1,r2,hm))}
+  if(o.broken){g.add(mesh(BOX,mat(0x222222),0,.2,.5,.2,.02,.05))}
+  g.add(mesh(CYL,gold,0,0,.02,.1,.06,.1,Math.PI/2,0,0));if(o.crack)g.add(mesh(BOX,mat(0x201810),.05,.1,.55,.01,.2,.01));if(o.glue)g.add(mesh(BOX,mat(0xcc8844),0,.1,.55,.2,.05,.08));g.userData.grip=[0,0,.1];return g};
+ B.rod=()=>{const g=grp(limbm([0,0,-.9],[0,0,.9],.03,WOOD),mesh(SPH,mat(0xc9a050),0,0,.95,.06,.06,.06));g.userData.grip=[0,0,0];return g};
+ B.lulav=()=>{const g=grp(limbm([0,0,-.3],[0,.9,.1],.04,mat(0x3a7a2a)),limbm([.06,.05,-.1],[.1,.7,.05],.03,mat(0x5a8a3a)),limbm([-.06,.05,-.1],[-.1,.65,.05],.03,mat(0x2a5a2a)),mesh(SPH,mat(0xe8d040),.14,.05,.1,.1,.1,.1));g.userData.grip=[0,0,0];return g};
+ B.sapling=(o={})=>{const s=o.s||1,g=grp(limbm([0,0,0],[0,1.4*s,0],.07*s,mat(0x6a4a2c)),mesh(SPH,mat(o.col||0x4a8a3a,{roughness:1}),0,1.9*s,0,.8*s,.6*s,.8*s));return g};
+ B.donkey=(o={})=>quad(Object.assign({kind:'donkey',L:2.4,H:1.1,W:.8,leg:.95,col:0x8a8478,face:0x77705f,s:1.2},o));
+ B.scroll=(o={})=>{const g=grp(mesh(CYL,mat(o.col||0xf1e4c4),0,0,0,.09,.6,.09,0,0,Math.PI/2),mesh(CYL,WOOD,-.34,0,0,.05,.12,.05,0,0,Math.PI/2),mesh(CYL,WOOD,.34,0,0,.05,.12,.05,0,0,Math.PI/2));g.userData.grip=[0,0,0];return g};
+ B.snakepole=()=>{const g=grp(limbm([0,0,0],[0,3.2,0],.06,WOOD),limbm([0,3.2,0],[.5,3.2,0],.04,WOOD));const sn=[[0,3.15,0],[.08,2.9,.08],[-.08,2.7,-.06],[.08,2.5,.06],[-.06,2.3,-.05]];for(let i=0;i<sn.length-1;i++)g.add(limb(sn[i],sn[i+1],.06,.06,CU));g.add(mesh(SPH,CU,0,3.2,0,.1,.08,.14));return g};
+ B.skyboard=(o={})=>{const sx=o.sx!=null?o.sx:-.55,mx=o.mx!=null?o.mx:-.15,my=o.my!=null?o.my:.35,ph=o.ph!=null?o.ph:0;
+  const tex=cv(320,200,(c,w,h)=>{const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,o.night?'#0a1030':'#f4a560');g.addColorStop(.7,o.night?'#1c2a5a':'#fbe0a8');g.addColorStop(1,'#3a2a14');c.fillStyle=g;c.fillRect(0,0,w,h);c.fillStyle='#3a2a14';c.fillRect(0,h*.8,w,h*.2);
+   if(!o.nosun){c.fillStyle='#fff2a0';c.beginPath();c.arc(w/2+sx*w*.45,h*.58,16,0,6.3);c.fill()}
+   c.fillStyle='#f5f5ff';c.beginPath();c.arc(w/2+mx*w*.45,h*(.55-my*.4),14,0,6.3);c.fill();c.globalCompositeOperation='destination-out';c.beginPath();c.arc(w/2+mx*w*.45+ph*14,h*(.55-my*.4)-2,13,0,6.3);c.fill();c.globalCompositeOperation='source-over'});
+  const g=grp(mesh(BOX,WOOD,0,1.4,0,3.4,2.2,.08),mesh(new T.PlaneGeometry(3.2,2),new T.MeshBasicMaterial({map:tex}),0,1.4,.05),mesh(BOX,WOOD,-1.5,.35,0,.1,.7,.1),mesh(BOX,WOOD,1.5,.35,0,.1,.7,.1));return g};
+ B.pit=()=>{const g=grp(mesh(new T.CylinderGeometry(1.4,1.4,.5,16,1,true),mat(0x8a7a5a,{side:T.DoubleSide}),0,.25,0),mesh(new T.CircleGeometry(1.2,16),mat(0x14100a),0,.02,0,1,1,1,-Math.PI/2));return g};
+ B.sheaf=()=>{const g=new T.Group();for(let i=0;i<9;i++)g.add(limbm([Math.cos(i)*.1,0,Math.sin(i)*.1],[Math.cos(i)*.25,1.1,Math.sin(i)*.25],.02,mat(0xe0b848)));g.add(mesh(CYL,mat(0xa88a4a),0,.6,0,.18,.06,.18));g.userData.grip=[0,0,0];return g};
+ B.dice=()=>{const g=grp(mesh(BOX,mat(0xf2ece0),-.1,0,0,.14,.14,.14,0,.4,0),mesh(BOX,mat(0xf2ece0),.12,0,.08,.14,.14,.14,0,-.3,0));g.userData.grip=[0,0,0];return g};
+ B.coin=()=>{const g=grp(mesh(CYL,GLD,0,0,0,.14,.03,.14),mesh(CYL,GLD,.2,.03,0,.14,.03,.14));g.userData.grip=[0,0,0];return g};
+ B.table=()=>{const g=new T.Group();g.add(mesh(BOX,WOOD,0,1.0,0,3,.12,1.4));[[-1.3,-.55],[1.3,-.55],[-1.3,.55],[1.3,.55]].forEach(p=>g.add(mesh(BOX,WOOD,p[0],.5,p[1],.1,1,.1)));return g};
  /* ---------- בעלי חיים ---------- */
  function quad(o){const g=new T.Group(),inn=new T.Group();g.add(inn);const s=o.s||1,wm=mat(o.col,{roughness:1}),sk=mat(o.face||o.col,{roughness:.9}),L=o.L,H=o.H,W=o.W,lg=o.leg;
   const body=mesh(SPH,wm,0,lg+H*.5,0,W*.5,H*.5,L*.5);inn.add(body);
@@ -266,7 +287,7 @@ const SV=(()=>{
   S={sc,actors:{},items:{},idx:0,t:0,playing:true,speed:1,run:null,camMode:'follow',follow:sc.main||Object.keys(sc.actors)[0],camTw:null,phase:'run',hold:0,err:null,fr:0};
   Object.keys(sc.actors).forEach(k=>{S.actors[k]=makeActor(k,sc.actors[k],[...poses[k]])});
   uiOpenScript();goTo(0)}
- function close(keepUI){try{typeof WORLD!='undefined'&&WORLD.hook(null)}catch(e){}AUD.stop();if(S){for(const k in S.items)killItem(k);for(const k in S.actors)root.remove(S.actors[k].root);S=null}if(!keepUI)uiBack()}
+ function close(keepUI){try{typeof WORLD!='undefined'&&WORLD.hook(null)}catch(e){}try{typeof RHW!='undefined'&&RHW.hook(null)}catch(e){}AUD.stop();if(S){for(const k in S.items)killItem(k);for(const k in S.actors)root.remove(S.actors[k].root);S=null}if(!keepUI)uiBack()}
  function resetState(){for(const k in S.items)killItem(k);const st=S.sc.start||{};
   for(const k in S.actors){const A=S.actors[k],s=st[k]||{at:[0,0]};A.lean=A.dip=A.roll=A.speed=0;A.hand.R.rotation.set(0,0,0);A.hand.L.rotation.set(0,0,0);['R','L'].forEach(h=>A.held[h]=null);A.explicit=s.at[2]!=null;
    A.x=s.at[0];A.z=s.at[1];A.y=ptY(s.at);A.yaw=dirYaw(s.face!=null?s.face:0);setPose(A,s.pose||'idle');A.root.visible=!s.hidden}
@@ -281,7 +302,7 @@ const SV=(()=>{
  function leadActor(actions){const sc={},visit=a=>{if(Array.isArray(a)){a.forEach(visit);return}if(!a||typeof a!='object')return;if(a.seq)visit(a.seq);
    if(a.who&&S.actors[a.who]){let w=0;if(a.walk){let p=null,L=0;for(const q of a.walk){if(p)L+=Math.hypot(q[0]-p[0],q[1]-p[1]);p=q}w=3+L*.05}else if(a.anim||a.take||a.give||a.drop||a.pose)w=1;else if(a.face||a.vis)w=.1;sc[a.who]=(sc[a.who]||0)+w}};
   visit(actions);let best=null,bs=0;for(const k in sc){const A=S.actors[k];if(sc[k]>bs&&A&&A.root&&A.root.visible!==false){bs=sc[k];best=k}}return best}
- function startStep(jump){const st=S.sc.steps[S.idx];S.t=0;S.phase='run';S.hold=0;try{typeof WORLD!='undefined'&&WORLD.hook(st)}catch(e){}
+ function startStep(jump){const st=S.sc.steps[S.idx];S.t=0;S.phase='run';S.hold=0;try{typeof WORLD!='undefined'&&WORLD.hook(st)}catch(e){}try{typeof RHW!='undefined'&&RHW.hook(st)}catch(e){}
   try{S.run=top(st.actions||[]);S.run.init()}catch(e){fail(e)}
   const chars=stText(st).length;S.minT=S.txtMinT=1.4+chars*.03;S.holdT=st.hold!=null?st.hold:.8;narrStart();
   if(S.camMode=='follow'&&!(st.cam&&st.cam.follow)){const L=leadActor(st.actions||[]);if(L&&L!==S.follow){S.follow=L;S.fboost=1.6}}   /* מצלמת מעקב: עוברת אל הדמות הפעילה בשלב (לא נשארת על main) */
@@ -313,15 +334,15 @@ const SV=(()=>{
  function followOff(A){const a=A.yaw+2.5;return V3(Math.sin(a)*16,9,Math.cos(a)*16)}
  const RET_MS=4000;let _retB=null,_retOn=false;   /* אחרי שהמשתמש הזיז את המצלמה: מבט חופשי ו-4 שניות אחר כך חזרה מונפשת אל הכהן */
  function retChip(on){if(on===_retOn)return;_retOn=on;if(!_retB){_retB=document.createElement('button');_retB.id='svRet';_retB.type='button';_retB.textContent='🎯 חוזרים אל הכהן… (לחצו לחזרה מיידית)';_retB.onclick=()=>{if(S){S.drag=false;S.ut=0}};document.body.appendChild(_retB)}_retB.classList.toggle('on',on)}
- function applyCam(c,jump){if(walk)return;
+ function applyCam(c,jump){if(walk)return;if(c&&c.rh&&typeof RHW!='undefined'){try{c=Object.assign({},c,RHW.resolve(c))}catch(e){}}   /* מצלמה במרחב ארץ ישראל (src/rh_world.js) */
   if(S.camMode=='free')return;
   if(S.camMode=='follow'){if(c&&c.follow&&S.actors[c.follow])S.follow=c.follow;
   {const A0=S.actors[S.follow];if(A0&&!jump&&!(c&&c.fixed)&&camera.position.distanceTo(V3(A0.x,A0.y,A0.z))>120){S.fd=null;S.fAz=null;const t0=V3(A0.x,A0.y+3,A0.z);flyTo(t0.clone().add(followOff(A0)),t0,.5);return}}   /* הדמות רחוקה מאוד (למשל אחרי שלב בדרך המדבר) – מעבר מהיר ולא מסע ארוך של המצלמה */
-  if(c&&c.fixed&&(c.pos||c.at)){const[p,t]=camFrom(c);S.fd=null;S.fAz=null;flyTo(p,t,jump?.01:(c.dur||1.8));return}   /* fixed: מצלמה קבועה גם במצב עוקב (למשל בתוך קודש הקדשים, מאחורי הפרוכת) – אחר כך ממשיכה אחרי הדמות */
+  if(c&&c.fixed&&(c.pos||c.at)){const[p,t]=camFrom(c);S.fd=null;S.fAz=null;flyTo(p,t,jump||(typeof RHW!='undefined'&&RHW.cut())?.01:(c.dur||1.8));return}   /* fixed: מצלמה קבועה גם במצב עוקב (למשל בתוך קודש הקדשים, מאחורי הפרוכת) – אחר כך ממשיכה אחרי הדמות */
   if(c&&c.follow)S.fboost=1.6;if(jump){S.fd=null;S.fAz=null;const A=S.actors[S.follow];if(A){const t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,.01)}}return}   /* סיור רציף: אין קפיצה לתחנה – המצלמה רק ממשיכה אחרי הכהן */
   if(c&&(c.pos||c.at)){const[p,t]=camFrom(c);flyTo(p,t,jump?.01:(c.dur||1.8))}else if(c&&c.follow){S.follow=c.follow}
   else if(jump){const A=S.actors[S.follow],t=V3(A.x,A.y+3,A.z);flyTo(t.clone().add(followOff(A)),t,.01)}}
- function updCam(dt){if(walk||!S)return;
+ function updCam(dt){if(walk||!S)return;{const _st=S.sc.steps[S.idx];if(_st&&(_st.rh&&_st.rh.land||_st.cam&&_st.cam.still)&&!S.camTw)return}   /* שלבי מפת ארץ ישראל: המצלמה נשארת במקומה (אין מעקב אחרי שחקן) */
   if(S.camTw){const w=S.camTw;w.t+=dt/w.dur;const k=Math.min(1,w.t),e=ease(k);camera.position.lerpVectors(w.p0,w.p1,e);controls.target.lerpVectors(w.t0,w.t1,e);if(k>=1)S.camTw=null;return}
   if(S.camMode=='follow'){const A=S.actors[S.follow];if(!A)return;
    /* מצלמת מעקב רציפה: גולשת אחרי הכהן, מסתובבת לאט אל אחורי כיוון ההליכה, ומתקרבת כשקיר חוסם (ומתרחקת חזרה כשמתפנה) */
@@ -373,7 +394,7 @@ const SV=(()=>{
  /* ================= ממשק ילדים – עיצוב מחדש (18.11.2026): מסך כרטיסי סדרים, סרגל התקדמות (נקודות לחיצות), כפתורי סמל גדולים, סמל הפעולה ליד הכהן וסיכום בסוף.
    נראה רק ב-body.kid (kidui.js); במצב מבוגרים נשאר הפאנל הישן (#svList/#svPlay). אין טקסט הסברי חדש – רק שמות קצרים וסמלים; תגיות הפעולה (KTAG) מ-kidui.js.
    נטפרי: אייקון PNG רק דרך blob: (UI_ICONS[מזהה-סדר] ← src/ui_icons.js, אם קיים), גיבוי: אימוג'י. */
- const KN={'tamid-shachar':['תמיד של שחר','🌅'],'ketoret':['קטורת','🌫️'],'menorah':['הטבת הנרות','🕎'],'olat-behema':['עולה','🐑'],'minchat-solet':['מנחה','🌾'],'olat-haof':['עולת העוף','🕊️'],'yom-kippur':['יום הכיפורים','🕯️']};
+ const KN={'tamid-shachar':['תמיד של שחר','🌅'],'ketoret':['קטורת','🌫️'],'menorah':['הטבת הנרות','🕎'],'olat-behema':['עולה','🐑'],'minchat-solet':['מנחה','🌾'],'olat-haof':['עולת העוף','🕊️'],'yom-kippur':['יום הכיפורים','🕯️'],'rosh-hashana':['ראש השנה','🎺']};
  const kinfo=sc=>KN[sc.id]||[sc.name,'📜'];
  const ktags=sc=>(window.KTAG&&window.KTAG[sc.id])||[];
  const kemoji=(sc,i)=>{const t=ktags(sc)[i]||'',j=t.indexOf(' ');return j>0?t.slice(0,j):''};

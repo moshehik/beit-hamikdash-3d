@@ -22,7 +22,7 @@ const ico=(key,emo)=>{const i=document.createElement('i');i.textContent=emo;
  const u=typeof UI_ICONS!='undefined'&&UI_ICONS[key];
  if(u){const bu=_bc[key]||(_bc[key]=toBlob(u));if(bu){const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{i.textContent='';i.classList.add('pic');i.appendChild(im)};im.src=bu}}
  return i};
-window.KTAG=TAG;   /* נגן הסיורים (services.js) משתמש באותן תגיות: סמל ליד הכהן ומסך הסיכום */
+if(window.KTAG_RH)TAG['rosh-hashana']=window.KTAG_RH;window.KTAG=TAG;   /* נגן הסיורים (services.js) משתמש באותן תגיות: סמל ליד הכהן ומסך הסיכום */
 
 /* ---------- סרגל עליון: כפתורי תמונה ---------- */
 const top=document.createElement('div');top.id='ktop';

@@ -10,8 +10,8 @@ const LIFE=(()=>{
  let tgt=null,hf=null;
  /* תמיד של שחר: חושך עד הפייסות והפתיחה, "ברקאי" – המזרח מתבהר, השחיטה לפני זריחה, ואחריה האור גדל (שמש במודל: זריחה 6:00) */
  const TSTEP={'tamid-shachar':i=>i<=10?4.5+i*.04:i==11?5.8:i<=14?5.9+(i-12)*.05:i<=17?6.05+(i-15)*.05:6.3+(i-18)*.09};
- const TSTEP_YK=i=>(window.YK_TIMES||[])[i];TSTEP['yom-kippur']=TSTEP_YK;let twash=false,_prevDay=null;
- const TOUR_H={'yom-kippur':17.5,'tamid-shachar':4.5,ketoret:6.4,menorah:6.2,'olat-behema':10.5,'olat-haof':10.5,'minchat-solet':10.5};
+ const TSTEP_YK=i=>(window.YK_TIMES||[])[i];TSTEP['yom-kippur']=TSTEP_YK;TSTEP['rosh-hashana']=i=>(window.RH_TIMES||[])[i];let twash=false,_prevDay=null;
+ const TOUR_H={'rosh-hashana':9,'yom-kippur':17.5,'tamid-shachar':4.5,ketoret:6.4,menorah:6.2,'olat-behema':10.5,'olat-haof':10.5,'minchat-solet':10.5};
  const sm=(a,b,x)=>{x=Math.min(1,Math.max(0,(x-a)/(b-a)));return x*x*(3-2*x)};
  const kiyorUp=h=>sm(3.6,4.35,h)-sm(18.4,19.1,h);   /* עולה לפני תחילת תמיד של שחר (במצגת: 4:30) */
  /* --- שמש/ירח --- */
@@ -62,5 +62,5 @@ const LIFE=(()=>{
    const dxa=-Math.sin(ang)*u.w,dza=Math.cos(ang)*u.w;g.rotation.y=Math.atan2(dxa,dza);g.rotation.z=(u.w>0?-.18:.18);
    const fl=Math.sin(t*(7+i%3)+u.fp)*.75,gl=Math.sin(t*.35+u.fp)>.55?.12:1;u.pl.rotation.z=-fl*gl;u.pr.rotation.z=fl*gl});
  }
- return{update,tour(id){hold=!!id;tgt=null;hf=null;twash=false;{const ds=document.getElementById('dayType');if(ds){if(id=='yom-kippur'){if(ds.value!='yk'){_prevDay=ds.value;ds.value='yk';ds.dispatchEvent(new Event('change'))}}else if(_prevDay!=null){ds.value=_prevDay;ds.dispatchEvent(new Event('change'));_prevDay=null}}}if(id){H=TOUR_H[id]||10.5;if(tm)tm.value=H;setTime(H)}},tourStep(id,i){twash=id=='yom-kippur'&&(window.YK_WASH||[]).includes(i);const f=TSTEP[id];tgt=hold&&f?f(i):null},setHour(h){H=((+h%24)+24)%24;if(tm)tm.value=H;setTime(H);since=0},get hour(){return H},get held(){return hold}}
+ return{update,tour(id){hold=!!id;tgt=null;hf=null;twash=false;{const ds=document.getElementById('dayType');if(ds){if(id=='yom-kippur'||id=='rosh-hashana'){const dv=id=='rosh-hashana'?'rh':'yk';if(ds.value!=dv){if(_prevDay==null)_prevDay=ds.value;ds.value=dv;ds.dispatchEvent(new Event('change'))}}else if(_prevDay!=null){ds.value=_prevDay;ds.dispatchEvent(new Event('change'));_prevDay=null}}}if(id){H=TOUR_H[id]||10.5;if(tm)tm.value=H;setTime(H)}},tourStep(id,i){twash=id=='yom-kippur'&&(window.YK_WASH||[]).includes(i);const f=TSTEP[id];tgt=hold&&f?f(i):null},setHour(h){H=((+h%24)+24)%24;if(tm)tm.value=H;setTime(H);since=0},get hour(){return H},get held(){return hold}}
 })();
