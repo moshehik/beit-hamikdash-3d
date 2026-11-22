@@ -76,6 +76,15 @@ for (const ch of built.chunks) {
     console.log('  external narration clips: ' + n);
   }
 }
+// real-people atlases (assets/people/people.json, made by tools/pack-people.py): a SEPARATE lazily-fetched file (not in the initial bundle).
+// src/real_people.js fetches window.REAL_PEOPLE_URL only when the user turns the 'אנשים אמיתיים' switch on; any failure falls back to the normal figures.
+const peopleFile = path.join(here, '..', 'assets', 'people', 'people.json');
+if (fs.existsSync(peopleFile) && !process.argv.includes('--no-people')) {
+  const pb = fs.readFileSync(peopleFile), pn = `p/people.${crypto.createHash('sha1').update(pb).digest('hex').slice(0, 12)}.json`, pz = zlib.gzipSync(pb, { level: 9 });
+  files.set(pn, { type: 'application/json; charset=utf-8', gzip: true, body: pz });
+  extTags.push('<script>window.REAL_PEOPLE_URL="/' + pn + '"</script>');
+  console.log(`  real-people atlas ${pn}: ${(pb.length / 1e3).toFixed(0)}KB -> ${(pz.length / 1e3).toFixed(0)}KB gzip (lazy, fetched on demand)`);
+}
 let html = built.shell;
 // visit tracker (only in the published site, not in the offline/local build)
 const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');

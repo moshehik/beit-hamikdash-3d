@@ -164,7 +164,7 @@ let STOOL=null;
   const P={key,pop,grp,cap,robe:mk(f.robe),head:mk(f.head),props:{},agents:new Array(cap).fill(null),free:[],hi:0};
   for(let i=cap-1;i>=0;i--)P.free.push(i);
   const fp=typeof FIG!='undefined'&&FIG&&FIG.crowdPalette?FIG.crowdPalette(POPFIG[pop]):null,pal=(fp&&fp.length)?fp:(PAL[pop]||PAL.Y),c=new T.Color();for(let i=0;i<cap;i++){P.robe.setColorAt(i,c.setHex(pick(pal)));const s=.8+R()*.22;P.head.setColorAt(i,c.setRGB(s,s*.97,s*.94))}
-  P.robe.instanceColor.needsUpdate=P.head.instanceColor.needsUpdate=true;P.robe.count=P.head.count=0;   // count רק אחרי setColorAt (three מקצה את instanceColor לפי count)
+  P.robe.instanceColor.needsUpdate=P.head.instanceColor.needsUpdate=true;P.robe.count=P.head.count=0;P.pop=pop;if(typeof REALP!='undefined')REALP.attach(P,POPFIG[pop]);   // count רק אחרי setColorAt (three מקצה את instanceColor לפי count)
   
   P.getProp=k=>{if(P.props[k])return P.props[k];const d=PROP[k],m=new T.InstancedMesh(getProp(k),d.tint?mLamC:(d.basic?mBas:mLam),cap);m.instanceMatrix.array.fill(0);m.frustumCulled=false;m.castShadow=false;
     if(d.tint){const cc=new T.Color();for(let i=0;i<cap;i++)m.setColorAt(i,cc.setHex(i%2?0xe8c060:0xdde1e6));m.instanceColor.needsUpdate=true}m.count=P.hi;(GRPS[grp]()).add(m);return P.props[k]=m};
@@ -515,7 +515,7 @@ let STOOL=null;
   if(!c.frozen){if(o.step)o.step(c,dt,t);else{const s=o.slot();c.x=s.x;c.z=s.z;c.y=s.y;c.yaw+=angd(c.yaw,s.yaw)*Math.min(1,dt*5);c.moving=false}}
   o.apply(c,t)}
  /* ---- מצב סיור (נגן סדרי העבודה): ההמון מוסתר בחיתוך הסצנה ומשוחזר ביציאה ---- */
- function applyHeldVis(){for(const k in POOLS){const P=POOLS[k];P.robe.visible=P.head.visible=!HELD;for(const q in P.props)P.props[q].visible=!HELD}ALL.forEach(a=>{if(a.obj)a.obj.visible=a.vis!==false&&!HELD})}
+ function applyHeldVis(){for(const k in POOLS){const P=POOLS[k];const rl=!!(P.real&&typeof REALP!='undefined'&&REALP.on);P.robe.visible=P.head.visible=!HELD&&!rl;if(P.real)P.real.visible=!HELD&&rl;for(const q in P.props)P.props[q].visible=!HELD}ALL.forEach(a=>{if(a.obj)a.obj.visible=a.vis!==false&&!HELD})}
  let wasLast=null,accM=0,accR=0;
  function update(t,dt){
   if(!READY){if(typeof floorY=='undefined'||!COL.length)return;init()}
