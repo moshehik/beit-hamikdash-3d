@@ -509,5 +509,1103 @@
   "model": "gemini-3.8-flash-tts",
   "faded": 1,
   "kid": 1
+ },
+ "yom-kippur-0": {
+  "hash": "80afd40f34",
+  "dur": 27.08875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-0-80afd40f34.mp3"
+ },
+ "yom-kippur-1": {
+  "hash": "b7e32c5412",
+  "dur": 25.366208,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-1-b7e32c5412.mp3"
+ },
+ "yom-kippur-2": {
+  "hash": "765d115861",
+  "dur": 35.096417,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-2-765d115861.mp3"
+ },
+ "yom-kippur-3": {
+  "hash": "4ed275f968",
+  "dur": 21.367125,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-3-4ed275f968.mp3"
+ },
+ "yom-kippur-4": {
+  "hash": "a949fd8fa8",
+  "dur": 29.967625,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-4-a949fd8fa8.mp3"
+ },
+ "yom-kippur-5": {
+  "hash": "80242d79e3",
+  "dur": 24.767583,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-5-80242d79e3.mp3"
+ },
+ "yom-kippur-6": {
+  "hash": "9042c51e02",
+  "dur": 30.053292,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-6-9042c51e02.mp3"
+ },
+ "yom-kippur-7": {
+  "hash": "9ff3ecd37b",
+  "dur": 20.080375,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-7-9ff3ecd37b.mp3"
+ },
+ "yom-kippur-8": {
+  "hash": "ceee3643e1",
+  "dur": 32.636,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-8-ceee3643e1.mp3"
+ },
+ "yom-kippur-9": {
+  "hash": "cd22f07312",
+  "dur": 22.61975,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-9-cd22f07312.mp3"
+ },
+ "yom-kippur-10": {
+  "hash": "5b6d121cb7",
+  "dur": 16.513958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-10-5b6d121cb7.mp3"
+ },
+ "yom-kippur-11": {
+  "hash": "60f56cbbf9",
+  "dur": 19.174875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-11-60f56cbbf9.mp3"
+ },
+ "yom-kippur-12": {
+  "hash": "ec9520a364",
+  "dur": 34.227083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-12-ec9520a364.mp3"
+ },
+ "yom-kippur-13": {
+  "hash": "06bd33760f",
+  "dur": 23.649833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-13-06bd33760f.mp3"
+ },
+ "yom-kippur-14": {
+  "hash": "171339f5b8",
+  "dur": 19.611625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-14-171339f5b8.mp3"
+ },
+ "yom-kippur-15": {
+  "hash": "a27cc7357a",
+  "dur": 28.804875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-15-a27cc7357a.mp3"
+ },
+ "yom-kippur-16": {
+  "hash": "0761281b0d",
+  "dur": 28.825958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-16-0761281b0d.mp3"
+ },
+ "yom-kippur-17": {
+  "hash": "464f31ee01",
+  "dur": 19.47875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-17-464f31ee01.mp3"
+ },
+ "yom-kippur-18": {
+  "hash": "dfe93c5e9b",
+  "dur": 25.628417,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-18-dfe93c5e9b.mp3"
+ },
+ "yom-kippur-19": {
+  "hash": "9bc67615e4",
+  "dur": 39.389833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-19-9bc67615e4.mp3"
+ },
+ "yom-kippur-20": {
+  "hash": "7b84fdf613",
+  "dur": 25.498375,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-20-7b84fdf613.mp3"
+ },
+ "yom-kippur-21": {
+  "hash": "d8cdc22c58",
+  "dur": 22.404625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-21-d8cdc22c58.mp3"
+ },
+ "yom-kippur-22": {
+  "hash": "99e50193ca",
+  "dur": 12.267875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-22-99e50193ca.mp3"
+ },
+ "yom-kippur-23": {
+  "hash": "7644e4b29f",
+  "dur": 25.672917,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-23-7644e4b29f.mp3"
+ },
+ "yom-kippur-24": {
+  "hash": "2694f09d34",
+  "dur": 12.032458,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-24-2694f09d34.mp3"
+ },
+ "yom-kippur-25": {
+  "hash": "eb8937e3d7",
+  "dur": 33.588667,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-25-eb8937e3d7.mp3"
+ },
+ "yom-kippur-26": {
+  "hash": "a416cd5542",
+  "dur": 25.329333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-26-a416cd5542.mp3"
+ },
+ "yom-kippur-27": {
+  "hash": "d60e15bad0",
+  "dur": 9.064,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-27-d60e15bad0.mp3"
+ },
+ "yom-kippur-28": {
+  "hash": "79a1d342c0",
+  "dur": 48.857083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-28-79a1d342c0.mp3"
+ },
+ "yom-kippur-29": {
+  "hash": "fe14aabea3",
+  "dur": 21.06675,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-29-fe14aabea3.mp3"
+ },
+ "yom-kippur-30": {
+  "hash": "13f7910fe4",
+  "dur": 25.244542,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-30-13f7910fe4.mp3"
+ },
+ "yom-kippur-31": {
+  "hash": "a4398c8004",
+  "dur": 23.087583,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-31-a4398c8004.mp3"
+ },
+ "yom-kippur-32": {
+  "hash": "ffd22f8b28",
+  "dur": 14.749208,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-32-ffd22f8b28.mp3"
+ },
+ "yom-kippur-33": {
+  "hash": "0046bdd184",
+  "dur": 19.439875,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-33-0046bdd184.mp3"
+ },
+ "yom-kippur-34": {
+  "hash": "f3bef4f800",
+  "dur": 10.277083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-34-f3bef4f800.mp3"
+ },
+ "yom-kippur-35": {
+  "hash": "7a97d4b1b0",
+  "dur": 24.205792,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-35-7a97d4b1b0.mp3"
+ },
+ "yom-kippur-36": {
+  "hash": "ab45451f7d",
+  "dur": 23.653833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-36-ab45451f7d.mp3"
+ },
+ "yom-kippur-37": {
+  "hash": "f5bdfffae5",
+  "dur": 11.185958,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-37-f5bdfffae5.mp3"
+ },
+ "yom-kippur-38": {
+  "hash": "3f857cf9a1",
+  "dur": 52.594833,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-38-3f857cf9a1.mp3"
+ },
+ "yom-kippur-39": {
+  "hash": "0a2a16fb8d",
+  "dur": 27.260667,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-39-0a2a16fb8d.mp3"
+ },
+ "yom-kippur-40": {
+  "hash": "ba2b98e9e3",
+  "dur": 23.863625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-40-ba2b98e9e3.mp3"
+ },
+ "yom-kippur-41": {
+  "hash": "ff2f3e98c2",
+  "dur": 32.250083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-41-ff2f3e98c2.mp3"
+ },
+ "yom-kippur-42": {
+  "hash": "9880374986",
+  "dur": 30.961958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-42-9880374986.mp3"
+ },
+ "yom-kippur-43": {
+  "hash": "54de552c11",
+  "dur": 24.293083,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-43-54de552c11.mp3"
+ },
+ "yom-kippur-44": {
+  "hash": "4970204a5c",
+  "dur": 39.433958,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-44-4970204a5c.mp3"
+ },
+ "yom-kippur-45": {
+  "hash": "14502e6b30",
+  "dur": 29.6255,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-45-14502e6b30.mp3"
+ },
+ "yom-kippur-46": {
+  "hash": "9b66bf599b",
+  "dur": 25.113042,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-46-9b66bf599b.mp3"
+ },
+ "yom-kippur-47": {
+  "hash": "5aa680444c",
+  "dur": 13.49525,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-47-5aa680444c.mp3"
+ },
+ "yom-kippur-48": {
+  "hash": "0c687ee90b",
+  "dur": 29.626625,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-48-0c687ee90b.mp3"
+ },
+ "yom-kippur-49": {
+  "hash": "7473116e3a",
+  "dur": 10.358208,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-49-7473116e3a.mp3"
+ },
+ "yom-kippur-50": {
+  "hash": "56eff922d8",
+  "dur": 25.457125,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-50-56eff922d8.mp3"
+ },
+ "yom-kippur-51": {
+  "hash": "a0d133a16a",
+  "dur": 28.511708,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-51-a0d133a16a.mp3"
+ },
+ "yom-kippur-52": {
+  "hash": "546bbda017",
+  "dur": 21.281458,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-52-546bbda017.mp3"
+ },
+ "yom-kippur-53": {
+  "hash": "b4ab44a651",
+  "dur": 23.692333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-53-b4ab44a651.mp3"
+ },
+ "yom-kippur-54": {
+  "hash": "dbd76c3d5e",
+  "dur": 13.159417,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-54-dbd76c3d5e.mp3"
+ },
+ "yom-kippur-55": {
+  "hash": "b7ee30c2ee",
+  "dur": 14.236292,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-55-b7ee30c2ee.mp3"
+ },
+ "yom-kippur-56": {
+  "hash": "9a10f02a4f",
+  "dur": 23.563458,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-56-9a10f02a4f.mp3"
+ },
+ "yom-kippur-57": {
+  "hash": "6fce9900c6",
+  "dur": 20.421333,
+  "model": "gemini-3.8-flash-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-57-6fce9900c6.mp3"
+ },
+ "yom-kippur-58": {
+  "hash": "0c9016f5dc",
+  "dur": 26.573125,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-58-0c9016f5dc.mp3"
+ },
+ "yom-kippur-59": {
+  "hash": "2e420e024e",
+  "dur": 28.47275,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-59-2e420e024e.mp3"
+ },
+ "yom-kippur-60": {
+  "hash": "5372376583",
+  "dur": 15.991625,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-60-5372376583.mp3"
+ },
+ "yom-kippur-61": {
+  "hash": "f542b2b8e0",
+  "dur": 24.597958,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-61-f542b2b8e0.mp3"
+ },
+ "yom-kippur-62": {
+  "hash": "eb12001bd2",
+  "dur": 31.171042,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-62-eb12001bd2.mp3"
+ },
+ "yom-kippur-63": {
+  "hash": "084f7b2743",
+  "dur": 23.622375,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-63-084f7b2743.mp3"
+ },
+ "yom-kippur-64": {
+  "hash": "4115e8cd02",
+  "dur": 18.101833,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-64-4115e8cd02.mp3"
+ },
+ "yom-kippur-65": {
+  "hash": "5f5e77e03f",
+  "dur": 28.46625,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-65-5f5e77e03f.mp3"
+ },
+ "yom-kippur-66": {
+  "hash": "d8a310b0df",
+  "dur": 15.388458,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-66-d8a310b0df.mp3"
+ },
+ "yom-kippur-67": {
+  "hash": "9ae17cd438",
+  "dur": 21.111167,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-67-9ae17cd438.mp3"
+ },
+ "yom-kippur-68": {
+  "hash": "ddb0842515",
+  "dur": 29.798125,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-68-ddb0842515.mp3"
+ },
+ "yom-kippur-69": {
+  "hash": "6c8d034d63",
+  "dur": 42.101875,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-69-6c8d034d63.mp3"
+ },
+ "yom-kippur-70": {
+  "hash": "edb4120b23",
+  "dur": 15.689958,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-70-edb4120b23.mp3"
+ },
+ "yom-kippur-71": {
+  "hash": "5b03364fda",
+  "dur": 15.087167,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-71-5b03364fda.mp3"
+ },
+ "yom-kippur-72": {
+  "hash": "71d4b37e8e",
+  "dur": 36.893,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-72-71d4b37e8e.mp3"
+ },
+ "yom-kippur-73": {
+  "hash": "95366d6594",
+  "dur": 14.961917,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-73-95366d6594.mp3"
+ },
+ "yom-kippur-74": {
+  "hash": "1a1b91ade3",
+  "dur": 25.289417,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-74-1a1b91ade3.mp3"
+ },
+ "yom-kippur-75": {
+  "hash": "7f45139913",
+  "dur": 21.116125,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-75-7f45139913.mp3"
+ },
+ "yom-kippur-76": {
+  "hash": "b51a2f489e",
+  "dur": 20.334083,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-76-b51a2f489e.mp3"
+ },
+ "yom-kippur-77": {
+  "hash": "97af0e9ff8",
+  "dur": 21.924292,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-77-97af0e9ff8.mp3"
+ },
+ "yom-kippur-78": {
+  "hash": "3e4c293b71",
+  "dur": 27.868208,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-78-3e4c293b71.mp3"
+ },
+ "yom-kippur-79": {
+  "hash": "69777e178f",
+  "dur": 12.378792,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-79-69777e178f.mp3"
+ },
+ "yom-kippur-80": {
+  "hash": "0066f7756b",
+  "dur": 16.726583,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-80-0066f7756b.mp3"
+ },
+ "yom-kippur-81": {
+  "hash": "eb94cb9703",
+  "dur": 27.824833,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-81-eb94cb9703.mp3"
+ },
+ "yom-kippur-82": {
+  "hash": "07917aceea",
+  "dur": 30.016292,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-82-07917aceea.mp3"
+ },
+ "yom-kippur-83": {
+  "hash": "7e590eabe9",
+  "dur": 30.060333,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-83-7e590eabe9.mp3"
+ },
+ "yom-kippur-84": {
+  "hash": "b8a8a02c8a",
+  "dur": 19.868125,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-84-b8a8a02c8a.mp3"
+ },
+ "yom-kippur-85": {
+  "hash": "4a821c7fa8",
+  "dur": 34.529875,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-85-4a821c7fa8.mp3"
+ },
+ "yom-kippur-86": {
+  "hash": "adf6512476",
+  "dur": 20.941875,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-86-adf6512476.mp3"
+ },
+ "yom-kippur-87": {
+  "hash": "cebfba9605",
+  "dur": 32.979917,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-87-cebfba9605.mp3"
+ },
+ "yom-kippur-88": {
+  "hash": "84e24b5657",
+  "dur": 25.63675,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-88-84e24b5657.mp3"
+ },
+ "yom-kippur-89": {
+  "hash": "7996ed40c8",
+  "dur": 18.971042,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-89-7996ed40c8.mp3"
+ },
+ "yom-kippur-90": {
+  "hash": "40882da2e0",
+  "dur": 38.529667,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-90-40882da2e0.mp3"
+ },
+ "yom-kippur-91": {
+  "hash": "0259c94767",
+  "dur": 23.432458,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-91-0259c94767.mp3"
+ },
+ "yom-kippur-92": {
+  "hash": "dfab8b3bf2",
+  "dur": 14.409625,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-92-dfab8b3bf2.mp3"
+ },
+ "yom-kippur-93": {
+  "hash": "ffffb4fa10",
+  "dur": 25.461417,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-93-ffffb4fa10.mp3"
+ },
+ "yom-kippur-94": {
+  "hash": "629192a8a4",
+  "dur": 30.789792,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-94-629192a8a4.mp3"
+ },
+ "yom-kippur-95": {
+  "hash": "c0614951ab",
+  "dur": 29.153917,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-95-c0614951ab.mp3"
+ },
+ "yom-kippur-96": {
+  "hash": "f109071e38",
+  "dur": 21.411292,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-96-f109071e38.mp3"
+ },
+ "yom-kippur-97": {
+  "hash": "3d3e06c0e2",
+  "dur": 26.231583,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-97-3d3e06c0e2.mp3"
+ },
+ "yom-kippur-98": {
+  "hash": "3f522237c9",
+  "dur": 23.438583,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-98-3f522237c9.mp3"
+ },
+ "yom-kippur-99": {
+  "hash": "d66eedd505",
+  "dur": 28.125625,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-99-d66eedd505.mp3"
+ },
+ "yom-kippur-100": {
+  "hash": "0f8eb80763",
+  "dur": 29.202708,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-100-0f8eb80763.mp3"
+ },
+ "yom-kippur-101": {
+  "hash": "a45411912e",
+  "dur": 43.08875,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-101-a45411912e.mp3"
+ },
+ "yom-kippur-102": {
+  "hash": "df71cc6301",
+  "dur": 14.703667,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-102-df71cc6301.mp3"
+ },
+ "yom-kippur-103": {
+  "hash": "8062184c5d",
+  "dur": 11.957792,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-103-8062184c5d.mp3"
+ },
+ "yom-kippur-104": {
+  "hash": "6bdd969940",
+  "dur": 14.620833,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-104-6bdd969940.mp3"
+ },
+ "yom-kippur-105": {
+  "hash": "c14631bfd8",
+  "dur": 15.991583,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-105-c14631bfd8.mp3"
+ },
+ "yom-kippur-106": {
+  "hash": "bf1fb2bcf0",
+  "dur": 24.901792,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-106-bf1fb2bcf0.mp3"
+ },
+ "yom-kippur-107": {
+  "hash": "f9e590c482",
+  "dur": 22.748042,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-107-f9e590c482.mp3"
+ },
+ "yom-kippur-108": {
+  "hash": "1e2ceb3aff",
+  "dur": 22.619833,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-108-1e2ceb3aff.mp3"
+ },
+ "yom-kippur-109": {
+  "hash": "3c7cdaec6b",
+  "dur": 10.0135,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-109-3c7cdaec6b.mp3"
+ },
+ "yom-kippur-110": {
+  "hash": "b767312575",
+  "dur": 14.103208,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-110-b767312575.mp3"
+ },
+ "yom-kippur-111": {
+  "hash": "3ece64c93a",
+  "dur": 12.769958,
+  "model": "gemini-3.8-flash-lite-tts",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-111-3ece64c93a.mp3"
+ },
+ "yom-kippur-112": {
+  "hash": "d87d0ac1c1",
+  "dur": 20.685375,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-112-d87d0ac1c1.mp3"
+ },
+ "yom-kippur-113": {
+  "hash": "ea239090d0",
+  "dur": 11.137958,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-113-ea239090d0.mp3"
+ },
+ "yom-kippur-114": {
+  "hash": "4724656c4f",
+  "dur": 16.343333,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-114-4724656c4f.mp3"
+ },
+ "yom-kippur-115": {
+  "hash": "bb1a411b9d",
+  "dur": 20.091333,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-115-bb1a411b9d.mp3"
+ },
+ "yom-kippur-116": {
+  "hash": "7b783b854c",
+  "dur": 16.250833,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-116-7b783b854c.mp3"
+ },
+ "yom-kippur-117": {
+  "hash": "d28caa2c09",
+  "dur": 9.922083,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-117-d28caa2c09.mp3"
+ },
+ "yom-kippur-118": {
+  "hash": "cd9c2adc67",
+  "dur": 17.176042,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-118-cd9c2adc67.mp3"
+ },
+ "yom-kippur-119": {
+  "hash": "bf0412ed7d",
+  "dur": 10.33775,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-119-bf0412ed7d.mp3"
+ },
+ "yom-kippur-120": {
+  "hash": "4d45c74a46",
+  "dur": 12.53125,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-120-4d45c74a46.mp3"
+ },
+ "yom-kippur-121": {
+  "hash": "05dadcb2b1",
+  "dur": 19.854417,
+  "model": "gemini-3.1-flash-tts-preview",
+  "faded": 1,
+  "kid": 0,
+  "ext": 1,
+  "file": "yom-kippur-121-05dadcb2b1.mp3"
  }
 }
