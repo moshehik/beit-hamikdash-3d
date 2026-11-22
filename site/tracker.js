@@ -19,6 +19,7 @@
     }
     var sid; try { sid = sessionStorage.getItem('bh_sid'); if (!sid) { sid = rnd(); sessionStorage.setItem('bh_sid', sid); } } catch (e) { sid = rnd(); }
     function ev(name, d) { if (total >= 300) return; total++; q.push({ ev: name, d: d || null }); if (q.length >= 20) flush(); }
+    window.__bhEv = ev;   // used by the boot loader (site/boot.js) to report load timings
     function flush() {
       if (!q.length) return;
       var body = JSON.stringify({ sid: sid, events: q.splice(0, 25) });
