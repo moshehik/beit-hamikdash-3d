@@ -1,4 +1,4 @@
-// node publish.mjs [--no-build] [--out <dir>]  -> builds the model as cacheable JS chunks (j/*.js) + tiny index.html + narration clips (a/*.mp3), gzips, uploads to Neon (or writes to <dir> for a local test).
+// node publish.mjs [--no-build] [--out <dir>] [--pwa]  -> (--pwa adds the installable-app files: manifest, service worker, icons, install/full-screen buttons) builds the model as cacheable JS chunks (j/*.js) + tiny index.html + narration clips (a/*.mp3), gzips, uploads to Neon (or writes to <dir> for a local test).
 // No git, no Vercel build, no deploy: the live site picks it up within ~60s (edge cache).
 // Needs DATABASE_URL in site/.env (gitignored) or in the environment.
 import fs from 'node:fs';
@@ -63,6 +63,21 @@ let html = built.shell;
 const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');
 if (!html.includes('</head>') || !html.includes('<!--@CHUNKS@-->')) { console.error('no </head> or chunk marker in built html'); process.exit(1); }
 html = html.replace('</head>', () => '<script>' + tracker + '</script></head>');
+// installable app (opt-in: --pwa): manifest + service worker + icons + install/full-screen buttons. Hashed file names, because serve.js
+// gives every non-HTML file a 1-year immutable cache (also at the Vercel edge), so a fixed /sw.js could never be updated.
+if (process.argv.includes('--pwa')) {
+  const pdir = path.join(here, 'pwa'), h8 = (b) => crypto.createHash('sha1').update(b).digest('hex').slice(0, 10);
+  const add = (name, type, body) => { files.set(name, { type, gzip: false, body: Buffer.isBuffer(body) ? body : Buffer.from(body) }); return '/' + name; };
+  const icon = (f) => { const b = fs.readFileSync(path.join(pdir, f)); return add(`pwa/${f.replace('.png', '')}.${h8(b)}.png`, 'image/png', b); };
+  const man = fs.readFileSync(path.join(pdir, 'manifest.webmanifest'), 'utf8')
+    .replace('@ICON192@', () => icon('icon-192.png')).replace('@ICON512@', () => icon('icon-512.png')).replace('@ICONM@', () => icon('icon-maskable-512.png'));
+  const manUrl = add(`pwa/manifest.${h8(man)}.webmanifest`, 'application/manifest+json', man);
+  const sw = fs.readFileSync(path.join(pdir, 'sw.js'));
+  const swUrl = add(`sw.${h8(sw)}.js`, 'text/javascript; charset=utf-8', sw);
+  const glue = fs.readFileSync(path.join(pdir, 'pwa.js'), 'utf8').replace('@SW@', () => swUrl);
+  html = html.replace('</head>', () => `<link rel="manifest" href="${manUrl}"><meta name="theme-color" content="#120f2a"><script>${glue}</script></head>`);
+  console.log('  pwa: manifest, service worker', swUrl, '+ 3 icons');
+}
 if (lazy.length) tags.push('<script>addEventListener("load",function(){setTimeout(function(){' + lazy.map((n) => 'var s=document.createElement("script");s.src="/' + n + '";document.head.appendChild(s);').join('') + '},300)})</script>');
 let fullHtml = null;
 if (BOOT) {
