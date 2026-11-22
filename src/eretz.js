@@ -54,7 +54,7 @@ const ERETZ=(()=>{
   x.strokeStyle=opt.border||'#e8c068';x.lineWidth=3;x.stroke();x.direction='rtl';x.textAlign='center';x.textBaseline='middle';
   lines.forEach((l,i)=>{x.font=(i?'600 ':'800 ')+(i?fs*.6:fs)+'px Heebo,Arial,sans-serif';x.fillStyle=i?'#f1e4c4':(opt.color||'#ffe9a8');x.fillText(l,W/2,i?pad*.55+lh+(i-1)*fs*.75+fs*.3:pad*.55+lh/2)});
   const t=new THREE.CanvasTexture(c);t.encoding=THREE.sRGBEncoding;t.anisotropy=4;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,fog:false}));s.userData.ar=c.width/c.height;s.renderOrder=30;return s}
- const stoneM=()=>new THREE.MeshBasicMaterial({color:0xd9c79a,fog:false}),darkM=()=>new THREE.MeshBasicMaterial({color:0x8d7447,fog:false});
+ const stoneM=()=>new THREE.MeshBasicMaterial({color:0xfff1d0,fog:false}),darkM=()=>new THREE.MeshBasicMaterial({color:0x8d7447,fog:false});
  function marker(p){const g=new THREE.Group(),b=(w,h,d,x,z,m)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m||stoneM());o.position.set(x,h/2,z);g.add(o);return o};
   switch(p.kind){
    case'temple':{const gm=new THREE.MeshBasicMaterial({color:0xffd45a,fog:false});b(2.6,1.4,2.6,0,0,stoneM());b(1.5,2.4,1.5,0,0,gm).position.y=1.6;const bm=new THREE.Mesh(new THREE.CylinderGeometry(.35,.35,30,10,1,true),new THREE.MeshBasicMaterial({color:0xffd45a,transparent:true,opacity:.5,fog:false,depthWrite:false}));bm.position.y=15;g.add(bm);
@@ -79,7 +79,7 @@ const ERETZ=(()=>{
   PL.forEach(r=>{const p=place(r[0]);const m=marker(p);if(m){m.position.set(p.x,p.y,p.z);m.userData.p=p;G.add(m);marks.push(m)}
    if(p.kind=='label'&&0)return;const s=label([p.he].concat(p.conf=='estimated'?['משוער']:[]),{fs:p.rank==1?64:52,color:p.conf=='estimated'?'#ffd0a0':null,bg:p.rank==1?'rgba(60,40,10,.88)':null});s.userData.p=p;s.userData.big=p.rank==1;s.userData.rank=p.rank;s.userData.off=(p.rank==1?2.6:2);s.position.set(p.x,p.y+4,p.z);G.add(s);labels.push(s)});
   RG.forEach(r=>{const y0=pos(r[2],r[3]),s=label([r[1]],{fs:84,color:'#fff4cf',bg:'rgba(20,40,60,.0)',border:'rgba(0,0,0,0)'});s.userData.region=1;s.userData.ar2=1;s.userData.big=1;s.position.set(y0.x,y0.y+30,y0.z);G.add(s);labels.push(s)});
-  scene.add(G);ui()}
+  scene.add(G);ui();if(on&&panel)panel.style.display='block'}
  function b64(s){const a=atob(s),u=new Uint8Array(a.length);for(let i=0;i<a.length;i++)u[i]=a.charCodeAt(i);return u}
  /* ----- טעינה עצלנית ----- */
  function decodeData(){return new Promise((res,rej)=>{if(H)return res();const d=D=window.ERETZ_DATA;if(!d)return rej(new Error('no data'));box=d.box;hw=d.hw;hh=d.hh;
@@ -105,7 +105,7 @@ const ERETZ=(()=>{
   const b=$$('bEretz');if(b)b.classList.remove('on')}
  function note(t){let d=$$('ertzNote');if(!d){d=document.createElement('div');d.id='ertzNote';d.style.cssText='position:fixed;left:50%;top:84px;transform:translateX(-50%);z-index:46;background:rgba(40,28,10,.9);color:#f6e6bd;border:1px solid #e8c068;border-radius:14px;padding:8px 18px;font:600 15px system-ui,sans-serif;direction:rtl;display:none';document.body.appendChild(d)}d.textContent=t;d.style.display=t?'block':'none'}
  /* ----- חלונית ושליטה ----- */
- function ui(){if(panel)return;panel=document.createElement('div');panel.id='ertzP';panel.style.cssText='position:fixed;left:12px;top:12px;z-index:46;display:none;background:rgba(14,22,38,.86);color:#f6e6bd;border:1px solid #c9a24a;border-radius:14px;padding:10px 12px;font:600 13px system-ui,sans-serif;direction:rtl;max-width:230px';
+ function ui(){if(panel)return;panel=document.createElement('div');panel.id='ertzP';panel.style.cssText='position:fixed;left:12px;top:285px;z-index:46;display:none;background:rgba(14,22,38,.86);color:#f6e6bd;border:1px solid #c9a24a;border-radius:14px;padding:10px 12px;font:600 13px system-ui,sans-serif;direction:rtl;max-width:230px';
   const sel=PL.filter(r=>r[4]!='label').map(r=>'<option value="'+r[0]+'">'+r[1]+'</option>').join('');
   panel.innerHTML='<div style="font-size:15px;color:#ffe9a8;margin-bottom:6px">🗺️ ארץ ישראל בימי בית שני</div><select id="ertzSel" style="width:100%;margin-bottom:6px;font:inherit;padding:3px;background:#1d2a40;color:#f6e6bd;border:1px solid #6b5a30;border-radius:6px"><option value="">קפצו אל מקום…</option>'+sel+'</select>'
    +'<div style="display:flex;gap:6px;flex-wrap:wrap"><button id="ertzAll" class="alt">כל הארץ</button><button id="ertzNames" class="alt">שמות ✓</button><button id="ertzBack">🕍 חזרה לדגם</button></div><div style="font-size:11px;opacity:.75;margin-top:6px">קנה המידה קולנועי והגבהים מוגזמים פי 5.5. ערים ושטחים מסומנים "משוער" אינם מדויקים.</div>';
@@ -123,15 +123,15 @@ const ERETZ=(()=>{
  function frame(){requestAnimationFrame(frame);const now=performance.now(),dt=Math.min(.1,(now-tL)/1000);tL=now;if(!on||!built)return;
   const y=camera.position.y;
   if(etw){etw.t+=dt;const k=Math.min(1,etw.t/etw.dur),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;camera.position.lerpVectors(etw.p0,etw.p1,e);controls.target.lerpVectors(etw.t0,etw.t1,e);controls.update();if(k>=1){etw=null;controls.enabled=true}}
-  G.visible=true;localHide(y>CUTY);
+  G.visible=true;localHide(!(y<CUTY&&Math.hypot(controls.target.x,controls.target.z)<150));   /* המודל המקומי (פי 222 גדול יותר) מוצג רק כשהמצלמה נמוכה וממוקדת בירושלים עצמה */
   if(controls.maxDistance<160000)controls.maxDistance=160000;
   const nf=(y>CUTY*.6)?(Math.max(.3,y*.004)+'|'+Math.max(8000,Math.min(260000,y*10))):'.3|8000';
   if(nf!==lastNF){lastNF=nf;const p=nf.split('|');camera.near=+p[0];camera.far=+p[1];camera.updateProjectionMatrix()}
   if(scene.fog){if(!fog0)fog0=[scene.fog.near,scene.fog.far];if(y>CUTY*.6){scene.fog.near=y*5;scene.fog.far=y*22}else{scene.fog.near=fog0[0];scene.fog.far=fog0[1]}}
   labels.forEach(s=>{const u=s.userData,p=s.position,d=camera.position.distanceTo(p);let vis=showNames;
-   if(u.region){vis=vis&&d>900;const h=d*.05;s.scale.set(h*u.ar,h,1);s.material.opacity=d>1800?.9:Math.max(0,(d-900)/900*.9);s.visible=vis;return}
+   if(u.region){vis=vis&&d>1300;const h=d*.026;s.scale.set(h*u.ar,h,1);s.material.opacity=d>2600?.8:Math.max(0,(d-1300)/1300*.8);s.visible=vis;return}
    if(u.rank>1&&d>(u.rank==2?2400:1100))vis=false;
-   const h=Math.max(d*.022*(u.big?1.25:1),.9)*1;s.scale.set(h*u.ar,h,1);s.visible=vis});
-  marks.forEach(m=>{const d=camera.position.distanceTo(m.position),k=Math.max(1,Math.min(14,d*.0045));m.scale.setScalar(k)})}
+   const h=Math.max(d*.02*(u.big?1.15:1),.9);s.scale.set(h*u.ar,h,1);s.visible=vis});
+  marks.forEach(m=>{const d=camera.position.distanceTo(m.position),k=Math.max(1.4,Math.min(36,d*.008));m.scale.setScalar(k)})}
  requestAnimationFrame(frame);
  return{show,hide,load,place,pos,elev,camAt,flyTo,kmUnit,K,J,EY,YOFF,places:Object.values(byId),regions:RG.map(r=>({id:r[0],he:r[1],lat:r[2],lon:r[3]})),get on(){return on},get loaded(){return built},get hiddenLocal(){return hiddenLocal}}})();
