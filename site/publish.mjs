@@ -53,6 +53,19 @@ for (const ch of built.chunks) {
   if (ch.lazy) lazy.push(name); else tags.push('<script src="/' + name + '"></script>');
   console.log(`  chunk ${ch.name}: ${(buf.length / 1e6).toFixed(2)}MB -> ${(gzc.length / 1e6).toFixed(2)}MB gzip`);
 }
+// external narration clips (tools/narration.cjs, source ext:true -> audio/ext/<key>-<hash>.mp3): served as a/<name>.mp3, only the ones referenced by the built code
+{
+  const extDir = path.join(here, '..', 'audio', 'ext');
+  if (fs.existsSync(extDir)) {
+    const all = built.chunks.map((c) => c.code).join('\n');
+    let n = 0;
+    for (const f of fs.readdirSync(extDir)) {
+      if (!f.endsWith('.mp3') || !all.includes('"a/' + f + '"')) continue;
+      files.set('a/' + f, { type: 'audio/mpeg', gzip: false, body: fs.readFileSync(path.join(extDir, f)) }); n++;
+    }
+    console.log('  external narration clips: ' + n);
+  }
+}
 let html = built.shell;
 // visit tracker (only in the published site, not in the offline/local build)
 const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');

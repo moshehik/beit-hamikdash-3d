@@ -283,13 +283,13 @@ const SV=(()=>{
   visit(actions);let best=null,bs=0;for(const k in sc){const A=S.actors[k];if(sc[k]>bs&&A&&A.root&&A.root.visible!==false){bs=sc[k];best=k}}return best}
  function startStep(jump){const st=S.sc.steps[S.idx];S.t=0;S.phase='run';S.hold=0;try{typeof WORLD!='undefined'&&WORLD.hook(st)}catch(e){}
   try{S.run=top(st.actions||[]);S.run.init()}catch(e){fail(e)}
-  const chars=stText(st).length;S.minT=1.4+chars*.03;S.holdT=st.hold!=null?st.hold:.8;narrStart();
+  const chars=stText(st).length;S.minT=S.txtMinT=1.4+chars*.03;S.holdT=st.hold!=null?st.hold:.8;narrStart();
   if(S.camMode=='follow'&&!(st.cam&&st.cam.follow)){const L=leadActor(st.actions||[]);if(L&&L!==S.follow){S.follow=L;S.fboost=1.6}}   /* מצלמת מעקב: עוברת אל הדמות הפעילה בשלב (לא נשארת על main) */
   uiStep();if(st.cam!==undefined&&st.cam!==null)applyCam(st.cam,jump);else if(jump)applyCam(null,true);
   if(jump)updateActors(0)}
  /* הקראה בקול: השלב לא מסתיים לפני שההקראה נגמרה (הפעולות והקול רצים יחד); במהירות מעל 2× או כשהקול כבוי – תזמון לפי אורך הטקסט */
  function narrStart(){const key=S.sc.id+'-'+S.idx;S.auDone=true;if(!AUD.narrOn||!AUD.has(key)||S.speed>2){AUD.stop();return}AUD.stop(true);
-  S.auDone=false;S.minT=.3;const idx=S.idx,sc=S.sc;AUD.narr(key,S.speed,()=>{if(S&&S.sc===sc&&S.idx===idx)S.auDone=true});if(!S.playing)AUD.pause()}
+  S.auDone=false;S.minT=.3;const idx=S.idx,sc=S.sc;AUD.narr(key,S.speed,err=>{if(S&&S.sc===sc&&S.idx===idx){S.auDone=true;if(err)S.minT=S.txtMinT}});if(!S.playing)AUD.pause();for(let j=1;j<=2;j++){const nk=sc.id+'-'+(idx+j);AUD.has(nk)&&AUD.prefetch&&AUD.prefetch(nk)}}
  function fail(e){console.error(e);S.err=e;S.playing=false;ui.act&&(ui.act.style.display='none');ui.cap&&(ui.capT.textContent='שגיאה בתסריט: '+e.message)}
  function nextStep(){if(S.idx>=S.sc.steps.length-1){S.playing=false;S.phase='end';uiState();return}S.idx++;startStep(false)}
  /* ---------- מצלמה ---------- */

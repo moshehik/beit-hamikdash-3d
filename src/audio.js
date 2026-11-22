@@ -60,7 +60,7 @@ const AUD=(()=>{
  function stop(keepDuck){if(cur){const c=cur;cur=null;c.a.onended=null;c.a.onerror=null;const a=c.a;let v=a.volume;const iv=setInterval(()=>{v-=.15;if(v<=0.02){clearInterval(iv);try{a.pause()}catch(e){}a.src=''}else a.volume=v},12)}
   if(!keepDuck)setDuck(1)}
  const BU={};   /* הקראות כ-blob: ולא כ-data-URI (נטפרי) */
- function blobUrl(k,u){if(BU[k])return BU[k];try{const i=u.indexOf(','),b=atob(u.slice(i+1)),n=b.length,a=new Uint8Array(n);for(let j=0;j<n;j++)a[j]=b.charCodeAt(j);return BU[k]=URL.createObjectURL(new Blob([a],{type:'audio/mpeg'}))}catch(e){return u}}
+ function blobUrl(k,u){if(BU[k])return BU[k];if(u.slice(0,5)!='data:')return u;try{const i=u.indexOf(','),b=atob(u.slice(i+1)),n=b.length,a=new Uint8Array(n);for(let j=0;j<n;j++)a[j]=b.charCodeAt(j);return BU[k]=URL.createObjectURL(new Blob([a],{type:'audio/mpeg'}))}catch(e){return u}}
  /* מקשי מדיה במקלדת/אוזניות/מסך נעילה: מחוברים לסיור (לא רק לרכיב האודיו), כדי שהכל יישאר מסונכרן */
  function msState(s){try{if(navigator.mediaSession)navigator.mediaSession.playbackState=s}catch(e){}}
  function msInit(){const ms=navigator.mediaSession;if(!ms||msInit.d)return;msInit.d=1;const H=(a,f)=>{try{ms.setActionHandler(a,f)}catch(e){}};const tour=()=>typeof SV!='undefined'&&SV.isOpen&&SV.S;
@@ -69,8 +69,10 @@ const AUD=(()=>{
  function msMeta(key){try{if(!navigator.mediaSession||typeof MediaMetadata=='undefined')return;const S=typeof SV!='undefined'&&SV.S;const st=S&&S.sc&&S.sc.steps[S.idx];navigator.mediaSession.metadata=new MediaMetadata({title:(S&&S.sc?S.sc.name:'הקראה')+(S?' · שלב '+(S.idx+1):''),artist:'בית המקדש השני',album:'סדרי העבודה'})}catch(e){}}
  function narr(key,rate,onEnd){stop(true);clearTimeout(duckT);const e=NR[key];if(!narrWanted||!e){setDuck(1);onEnd&&onEnd();return false}
   const a=new Audio(blobUrl(key,e[0]));a.playbackRate=Math.max(.5,Math.min(2,rate||1));const c={a,key,end:onEnd};cur=c;msInit();msMeta(key);msState('playing');
-  const fin=()=>{if(cur!==c)return;cur=null;clearTimeout(duckT);duckT=setTimeout(()=>{if(!cur)setDuck(1)},350);onEnd&&onEnd()};a.onended=fin;a.onerror=fin;
-  setDuck(.2);const pr=a.play();if(pr&&pr.catch)pr.catch(()=>fin());return true}
+  const fin=err=>{if(cur!==c)return;cur=null;clearTimeout(duckT);duckT=setTimeout(()=>{if(!cur)setDuck(1)},350);onEnd&&onEnd(err===true)};a.onended=()=>fin();a.onerror=()=>fin(true);
+  setDuck(.2);const pr=a.play();if(pr&&pr.catch)pr.catch(()=>fin(true));return true}
+ /* טעינה מוקדמת של הקראות חיצוניות (קבצי a/*.mp3) – השלב הבא כבר בדרך כשהנוכחי מסתיים */
+ const PF={};function prefetch(key){const e=NR[key];if(!e||e[0].slice(0,5)=='data:'||PF[key])return;PF[key]=1;try{fetch(e[0]).then(r=>r.blob()).catch(()=>{delete PF[key]})}catch(x){}}
  const has=key=>!!NR[key];
  const dur=key=>NR[key]?NR[key][1]:0;
  function pause(){if(cur&&!cur.a.paused)cur.a.pause();msState('paused')}
@@ -81,5 +83,5 @@ const AUD=(()=>{
  function first(e){if(started||e&&e.target&&e.target.id==='bMus')return;started=true;['pointerdown','keydown','touchstart'].forEach(ev=>window.removeEventListener(ev,first,true));if(musicWanted)setMusic(true)}
  ['pointerdown','keydown','touchstart'].forEach(ev=>window.addEventListener(ev,first,true));
  const b=document.getElementById('bMus');if(b)b.onclick=()=>{started=true;setMusic(!musicWanted)};btn();
- return{setMusic,setNarr,narr,stop,pause,resume,rate,has,dur,btn,get music(){return musicWanted},get narrOn(){return narrWanted},get speaking(){return !!cur}}
+ return{setMusic,setNarr,narr,prefetch,stop,pause,resume,rate,has,dur,btn,get music(){return musicWanted},get narrOn(){return narrWanted},get speaking(){return !!cur}}
 })();
