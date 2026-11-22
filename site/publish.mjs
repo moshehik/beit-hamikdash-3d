@@ -53,6 +53,15 @@ for (const ch of built.chunks) {
   if (ch.lazy) lazy.push(name); else tags.push('<script src="/' + name + '"></script>');
   console.log(`  chunk ${ch.name}: ${(buf.length / 1e6).toFixed(2)}MB -> ${(gzc.length / 1e6).toFixed(2)}MB gzip`);
 }
+// real-people atlases (assets/people/people.json, made by tools/pack-people.py): a SEPARATE lazily-fetched file (not in the initial bundle).
+// src/real_people.js fetches window.REAL_PEOPLE_URL only when the user turns the 'אנשים אמיתיים' switch on; any failure falls back to the normal figures.
+const peopleFile = path.join(here, '..', 'assets', 'people', 'people.json');
+if (fs.existsSync(peopleFile) && !process.argv.includes('--no-people')) {
+  const pb = fs.readFileSync(peopleFile), pn = `p/people.${crypto.createHash('sha1').update(pb).digest('hex').slice(0, 12)}.json`, pz = zlib.gzipSync(pb, { level: 9 });
+  files.set(pn, { type: 'application/json; charset=utf-8', gzip: true, body: pz });
+  tags.unshift('<script>window.REAL_PEOPLE_URL="/' + pn + '"</script>');
+  console.log(`  real-people atlas ${pn}: ${(pb.length / 1e3).toFixed(0)}KB -> ${(pz.length / 1e3).toFixed(0)}KB gzip (lazy, fetched on demand)`);
+}
 let html = built.shell;
 // visit tracker (only in the published site, not in the offline/local build)
 const tracker = fs.readFileSync(path.join(here, 'tracker.js'), 'utf8');
@@ -86,7 +95,7 @@ try {
   const keep = [...files.keys()];
   const del = await c.query("delete from temple_site_files where path <> all($1::text[]) and updated_at < now() - interval '1 day'", [keep]);
   await c.query('commit');
-  console.log(`published: index.html ${(gz.length / 1e3).toFixed(0)}KB gzip, ${tags.length} js chunks, ${keep.length - 1 - tags.length} audio clips, ${del.rowCount} old files removed (older than 1 day)`);
+  console.log(`published: index.html ${(gz.length / 1e3).toFixed(0)}KB gzip, ${tags.length} js chunks, ${keep.filter((k) => k.startsWith('a/')).length} audio clips, ${del.rowCount} old files removed (older than 1 day)`);
 } catch (e) {
   await c.query('rollback').catch(() => {});
   throw e;
