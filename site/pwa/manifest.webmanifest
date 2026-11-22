@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "בית המקדש השני – מודל תלת־ממדי",
+  "short_name": "בית המקדש",
+  "description": "מודל תלת־ממדי של בית המקדש השני: סיורים, טיול ברגל, מפות",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "orientation": "any",
+  "background_color": "#120f2a",
+  "theme_color": "#120f2a",
+  "categories": ["education"],
+  "icons": [
+    { "src": "@ICON192@", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "@ICON512@", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "@ICONM@", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
