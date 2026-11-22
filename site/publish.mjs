@@ -80,9 +80,10 @@ for (const ch of built.chunks) {
 // src/real_people.js fetches window.REAL_PEOPLE_URL only when the user turns the 'אנשים אמיתיים' switch on; any failure falls back to the normal figures.
 const peopleFile = path.join(here, '..', 'assets', 'people', 'people.json');
 if (fs.existsSync(peopleFile) && !process.argv.includes('--no-people')) {
-  const pb = fs.readFileSync(peopleFile), pn = `p/people.${crypto.createHash('sha1').update(pb).digest('hex').slice(0, 12)}.json`, pz = zlib.gzipSync(pb, { level: 9 });
-  files.set(pn, { type: 'application/json; charset=utf-8', gzip: true, body: pz });
-  extTags.push('<script>window.REAL_PEOPLE_URL="/' + pn + '"</script>');
+  // opaque gzip bytes (application/octet-stream, like the boot payloads): content filters (Netfree/Etrog) rewrite/scan text + image responses, so the atlases must not travel as a .json or image file
+  const pb = fs.readFileSync(peopleFile), pz = zlib.gzipSync(pb, { level: 9 }), pn = `p/people.${crypto.createHash('sha1').update(pz).digest('hex').slice(0, 12)}.bin`;
+  files.set(pn, { type: 'application/octet-stream', gzip: false, body: pz });
+  extTags.push('<script>window.REAL_PEOPLE_URL="/' + pn + '";window.REAL_PEOPLE_GZ=1</script>');
   console.log(`  real-people atlas ${pn}: ${(pb.length / 1e3).toFixed(0)}KB -> ${(pz.length / 1e3).toFixed(0)}KB gzip (lazy, fetched on demand)`);
 }
 let html = built.shell;

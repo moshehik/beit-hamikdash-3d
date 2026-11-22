@@ -3,7 +3,7 @@
  לכל בריכה מתווסף InstancedMesh של מרובעים מוטי־מצלמה (בילבורד גלילי, ציר Y) שחולק את אותה instanceMatrix – כלומר אותו מיקום/כיוון/קנה מידה של כל דמות, בלי לגעת
  בלוגיקת התנועה. הצללן בוחר לכל דמות תא מתוך אטלס (קדמי/אחורי לפי הכיוון שבו הדמות פונה ביחס למצלמה), היפוך שמאל־ימין ושונות צבע קלה כדי שלא ייראו שכפולים.
  הנתונים (אטלסי WebP, base64 גולמי – בלי data: בגלל נטפרי) נטענים עצל רק בלחיצה על המתג: window.REAL_PEOPLE (מוטמע בבנייה עם REAL=1) או fetch של window.REAL_PEOPLE_URL (באתר החי).
- כל כשל (רשת/פענוח/מסנן) => חוזרים בשקט לדמויות הסגנוניות. ברירת מחדל: כבוי. כלי הפקה: tools/gen-people.mjs → tools/pack-people.py → assets/people/people.json. תיעוד: docs/real-people.md */
+ כל כשל (רשת/פענוח/מסנן) => חוזרים בשקט לדמויות הסגנוניות. ברירת מחדל: דלוק (22.11, ביקשה משה; הכיבוי נזכר ב-localStorage realPplOff). כלי הפקה: tools/gen-people.mjs → tools/pack-people.py → assets/people/people.json. תיעוד: docs/real-people.md */
 const REALP=(()=>{
  const T=THREE,$=id=>document.getElementById(id);
  const LIST=[];let on=false,data=null,loading=false,failed=false,texs={},loop=0,chip=null;
@@ -22,7 +22,10 @@ const REALP=(()=>{
   if(data)return Promise.resolve();if(loading)return loading;
   loading=Promise.resolve().then(()=>{
    if(window.REAL_PEOPLE)return window.REAL_PEOPLE;
-   if(window.REAL_PEOPLE_URL)return fetch(window.REAL_PEOPLE_URL).then(r=>{if(!r.ok)throw new Error('http '+r.status);return r.json()});
+   if(window.REAL_PEOPLE_URL)return fetch(window.REAL_PEOPLE_URL,{credentials:'same-origin'}).then(r=>{if(!r.ok)throw new Error('http '+r.status);
+    if(!window.REAL_PEOPLE_GZ)return r.json();   /* אתר חי: בייטים אטומים (gzip, octet-stream) – מסנני נטפרי/אתרוג לא נוגעים בהם */
+    if(typeof DecompressionStream=='undefined')throw new Error('no DecompressionStream');
+    return r.arrayBuffer().then(b=>new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text()).then(t=>JSON.parse(t))});
    throw new Error('no data source')}).then(d=>decode(d).then(()=>{data=d})).catch(e=>{failed=true;console.warn('REALP load failed',e&&e.message);loading=false;throw e});
   return loading}
  /* ---- חומר ---- */
@@ -79,7 +82,9 @@ const REALP=(()=>{
    load().then(()=>{on=true;apply();say('אנשים אמיתיים',1500);if(!loop)loop=requestAnimationFrame(tick)}).catch(()=>{on=false;const cb=$('realPpl');if(cb)cb.checked=false;say('לא הצלחתי לטעון את תמונות האנשים – נשארים הדמויות הרגילות',4000)})}
   else{on=false;apply();say('דמויות רגילות',1200)}}
  function ui(){if(!(window.REAL_PEOPLE||window.REAL_PEOPLE_URL)||(typeof LITE!='undefined'&&LITE))return;const row=$('dayType')&&$('dayType').closest('.row');if(!row||$('realPpl'))return;
-  const d=document.createElement('div');d.className='row';d.innerHTML='<label style="cursor:pointer"><input type="checkbox" id="realPpl"> אנשים "אמיתיים" (תמונות)</label><div style="font-size:11px;color:var(--mut)">תמונות אנשים צילומיות מ-AI במקום הדמויות המצוירות</div>';row.after(d);$('realPpl').onchange=e=>set(e.target.checked)}
+  const d=document.createElement('div');d.className='row';d.innerHTML='<label style="cursor:pointer"><input type="checkbox" id="realPpl"> אנשים "אמיתיים" (תמונות)</label><div style="font-size:11px;color:var(--mut)">תמונות אנשים צילומיות מ-AI במקום הדמויות המצוירות</div>';row.after(d);const cb=$('realPpl');let off=0;try{off=localStorage.getItem('realPplOff')=='1'}catch(e){}
+  cb.onchange=e=>{set(e.target.checked);try{localStorage.setItem('realPplOff',e.target.checked?'0':'1')}catch(x){}};
+  if(!off){cb.checked=true;const go=()=>setTimeout(()=>{if(cb.checked&&!on)set(true)},2500);if(document.readyState=='complete')go();else addEventListener('load',go)}}   /* 22.11: דלוק כברירת מחדל (ביקשה משה); אם כיבו – זוכר בדפדפן */
  if(document.readyState!='loading')setTimeout(ui,0);else addEventListener('DOMContentLoaded',()=>setTimeout(ui,0));
  return{attach(P,kind){P.kind=kind;LIST.push(P);if(on&&data){build(P);if(P.real){P.real.visible=true;P.robe.visible=P.head.visible=false}}},set,get on(){return on},get ready(){return !!data},get failed(){return failed},list:LIST,load,ui}
 })();
