@@ -29,8 +29,8 @@ const REALP=(()=>{
    throw new Error('no data source')}).then(d=>decode(d).then(()=>{data=d})).catch(e=>{failed=true;console.warn('REALP load failed',e&&e.message);loading=false;throw e});
   return loading}
  /* ---- חומר ---- */
- const VS=`attribute vec2 corner;attribute vec4 aF;attribute vec4 aB;attribute vec4 aS;attribute vec4 aV;   // aF/aB/aS: מלבן התא באטלס (קדמי/אחורי/פרופיל); aV: x=היפוך(±1) yzw=גוון
-  uniform vec2 sF,sB,sS;uniform float uH,uCellH,uSide;varying vec2 vUv;varying vec3 vTint;varying float vBk;
+ const VS=`attribute vec2 corner;attribute vec4 aF;attribute vec4 aB;attribute vec4 aS;attribute vec4 aV;attribute vec2 aM;   // aF/aB/aS: מלבן התא באטלס (קדמי/אחורי/פרופיל); aV: x=היפוך(±1) yzw=גוון
+  uniform vec2 sF,sB,sS;uniform float uH,uCellH,uSide;varying vec2 vUv;varying vec3 vTint;varying float vBk;varying vec2 vM;varying vec2 vC;varying vec4 vRect;
   #include <fog_pars_vertex>
   void main(){mat4 M=instanceMatrix;vec3 c=M[3].xyz;float sy=length(M[1].xyz);
    if(sy<1e-4){gl_Position=vec4(2.,2.,2.,1.);vUv=vec2(0.);vTint=vec3(1.);vBk=0.;return;}
@@ -39,16 +39,20 @@ const REALP=(()=>{
    float bk=d<-.5?1.:0.;if(uSide>.5&&abs(d)<=.5)bk=2.;else if(d<0.)bk=1.;   // 0 קדמי, 1 אחורי, 2 פרופיל (פונה ימינה בתמונה)
    vec4 r=bk>1.5?aS:(bk>.5?aB:aF);vec2 sz=bk>1.5?sS:(bk>.5?sB:sF);
    float h=uH*sy*(r.w/uCellH),w=h*(r.z/r.w);
-   vec3 pos=c+right*(corner.x-.5)*w+vec3(0.,corner.y*h,0.);
+   vec3 pos=c+right*(corner.x-.5)*w+vec3(0.,corner.y*h+abs(sin(aM.x))*.022*h*aM.y,0.);   // aM: x=שלב הצעד (מצטבר לפי המרחק), y=הולך (0..1)
    float u=bk>1.5?(sd>0.?corner.x:1.-corner.x):(aV.x>0.?corner.x:1.-corner.x);
-   vUv=vec2((r.x+u*r.z)/sz.x,1.-(r.y+(1.-corner.y)*r.w)/sz.y);vTint=aV.yzw;vBk=bk;
+   vUv=vec2((r.x+u*r.z)/sz.x,1.-(r.y+(1.-corner.y)*r.w)/sz.y);vTint=aV.yzw;vBk=bk;vM=aM;vC=corner;vRect=vec4(r.x/sz.x,1.-(r.y+r.w)/sz.y,(r.x+r.z)/sz.x,1.-r.y/sz.y);
    vec4 mvPosition=viewMatrix*vec4(pos,1.);gl_Position=projectionMatrix*mvPosition;
    #include <fog_vertex>
   }`;
- const FS=`uniform sampler2D tF,tB,tS;uniform vec3 uLight;varying vec2 vUv;varying vec3 vTint;varying float vBk;
+ const FS=`uniform sampler2D tF,tB,tS;uniform vec3 uLight;varying vec2 vUv;varying vec3 vTint;varying float vBk;varying vec2 vM;varying vec2 vC;varying vec4 vRect;
   #include <common>
   #include <fog_pars_fragment>
-  void main(){vec4 c=vBk>1.5?texture2D(tS,vUv):(vBk>.5?texture2D(tB,vUv):texture2D(tF,vUv));if(c.a<.42)discard;
+  void main(){vec2 uv=vUv;
+   if(vM.y>.01){float zone=1.-smoothstep(.04,.52,vC.y),sn=sin(vM.x);   // הליכה: הרגליים (החצי התחתון) מתחלפות – בקדמי/אחורי רגל שמאל/ימין עולות ויורדות לסירוגין, בפרופיל סכין מספריים
+    if(vBk>1.5)uv.x+=sn*.075*(vRect.z-vRect.x)*zone*vM.y;else uv.y+=sn*(vC.x<.5?1.:-1.)*.05*(vRect.w-vRect.y)*zone*vM.y;
+    uv=clamp(uv,vRect.xy,vRect.zw);}
+   vec4 c=vBk>1.5?texture2D(tS,uv):(vBk>.5?texture2D(tB,uv):texture2D(tF,uv));if(c.a<.42)discard;
    vec3 rgb=pow(c.rgb,vec3(2.2))*vTint*uLight;gl_FragColor=vec4(rgb,1.);
    #include <tonemapping_fragment>
    #include <encodings_fragment>
@@ -68,14 +72,21 @@ const REALP=(()=>{
   const aF=new Float32Array(cap*4),aB=new Float32Array(cap*4),aS=new Float32Array(cap*4),aV=new Float32Array(cap*4);seed=cap*31+P.kind.length*7;
   for(let i=0;i<cap;i++){const f=F.cells[(rnd()*F.cells.length)|0],b=K.cells[(rnd()*K.cells.length)|0];
    const sd=SD.cells[(rnd()*SD.cells.length)|0];aF.set(f.slice(0,4),i*4);aB.set(b.slice(0,4),i*4);aS.set(sd.slice(0,4),i*4);const s=.9+rnd()*.2;aV.set([rnd()<.5?1:-1,s*(.96+rnd()*.08),s*(.96+rnd()*.08),s*(.96+rnd()*.08)],i*4)}
-  const g=quad.clone();g.setAttribute('aF',new T.InstancedBufferAttribute(aF,4));g.setAttribute('aB',new T.InstancedBufferAttribute(aB,4));g.setAttribute('aS',new T.InstancedBufferAttribute(aS,4));g.setAttribute('aV',new T.InstancedBufferAttribute(aV,4));
+  const g=quad.clone();g.setAttribute('aF',new T.InstancedBufferAttribute(aF,4));g.setAttribute('aB',new T.InstancedBufferAttribute(aB,4));g.setAttribute('aS',new T.InstancedBufferAttribute(aS,4));g.setAttribute('aV',new T.InstancedBufferAttribute(aV,4));const aM=new T.InstancedBufferAttribute(new Float32Array(cap*2),2);aM.setUsage(T.DynamicDrawUsage);g.setAttribute('aM',aM);P.rpM=aM;P.rpPrev=new Float32Array(cap*3);
   const mat=material(P.kind);mat.uniforms.uH.value=heightOf(P.kind)*1.03;
   const m=new T.InstancedMesh(g,mat,cap);m.instanceMatrix=P.robe.instanceMatrix;m.frustumCulled=false;m.castShadow=false;m.count=P.robe.count;
   (P.robe.parent||scene).add(m);P.real=m}
  function light(){let r=1,g=1,b=1;try{const hi=hemi.intensity,hc=hemi.color,si=sun.intensity,sc=sun.color;r=hc.r*hi*.9+sc.r*si*.42;g=hc.g*hi*.9+sc.g*si*.42;b=hc.b*hi*.9+sc.b*si*.42}catch(e){}
   const k=1.55;for(const kind in mats)mats[kind].uniforms.uLight.value.set(Math.max(.06,r*k),Math.max(.06,g*k),Math.max(.07,b*k))}
  function apply(){for(const P of LIST){if(on){build(P);if(P.real){P.real.visible=true;P.robe.visible=P.head.visible=false}}else{if(P.real)P.real.visible=false;P.robe.visible=P.head.visible=true}}}
- function tick(){if(!on){loop=0;return}loop=requestAnimationFrame(tick);for(const P of LIST){if(P.real&&P.real.visible){P.real.count=P.robe.count;if(!P.robe.visible===false){}}}light()}
+ let last=0;
+ function walkAnim(P,dt){const a=P.real.instanceMatrix.array,n=P.real.count,pv=P.rpPrev,am=P.rpM.array,k=Math.min(1,dt*6);   // מהירות כל דמות מתוך השינוי במיקום (instanceMatrix משותף עם ההמון) -> שלב צעד + 'הולך'
+  for(let i=0;i<n;i++){const o=i*16,e=a[o+4]*a[o+4]+a[o+5]*a[o+5]+a[o+6]*a[o+6];if(e<1e-8){am[i*2+1]=0;pv[i*3+2]=0;continue}
+   const x=a[o+12],z=a[o+14],q=i*3;if(!pv[q+2]){pv[q]=x;pv[q+1]=z;pv[q+2]=1;continue}
+   let d=Math.hypot(x-pv[q],z-pv[q+1]);pv[q]=x;pv[q+1]=z;if(d>8*dt)d=0;   // קפיצה (התחדשות) – לא צעד
+   am[i*2+1]+=((d/dt>.25?1:0)-am[i*2+1])*k;am[i*2]+=d*4.19}   // 2π / אורך צעד זוגי 1.5 מ'
+  P.rpM.needsUpdate=true}
+ function tick(){if(!on){loop=0;return}loop=requestAnimationFrame(tick);const now=performance.now(),dt=Math.min(.1,Math.max(.001,(now-last)/1000));last=now;for(const P of LIST){if(P.real&&P.real.visible){P.real.count=P.robe.count;walkAnim(P,dt)}}light()}
  /* ---- ממשק ---- */
  function set(v){
   if(v){say('טוען אנשים אמיתיים…');
