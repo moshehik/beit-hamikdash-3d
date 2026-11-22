@@ -380,7 +380,9 @@ const SV=(()=>{
  const _bu={};
  function blobUrl(k){if(k in _bu)return _bu[k];let u=null;try{const I=typeof UI_ICONS!='undefined'?UI_ICONS:null,d=I&&(I[k]||I['svc-'+k]||I['svc_'+k])||(typeof ICON2!='undefined'&&(ICON2['svc_'+k]||ICON2[k]));
    if(d){const i=d.indexOf(','),b=atob(d.slice(i+1)),a=new Uint8Array(b.length);for(let j=0;j<b.length;j++)a[j]=b.charCodeAt(j);u=URL.createObjectURL(new Blob([a],{type:'image/png'}))}}catch(e){u=null}return _bu[k]=u}
- function kIcon(el,key,em){el.textContent=em;const u=blobUrl(key);if(!u)return;const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{el.textContent='';el.classList.add('im');el.appendChild(im)};im.src=u}
+ const _pend=[];   /* איקונים שחיכו ל-ICON2 (נטען עצל): נסרקים מחדש ב-__icon2Ready */
+ window.__icon2Ready=()=>{for(const k in _bu)if(_bu[k]===null)delete _bu[k];_pend.splice(0).forEach(a=>{if(a[0].isConnected)kIcon(a[0],a[1],a[2])});try{EI.refresh()}catch(e){}};
+ function kIcon(el,key,em){el.textContent=em;const u=blobUrl(key);if(!u){if(typeof ICON2=='undefined')_pend.push([el,key,em]);return}const im=new Image();im.alt='';im.draggable=false;im.onload=()=>{el.textContent='';el.classList.add('im');el.appendChild(im)};im.src=u}
  const kmk=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
  function kBuild(){const p=ui.panel,B=document.body;B.classList.add('ksvl');
   /* מסך כרטיסים */

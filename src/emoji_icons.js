@@ -33,6 +33,8 @@ const EI=(()=>{
   i.onload=()=>{I.ok=true;try{if(typeof kQ=='function')kQ()}catch(e){}try{if(typeof rgQ=='function')rgQ()}catch(e){}};i.src=u;return null}
  /* מצייר איקון במקום fillText(t,x,y): S = גודל בפיקסלים; mid = textBaseline 'middle'. מחזיר true אם צויר איקון */
  function fill(c,t,x,y,S,mid){const k=keyOf(t),I=k&&image(k);if(I){c.drawImage(I,x-S/2,mid?y-S/2:y-S*.86,S,S);return true}c.fillText(t,x,y);return false}
+ /* ui_icons2 (ICON2) מגיע כחלק עצל אחרי שהמודל עלה (site/boot.js): מנקים תוצאות null שנשמרו ומחליפים שוב אימוג'י באיקונים */
+ function refresh(){try{for(const k in bu)if(bu[k]===null)delete bu[k];if(document.body)scan(document.body)}catch(e){}}
  setTimeout(start,0);
- return{url,el,has,keyOf,setTag,fill,start,scan}
+ return{url,el,has,keyOf,setTag,fill,start,scan,refresh}
 })();
