@@ -113,7 +113,7 @@ const REALP=(()=>{
    if(!S.pvOk){S.pv.copy(_v);S.pvOk=1;continue}
    let d=Math.hypot(_v.x-S.pv.x,_v.z-S.pv.z);S.pv.copy(_v);if(d>8*dt)d=0;am.y+=((d/dt>.25?1:0)-am.y)*Math.min(1,dt*6);am.x+=d*4.19}}
  function light(){let r=1,g=1,b=1;try{const hi=hemi.intensity,hc=hemi.color,si=sun.intensity,sc=sun.color;r=hc.r*hi*.9+sc.r*si*.42;g=hc.g*hi*.9+sc.g*si*.42;b=hc.b*hi*.9+sc.b*si*.42}catch(e){}
-  const k=1.55;for(const kind in mats)mats[kind].uniforms.uLight.value.set(Math.max(.06,r*k),Math.max(.06,g*k),Math.max(.07,b*k))}
+  const k=1.55;for(const kind in mats)mats[kind].uniforms.uLight.value.set(Math.max(.27,r*k),Math.max(.27,g*k),Math.max(.29,b*k))}
  function apply(){for(const S of OBJS)showObj(S,on);for(const P of LIST){if(on){build(P);if(P.real){P.real.visible=true;P.robe.visible=P.head.visible=false}}else{if(P.real)P.real.visible=false;P.robe.visible=P.head.visible=true}}}
  let last=0;
  function walkAnim(P,dt){const a=P.real.instanceMatrix.array,n=P.real.count,pv=P.rpPrev,am=P.rpM.array,k=Math.min(1,dt*6);   // מהירות כל דמות מתוך השינוי במיקום (instanceMatrix משותף עם ההמון) -> שלב צעד + 'הולך'
