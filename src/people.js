@@ -60,7 +60,7 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
   g.computeVertexNormals();return g}
  // קצה אבנט תלוי: מישור ש-UV שלו לאורך הרצועה (הדוגמה רצה לאורך הקצה)
  function beltTail(W,Ln){const g=new T.PlaneGeometry(W,Ln),p=g.attributes.position,u=g.attributes.uv;for(let i=0;i<p.count;i++){u.setXY(i,(p.getY(i)/Ln+.5)*Ln/2.55,.19+.62*(p.getX(i)/W+.5))}return g}
- function priest(kind,pose,beard){pose=pose||'idle';const hp=kind!='k',gold=kind=='g',B=PB(),G=PB(),S=PB(),g=new T.Group();
+ function priest(kind,pose,beard){pose=pose||'idle';const hp=kind!='k',gold=kind=='g',B=PB(),G=PB(),S=PB(),Pp=PB(),g=new T.Group();   // Pp+S = אביזרי התנוחה (סל, מגרפה, נתח, חצוצרה) – userData.keep: נשארים גם כשהגוף מוחלף בתמונת אדם אמיתי (real_people.js)
   const HAIR=beard!=null?beard:({k:0x3a261d,g:0xd8d8d6,y:0xb4b4b2})[kind];
   const mesh=(P,mat,sh=true)=>{if(!P.n())return;const m=new T.Mesh(P.geo(),mat);m.castShadow=sh;g.add(m);return m};
   // רגליים: כפות יחפות (אליפסואיד + עקב), קרסול, מכנסי פשתן צרים מתחת לכתונת
@@ -89,12 +89,12 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
   // זרועות לפי תנוחה: [כתף שמאל, מרפק, שורש כף, כתף ימין, מרפק, שורש כף] – שרוולים רחבים מעט, כף יד אליפטית
   const PO=POSES[pose]||POSES.idle;
   [0,3].forEach(k=>{const s=PO[k],e=PO[k+1],w=PO[k+2];B.limb(s,e,.125,.115,PLIN);B.limb(e,w,.118,.1,PLIN);B.add(new T.SphereGeometry(.115,10,8),PLIN,e[0],e[1],e[2]);B.add(new T.SphereGeometry(.082,10,8),PSKIN,w[0],w[1],w[2],.9,1.05,1.2)});
-  if(pose=='tray'){S.add(new T.CylinderGeometry(.52,.46,.07,22),0xdde1e6,0,2.3,.68);rep(5,i=>B.add(new T.SphereGeometry(.1,8,6),[0xc0392b,0xe8a838,0x7a3a9a,0x58b868,0xc0392b][i],Math.cos(i*1.26)*.24,2.42,.68+Math.sin(i*1.26)*.24))}
-  if(pose=='basket'){B.add(new T.SphereGeometry(.5,14,8),0xb98a4a,0,3.4,.24,1,.55,1);rep(7,i=>B.add(new T.SphereGeometry(.1,8,6),[0xc0392b,0xe8a838,0x7a3a9a,0x58b868,0xd0463c,0xe8a838,0x58b868][i],Math.cos(i*.9)*.28,3.68,.24+Math.sin(i*.9)*.28))}
-  if(pose=='rake'){B.limb([-.25,2.75,.5],[.3,.02,.95],.035,.035,0x7a5a38,6);S.add(new T.BoxGeometry(.5,.04,.38),0x555a60,.3,.05,1.0)}
-  if(pose=='wave'){B.add(new T.SphereGeometry(.17,10,8),0xa8403a,.5,3.64,.22,1,1.3,.9);B.limb([.5,3.5,.2],[.5,3.78,.22],.03,.03,0xe8e0d0,5)}
+  if(pose=='tray'){S.add(new T.CylinderGeometry(.52,.46,.07,22),0xdde1e6,0,2.3,.68);rep(5,i=>Pp.add(new T.SphereGeometry(.1,8,6),[0xc0392b,0xe8a838,0x7a3a9a,0x58b868,0xc0392b][i],Math.cos(i*1.26)*.24,2.42,.68+Math.sin(i*1.26)*.24))}
+  if(pose=='basket'){Pp.add(new T.SphereGeometry(.5,14,8),0xb98a4a,0,3.4,.24,1,.55,1);rep(7,i=>Pp.add(new T.SphereGeometry(.1,8,6),[0xc0392b,0xe8a838,0x7a3a9a,0x58b868,0xd0463c,0xe8a838,0x58b868][i],Math.cos(i*.9)*.28,3.68,.24+Math.sin(i*.9)*.28))}
+  if(pose=='rake'){Pp.limb([-.25,2.75,.5],[.3,.02,.95],.035,.035,0x7a5a38,6);S.add(new T.BoxGeometry(.5,.04,.38),0x555a60,.3,.05,1.0)}
+  if(pose=='wave'){Pp.add(new T.SphereGeometry(.17,10,8),0xa8403a,.5,3.64,.22,1,1.3,.9);Pp.limb([.5,3.5,.2],[.5,3.78,.22],.03,.03,0xe8e0d0,5)}
   if(pose=='trumpet'){S.limb([0,2.82,.46],[0,3.0,2.3],.035,.035,0xdde1e6,6);S.add(new T.ConeGeometry(.22,.55,12),0xdde1e6,0,3.02,2.45,1,1,1,Math.PI/2,0,0)}
-  mesh(B,mP);mesh(G,mGld);mesh(S,mSlv);
+  mesh(B,mP);mesh(G,mGld);{const m=mesh(Pp,mP);if(m)m.userData.keep=1}{const m=mesh(S,mSlv);if(m)m.userData.keep=1}
   // אבנט: רצועה רקומה (טקסטורה מהתמונה) כרוכה בגובה המותן, קשר וקצוות תלויים עם ציציות (הכהן הגדול ביום הכיפורים – פשתן לבן)
   {const bm=kind=='y'?mBeltL:mBeltP,bl=new T.Mesh(new T.CylinderGeometry(.445,.445,.24,36,1,true),bm);bl.position.set(0,1.93,0);bl.castShadow=true;g.add(bl);
    const kn=new T.Mesh(new T.SphereGeometry(.085,10,8),bm);kn.scale.set(1.25,.9,.75);kn.position.set(.06,1.9,.45);g.add(kn);
@@ -163,7 +163,7 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
   [-3.4,3.4].forEach((o,i)=>{p=priest('k','trumpet',i?0xb4b4b2:0x3a2a1e);p.visible=false;p.position.set(-2.5,YA-.5,ZC+o);p.rotation.y=-Math.PI/2;gA.add(p);TRUMP.push(p);
    if(typeof NPCS!='undefined'){const n=NPCS.register({id:'trump-'+i,kind:'kohen',who:'כהן מחצצר על הדוכן (שתי חצוצרות של כסף – תמיד ז:ג)',active:false,job:()=>'תוקע בחצוצרה בשעת הנסכים',getPos:()=>p.position.clone(),pick:{obj:p},freeze:on=>{p.userData.frozen=!!on;if(p.userData.c)p.userData.c.frozen=!!on},face:v=>{p.rotation.y=Math.atan2(v.x-p.position.x,v.z-p.position.z);if(p.userData.c)p.userData.c.yaw=p.rotation.y},extra:{}});p.userData.npc=n}});LBL_TR=lbl('כהנים מחצצרים',-2.5,YA+5,ZC,'azarah',80);if(LBL_TR)LBL_TR.r=.001;
   {const sh=priest('k','hold',0x6a4a30);sh.position.set(-2.5,YA-.5,ZC);sh.rotation.y=-Math.PI/2;sh.visible=false;gA.add(sh);   // ראש השנה: שופר של יעל (פשוט, פיו מצופה זהב) בין שתי החצוצרות – משנה ראש השנה ג:ג
-   const hm=new T.Mesh(new T.CylinderGeometry(.06,.1,2.4,7),new T.MeshStandardMaterial({color:0xcfc4a8,roughness:.6}));hm.rotation.x=Math.PI/2;hm.position.set(0,2.95,1.35);sh.add(hm);const gm=new T.Mesh(new T.CylinderGeometry(.075,.075,.3,7),M.gold);gm.rotation.x=Math.PI/2;gm.position.set(0,2.95,.18);sh.add(gm);SHOFAR=sh}}
+   const hm=new T.Mesh(new T.CylinderGeometry(.06,.1,2.4,7),new T.MeshStandardMaterial({color:0xcfc4a8,roughness:.6}));hm.rotation.x=Math.PI/2;hm.position.set(0,2.95,1.35);hm.userData.keep=1;sh.add(hm);const gm=new T.Mesh(new T.CylinderGeometry(.075,.075,.3,7),M.gold);gm.rotation.x=Math.PI/2;gm.position.set(0,2.95,.18);gm.userData.keep=1;sh.add(gm);SHOFAR=sh}}
 
  /* ---- חיים בעזרה: לויים ומחצצרים רק בזמן השירה והנסכים; כהנים מהלכים בהקפה; הכל בתנועה ---- */
  const LOOP=[[-7,-24],[-7,-62],[-46,-63],[-46,-40],[-46,5.5],[-8,5.5]];   // הקפה בעזרה עוקפת את המזבח והכבש (עם כיוון השעון)
@@ -175,6 +175,8 @@ const PRIESTS=[];let mkPriest=null,ambUpdate=null;   // mkPriest: מוצא את 
  const rampAt=d=>{let i=0;while(i<RAMP.length-2&&d>RL[i+1])i++;const a=RAMP[i],b=RAMP[i+1],u=Math.min(1,Math.max(0,(d-RL[i])/(RL[i+1]-RL[i])));return[a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u,Math.atan2(b[0]-a[0],b[1]-a[1])]};
  let ACT_READY=false;
  function mkActors(){ACT_READY=true;
+  /* אנשים "אמיתיים" (real_people.js): הכהנים העובדים והכהן הגדול – בילבורד של תמונת אדם במקום הדמות התלת־ממדית (כבוי/כשל = הדמות הרגילה) */
+  if(typeof REALP!='undefined'){try{WALK.forEach((w,i)=>REALP.skin(w.p,w.k=='g'?'kgg':w.k=='y'?'kgw':'kohen',{seed:i*3+1}));FIXP.forEach((f,i)=>REALP.skin(f.p,({'fixed-basket':'kbasket','fixed-rake':'krake','fixed-wave':'kwave'})[f.id]||'kohen',{seed:i*2+5,all:1}));TRUMP.forEach((p,i)=>REALP.skin(p,'ktrumpet',{seed:i+11,all:1}));if(SHOFAR)REALP.skin(SHOFAR,'kohen',{seed:17})}catch(e){console.warn('REALP.skin',e&&e.message)}}
   const CS=()=>CROWD.S,songNow=()=>{const C=CS();return !!(C&&C.song)},zero=(im,i)=>{im.instanceMatrix.array.fill(0,i*16,i*16+16);im.instanceMatrix.needsUpdate=true};
   const act=(o)=>CROWD.actor(Object.assign({role:'A'},o));
   // לויים על הדוכן: כל לוי נכנס בשער ועולה למקומו בשעת השירה

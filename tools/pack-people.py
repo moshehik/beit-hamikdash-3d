@@ -35,6 +35,11 @@ def bleed(im):
     a[..., :3] = np.where((al > 200)[..., None], a[..., :3], rgb)
     return Image.fromarray(a, 'RGBA')
 
+def anchor(im):
+    """x of the feet (centroid of the opaque pixels in the bottom 8%) as a fraction of the cell width - single sprites (Kohen Gadol, pose kohanim with a prop sticking out sideways) stand on this point, not on the cell centre"""
+    a = np.asarray(im)[..., 3]; h = a.shape[0]; b = a[int(h * .92):] > 128; xs = np.nonzero(b.any(axis=0))[0]
+    return round(float(xs.mean()) / a.shape[1], 3) if len(xs) else .5
+
 def people_of(path):
     """list of RGBA crops, one per person (connected blobs, small specks dropped, nearby blobs of the same person merged)"""
     rgba = key_sheet(path); mask = rgba[..., 3] > 70
@@ -57,44 +62,66 @@ def people_of(path):
     out.sort(key=lambda t: (round(t[1] / (H / 2.2)), t[0]))   # row-major
     return [t[2] for t in out]
 
-meta = {'cellH': CELL_H, 'kinds': {}}
-sheets = sorted(glob.glob(os.path.join(work, '*-*-*.jpg')))
-groups = {}
-for p in sheets:
-    m = re.match(r'(\w+)-(front|back|side)-(\w+)\.jpg$', os.path.basename(p))
-    if m: groups.setdefault((m.group(1), m.group(2)), []).append(p)
-for (kind, view), paths in sorted(groups.items()):
-    ppl = []
-    for p in paths:
-        got = people_of(p); print(kind, view, os.path.basename(p), len(got), 'people'); ppl += got
-    if not ppl: continue
-    hmax = max(i.height for i in ppl)
-    cells = []
-    for i in ppl:
-        s = CELL_H / hmax; w = max(8, round(i.width * s)); h = max(8, round(i.height * s))
-        cells.append(bleed(i.resize((w, h), Image.LANCZOS)))
-    # shelf-pack into a 1024-wide atlas, padded by 2px (bleed-safe with premultiplied alpha)
-    AW = 1024; x = y = rowh = 0; pos = []
-    for c in cells:
-        if x + c.width + 2 > AW: x = 0; y += rowh + 2; rowh = 0
-        pos.append((x, y)); x += c.width + 2; rowh = max(rowh, c.height)
-    AH = 1
-    while AH < y + rowh + 2: AH *= 2
-    atlas = Image.new('RGBA', (AW, AH), (0, 0, 0, 0))
-    for c, (px, py) in zip(cells, pos): atlas.paste(c, (px, py))
-    f = os.path.join(outdir, f'atlas-{kind}-{view}.webp'); atlas.save(f, 'WEBP', quality=Q, method=6, alpha_quality=80)
-    sz = os.path.getsize(f)
-    meta['kinds'].setdefault(kind, {})[view] = {'file': os.path.basename(f), 'w': AW, 'h': AH,
-        'cells': [[px, py, c.width, c.height, round(c.height / CELL_H, 3)] for c, (px, py) in zip(cells, pos)], 'bytes': sz}
-    print(f'  -> {os.path.basename(f)} {AW}x{AH}, {len(cells)} cells, {sz/1024:.0f} KB')
+# --- 23.11.2026: incremental. Raw sheets (tools/people-work, not in git) may be missing for older kinds, so by default the existing atlases/manifest are kept and
+#     only the (kind,view) pairs that have sheets in people-work are (re)built; with --append the new people are ADDED to the old cells of that kind+view (cells are cut back out of the old atlas).
+#     <kind>-turn-<x>.jpg = turnaround sheet: ONE person shown 3 times, left->right front | side (facing right) | back  -> one cell in each of the 3 views of <kind>.
+prev = {'cellH': CELL_H, 'kinds': {}}
+mp = os.path.join(outdir, 'manifest.json')
+if os.path.exists(mp) and '--fresh' not in args: prev = json.load(open(mp, encoding='utf8'))
+APPEND = '--append' in args
+HI = {'kgg': 480, 'kgw': 480, 'kbasket': 360, 'krake': 360, 'kwave': 360, 'ktrumpet': 360}   # kinds shown close-up (Kohen Gadol in the tour): taller cells (px); their atlas views carry their own cellH, the shader scales by it
+crops = {}   # (kind, view) -> [RGBA crops]
+for p in sorted(glob.glob(os.path.join(work, '*-*-*.jpg'))):
+    m = re.match(r'(\w+)-(front|back|side|turn)-(\w+)\.jpg$', os.path.basename(p))
+    if not m: continue
+    kind, view = m.group(1), m.group(2)
+    got = people_of(p); print(kind, view, os.path.basename(p), len(got), 'people')
+    if view == 'turn':
+        if len(got) != 3: print('  !! turnaround sheet must give 3 figures, got', len(got), '- skipped'); continue
+        for v, g in zip(('front', 'side', 'back'), got): crops.setdefault((kind, v), []).append(g)
+    else: crops.setdefault((kind, view), []).extend(got)
+meta = {'cellH': CELL_H, 'kinds': json.loads(json.dumps(prev.get('kinds', {})))}
+kinds_new = {}
+for (kind, view), ppl in crops.items(): kinds_new.setdefault(kind, []).extend(ppl)
+for kind, allp in kinds_new.items():
+    hmax = max(i.height for i in allp)        # one scale per kind (front/side/back of a turnaround keep their relative size)
+    CH = HI.get(kind, CELL_H)
+    for view in ('front', 'side', 'back'):
+        ppl = crops.get((kind, view))
+        if not ppl: continue
+        cells = []
+        if APPEND and view in meta['kinds'].get(kind, {}):
+            old = meta['kinds'][kind][view]; at = Image.open(os.path.join(outdir, old['file'])).convert('RGBA')
+            for (x, y, w, h, _) in old['cells']: cells.append(at.crop((x, y, x + w, y + h)))
+        for i in ppl:
+            s = CH / hmax; w = max(8, round(i.width * s)); h = max(8, round(i.height * s))
+            cells.append(bleed(i.resize((w, h), Image.LANCZOS)))
+        AW = 1024
+        if len(cells) == 1:   # single figure: smallest power-of-two atlas (GPU memory)
+            AW = 64
+            while AW < cells[0].width + 2: AW *= 2
+        x = y = rowh = 0; pos = []
+        for c in cells:
+            if x + c.width + 2 > AW: x = 0; y += rowh + 2; rowh = 0
+            pos.append((x, y)); x += c.width + 2; rowh = max(rowh, c.height)
+        AH = 1
+        while AH < y + rowh + 2: AH *= 2
+        atlas = Image.new('RGBA', (AW, AH), (0, 0, 0, 0))
+        for c, (px, py) in zip(cells, pos): atlas.paste(c, (px, py))
+        f = os.path.join(outdir, f'atlas-{kind}-{view}.webp'); atlas.save(f, 'WEBP', quality=Q, method=6, alpha_quality=80)
+        sz = os.path.getsize(f)
+        meta['kinds'].setdefault(kind, {})[view] = {'file': os.path.basename(f), 'w': AW, 'h': AH,
+            'cellH': CH, 'cells': [[px, py, c.width, c.height, round(c.height / CH, 3), anchor(c)] for c, (px, py) in zip(cells, pos)], 'bytes': sz}
+        print(f'  -> {os.path.basename(f)} {AW}x{AH}, {len(cells)} cells, {sz/1024:.0f} KB')
 
-# one JSON (raw base64 WebP atlases, no data: prefix): fetched lazily by the live site (site/publish.mjs -> p/people.<hash>.json) or embedded with REAL=1 node build.js
+# one JSON (raw base64 WebP atlases, no data: prefix): fetched lazily by the live site (site/publish.mjs gzips it -> p/people.<hash>.bin) or embedded with REAL=1 node build.js
 out = {'cellH': CELL_H, 'kinds': {}}
 for kind, views in meta['kinds'].items():
     for view, v in views.items():
         b64 = base64.b64encode(open(os.path.join(outdir, v['file']), 'rb').read()).decode()
         out['kinds'].setdefault(kind, {})[view] = {'w': v['w'], 'h': v['h'], 'cells': v['cells'], 'b64': b64}
+        if v.get('cellH') and v['cellH'] != CELL_H: out['kinds'][kind][view]['cellH'] = v['cellH']
 fo = os.path.join(outdir, 'people.json'); json.dump(out, open(fo, 'w'), separators=(',', ':'))
 tot = sum(v['bytes'] for k in meta['kinds'].values() for v in k.values())
 print('assets/people/people.json', os.path.getsize(fo) // 1024, 'KB; webp total', tot // 1024, 'KB')
-json.dump(meta, open(os.path.join(outdir, 'manifest.json'), 'w'), ensure_ascii=False)
+json.dump(meta, open(mp, 'w', encoding='utf8'), ensure_ascii=False)

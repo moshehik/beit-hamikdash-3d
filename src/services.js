@@ -206,7 +206,8 @@ const SV=(()=>{
  const wristOf=(pose,h)=>{const P=mkPriest.POSES[pose]||mkPriest.POSES.idle;return P[h=='R'?2:5]};
  function makeActor(id,spec,poses){if(typeof spec=='string')spec={kind:spec};const A={id,spec,x:0,y:YA,z:0,yaw:0,lean:0,dip:0,roll:0,speed:0,phase:0,pose:'idle',var:{},hand:{R:new T.Group(),L:new T.Group()},held:{R:null,L:null}};
   A.root=new T.Group();A.body=new T.Group();A.root.add(A.body);
-  poses.forEach(p=>{const v=variant(spec.kind,p,spec);v.visible=false;A.body.add(v);A.var[p]=v});
+  A.skins=[];const rk=spec.kind=='g'?'kgg':spec.kind=='y'?'kgw':spec.kind=='k'?'kohen':null,sd=[...id].reduce((h,c)=>(h*31+c.charCodeAt(0))|0,7)&0xffff;   // אנשים "אמיתיים" (real_people.js): לכל תנוחה אותה תמונה (seed לפי שם השחקן)
+  poses.forEach(p=>{const v=variant(spec.kind,p,spec);v.visible=false;A.body.add(v);A.var[p]=v;if(rk&&typeof REALP!='undefined'){try{const pk=spec.kind=='k'?({rake:'krake',basket:'kbasket',wave:'kwave',trumpet:'ktrumpet'})[p]:null;A.skins.push(REALP.skin(v,pk||rk,{seed:sd,all:pk?1:0}))}catch(e){}}});
   A.body.add(A.hand.R,A.hand.L);
   const sh=mesh(new T.CircleGeometry(.75,16),BASIC(0,{transparent:true,opacity:.3,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-3}),0,.05,0,1,1,1,-Math.PI/2);A.root.add(sh);
   root.add(A.root);return A}
@@ -287,7 +288,7 @@ const SV=(()=>{
   S={sc,actors:{},items:{},idx:0,t:0,playing:true,speed:1,run:null,camMode:'follow',follow:sc.main||Object.keys(sc.actors)[0],camTw:null,phase:'run',hold:0,err:null,fr:0};
   Object.keys(sc.actors).forEach(k=>{S.actors[k]=makeActor(k,sc.actors[k],[...poses[k]])});
   uiOpenScript();goTo(0)}
- function close(keepUI){try{typeof WORLD!='undefined'&&WORLD.hook(null)}catch(e){}try{typeof RHW!='undefined'&&RHW.hook(null)}catch(e){}AUD.stop();if(S){for(const k in S.items)killItem(k);for(const k in S.actors)root.remove(S.actors[k].root);S=null}if(!keepUI)uiBack()}
+ function close(keepUI){try{typeof WORLD!='undefined'&&WORLD.hook(null)}catch(e){}try{typeof RHW!='undefined'&&RHW.hook(null)}catch(e){}AUD.stop();if(S){for(const k in S.items)killItem(k);for(const k in S.actors){const A=S.actors[k];if(A.skins&&typeof REALP!='undefined')A.skins.forEach(q=>REALP.unskin(q));root.remove(A.root)}S=null}if(!keepUI)uiBack()}
  function resetState(){for(const k in S.items)killItem(k);const st=S.sc.start||{};
   for(const k in S.actors){const A=S.actors[k],s=st[k]||{at:[0,0]};A.lean=A.dip=A.roll=A.speed=0;A.hand.R.rotation.set(0,0,0);A.hand.L.rotation.set(0,0,0);['R','L'].forEach(h=>A.held[h]=null);A.explicit=s.at[2]!=null;
    A.x=s.at[0];A.z=s.at[1];A.y=ptY(s.at);A.yaw=dirYaw(s.face!=null?s.face:0);setPose(A,s.pose||'idle');A.root.visible=!s.hidden}

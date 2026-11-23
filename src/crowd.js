@@ -279,7 +279,7 @@ let STOOL=null;
  /* דמות בודדת מפורטת (Group): כהן (priest) או חכם (שתי רשתות). ברשימה לכל מפרט – כדי שדמות יוצאת וחדשה נכנסת לא יתחלקו באותו Group */
  const SINGLES={};
  function mkSingle(sp){let g;
-  if(sp.make=='priest'){g=mkPriest?mkPriest(sp.pk||'k',sp.pose||'idle',sp.beard):new T.Group()}
+  if(sp.make=='priest'){g=mkPriest?mkPriest(sp.pk||'k',sp.pose||'idle',sp.beard):new T.Group();if(typeof REALP!='undefined'&&mkPriest)REALP.skin(g,'kohen',{seed:(SINGLES[sp.id]||[]).length*7+3})}   // אנשים "אמיתיים": הגוף מוחלף בתמונה לפני sp.attach (אבוקה נשארת)
   else{const f=getFig(sp.make||'sit');g=new T.Group();const c=new T.Color(pick(PAL.Q)),s=.85+R()*.15;const m1=new T.Mesh(f.robe,new T.MeshLambertMaterial({vertexColors:true,color:c,side:T.DoubleSide})),m2=new T.Mesh(f.head,new T.MeshLambertMaterial({vertexColors:true,side:T.DoubleSide,color:new T.Color(s,s*.97,s*.94)}));g.add(m1,m2)}
   if(sp.attach)sp.attach(g);(GRPS[sp.grp||'A']()).add(g);g.visible=false;return g}
  function allocAgent(sp,k){
