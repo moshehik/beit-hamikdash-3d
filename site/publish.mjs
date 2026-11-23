@@ -49,10 +49,17 @@ for (const ch of built.chunks) {
     return '/' + name;
   });
   if (!code) continue;
-  if (ch.ext) {   // on-demand data (ERETZ terrain): always an external cacheable file, fetched only when the user opens the feature; if a filter mangles it only that feature fails
-    const eb = Buffer.from(code), en = `j/${ch.name}.${crypto.createHash('sha1').update(eb).digest('hex').slice(0, 12)}.js`, ez = zlib.gzipSync(eb, { level: 9 });
-    files.set(en, { type: 'text/javascript; charset=utf-8', gzip: true, body: ez }); extTags.push('<script>window.ERETZ_SRC="/' + en + '"</script>');
-    console.log(`  on-demand ${ch.name}: ${(eb.length / 1e6).toFixed(2)}MB -> ${(ez.length / 1e6).toFixed(2)}MB gzip`); continue;
+  if (ch.ext) {   // on-demand data (ERETZ terrain: permanent horizon backdrop + the explicit land view), fetched in the background after the model is ready.
+    // Shipped like the other heavy payloads (Netfree/Etrog protocol): opaque gzip bytes, application/octet-stream, NO external .js/.json/image file.
+    // Container (before gzip): [uint32 LE header length][header JSON {box,tbox,hw,hh,hl,tl}][height PNG bytes (hl)][texture WebP bytes (tl)]; src/eretz.js fetchData() decodes it with DecompressionStream.
+    // Any failure on the client = no backdrop / no land view, never a broken site.
+    const win = {}; new Function('window', code)(win); const d = win.ERETZ_DATA;
+    if (!d || !d.h || !d.tex) { console.error('eretz data malformed'); process.exit(1); }
+    const hb = Buffer.from(d.h, 'base64'), tb = Buffer.from(d.tex, 'base64'), head = Buffer.from(JSON.stringify({ box: d.box, tbox: d.tbox, hw: d.hw, hh: d.hh, hl: hb.length, tl: tb.length })), len = Buffer.alloc(4);
+    len.writeUInt32LE(head.length);
+    const eb = Buffer.concat([len, head, hb, tb]), ez = zlib.gzipSync(eb, { level: 9 }), en = `p/${ch.name}.${crypto.createHash('sha1').update(ez).digest('hex').slice(0, 12)}.bin`;
+    files.set(en, { type: 'application/octet-stream', gzip: false, body: ez }); extTags.push('<script>window.ERETZ_URL="/' + en + '"</script>');
+    console.log(`  land-of-israel data ${en}: ${(code.length / 1e6).toFixed(2)}MB source -> ${(eb.length / 1e6).toFixed(2)}MB raw -> ${(ez.length / 1e6).toFixed(2)}MB gzip (opaque .bin, background fetch)`); continue;
   }
   codes[ch.name] = code; inlineTags.push('<script>' + code + '</script>');
   if (!CHUNKED) { tags.push('<script>' + code + '</script>'); console.log(`  inline ${ch.name}: ${(code.length / 1e6).toFixed(2)}MB`); continue; }   // default: scripts inline in index.html (Moshe's network filter broke external /j/*.js on 20.11.2026)

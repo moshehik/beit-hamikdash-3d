@@ -179,7 +179,7 @@ function loop(){requestAnimationFrame(loop);if(mapOpen||kidOpen)return;const dt=
  fires.forEach((f,i)=>{const kk=f.userData.k==null?1:f.userData.k;f.scale.set((1+.15*Math.sin(t*9+i))*kk,(1+.3*Math.sin(t*7+i*2))*kk,(1+.15*Math.cos(t*8+i))*kk);f.rotation.y=t*2+i});
  smoke.forEach(s=>{const p=(t*.045+s.userData.p)%1;s.position.set(-26+Math.sin(p*9+s.userData.p*20)*1.6*p,YA+16+p*120,-43+Math.cos(p*7)*1.4*p);const sc=6+p*26;s.scale.set(sc,sc,1);s.material.opacity=.55*(1-p)*Math.min(1,p*8)});
  updLabels();if(++fr%4==0)drawMap();
- renderer.render(scene,camera)}
+ if(!(typeof ERETZ!='undefined'&&ERETZ.bdDraw&&ERETZ.bdDraw()))renderer.render(scene,camera)}   /* רקע ארץ ישראל (eretz.js): ציור בשני מעברים; false = ציור רגיל */
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 renderer.setSize(innerWidth,innerHeight);setTime(11);applyCut();
 PERIODS.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.n+' ('+p.yr+')';$('per').appendChild(o)});

@@ -4,7 +4,9 @@
    גובה: y=(מ'−740)*EY+YOFF (הגזמה ×5.5) – ירושלים מתחת למודל המקומי כדי לא להצטלב איתו.
    הנתונים (מפת גבהים PNG + מרקם WebP, יוצרו ע"י tools/make-eretz.py) נמצאים ב-src/eretz_data.js: נטענים עצלנית (ERETZ.load()) – לא נכללים בטעינה הראשונית.
    ה-API (לסיורים): ERETZ.show({fly}) / hide({restore}) / on / loaded / load() / pos(lat,lon) -> {x,y,z} / elev(lat,lon) מ' / kmUnit / place(id) / places / camAt(id,height,tiltDeg,azDeg) / flyTo(id,opt)
-   כשהמודל מוצג והמצלמה גבוהה (>CUTY) המודל המקומי של ירושלים מוסתר (הסולמות שונים פי 222). מקורות והערכות: docs/land-israel.md. */
+   כשהמודל מוצג והמצלמה גבוהה (>CUTY) המודל המקומי של ירושלים מוסתר (הסולמות שונים פי 222). מקורות והערכות: docs/land-israel.md.
+   רקע קבוע (BACKDROP, 22.11.2026): בכל מצב רגיל (לא בתצוגת ארץ ישראל המפורשת) הארץ כולה מצוירת כאופק רחוק מאחורי המודל המקומי, בקנה מידה אמיתי (מטרים) – מעבר ציור נפרד: סצנה+מצלמה משלה (אותו כיוון ומיקום כמו המצלמה הראשית, אמות→מטרים ×0.5), ואז clearDepth וציור המודל המקומי מעל.
+   ui.js קורא ל-ERETZ.bdDraw() במקום renderer.render; אם הוא מחזיר false מציירים רגיל. נטען ברקע אחרי העלייה; כל כשל = אין רקע (בלי שגיאות). כבוי ב-LITE, ב-?backdrop=0 וב-localStorage bh_backdrop=0. */
 const ERETZ=(()=>{
  const K=1000,J=[35.2,31.8],EY=.055,YOFF=-250,CUTY=1800,kmUnit=K/111;
  const wx=lon=>(lon-J[0])*K,wz=lat=>-(lat-J[1])*K;
@@ -75,20 +77,34 @@ const ERETZ=(()=>{
   const idx=new Uint32Array((hw-1)*(hh-1)*6);let n=0;for(let j=0;j<hh-1;j++)for(let i=0;i<hw-1;i++){const a=j*hw+i,b=a+1,c=a+hw,d=c+1;idx[n++]=a;idx[n++]=c;idx[n++]=b;idx[n++]=b;idx[n++]=c;idx[n++]=d}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos_,3));g.setAttribute('uv',new THREE.BufferAttribute(uv,2));g.setIndex(new THREE.BufferAttribute(idx,1));g.computeBoundingSphere();
   const mat=new THREE.MeshBasicMaterial({color:0x8a8a7a,fog:false});mesh=new THREE.Mesh(g,mat);mesh.frustumCulled=false;G.add(mesh);
-  if(D.tex){const im=new Image();im.onload=()=>{const t=new THREE.Texture(im);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;t.needsUpdate=true;mat.map=t;mat.color.set(0xffffff);mat.needsUpdate=true};im.src=URL.createObjectURL(new Blob([b64(D.tex)],{type:'image/webp'}))}
+  getTex().then(t=>{mat.map=t;mat.color.set(0xffffff);mat.needsUpdate=true},()=>{})
   PL.forEach(r=>{const p=place(r[0]);const m=marker(p);if(m){m.position.set(p.x,p.y,p.z);m.userData.p=p;G.add(m);marks.push(m)}
    if(p.kind=='label'&&0)return;const s=label([p.he].concat(p.conf=='estimated'?['משוער']:[]),{fs:p.rank==1?64:52,color:p.conf=='estimated'?'#ffd0a0':null,bg:p.rank==1?'rgba(60,40,10,.88)':null});s.userData.p=p;s.userData.big=p.rank==1;s.userData.rank=p.rank;s.userData.off=(p.rank==1?2.6:2);s.position.set(p.x,p.y+4,p.z);G.add(s);labels.push(s)});
   RG.forEach(r=>{const y0=pos(r[2],r[3]),s=label([r[1]],{fs:84,color:'#fff4cf',bg:'rgba(20,40,60,.0)',border:'rgba(0,0,0,0)'});s.userData.region=1;s.userData.ar2=1;s.userData.big=1;s.position.set(y0.x,y0.y+30,y0.z);G.add(s);labels.push(s)});
   scene.add(G);ui();if(on&&panel)panel.style.display='block'}
- function b64(s){const a=atob(s),u=new Uint8Array(a.length);for(let i=0;i<a.length;i++)u[i]=a.charCodeAt(i);return u}
+ function b64(s){if(typeof s!='string')return s;const a=atob(s),u=new Uint8Array(a.length);for(let i=0;i<a.length;i++)u[i]=a.charCodeAt(i);return u}   /* מחרוזת base64 (קובץ הבנייה היחיד) או Uint8Array (מיכל .bin של האתר החי) */
  /* ----- טעינה עצלנית ----- */
- function decodeData(){return new Promise((res,rej)=>{if(H)return res();const d=D=window.ERETZ_DATA;if(!d)return rej(new Error('no data'));box=d.box;hw=d.hw;hh=d.hh;
-  const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=hw;c.height=hh;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0);const px=x.getImageData(0,0,hw,hh).data;H=new Float32Array(hw*hh);for(let k=0;k<hw*hh;k++)H[k]=(px[k*4]*256+px[k*4+1])/16-600;res()}catch(e){rej(e)}};im.onerror=()=>rej(new Error('height png'));
-  im.src=URL.createObjectURL(new Blob([b64(d.h)],{type:'image/png'}))})}
- function load(){if(loadP)return loadP;loadP=new Promise((res,rej)=>{const go=()=>decodeData().then(()=>{build();res(true)},rej);
-   if(window.ERETZ_DATA)return go();const src=window.ERETZ_SRC;if(!src)return rej(new Error('ERETZ data not bundled'));
-   const s=document.createElement('script');s.src=src;s.onload=go;s.onerror=()=>rej(new Error('ERETZ data failed to load'));document.head.appendChild(s)});
+ let decP=null;
+ function decodeData(){if(H)return Promise.resolve();if(decP)return decP;decP=new Promise((res,rej)=>{const d=D=window.ERETZ_DATA;if(!d)return rej(new Error('no data'));box=d.box;hw=d.hw;hh=d.hh;
+  const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=hw;c.height=hh;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0);const px=x.getImageData(0,0,hw,hh).data;const h=new Float32Array(hw*hh);for(let k=0;k<hw*hh;k++)h[k]=(px[k*4]*256+px[k*4+1])/16-600;H=h;res()}catch(e){rej(e)}};im.onerror=()=>rej(new Error('height png'));
+  im.src=URL.createObjectURL(new Blob([b64(d.h)],{type:'image/png'}))});decP.catch(()=>{decP=null});return decP}
+ /* נתוני הארץ: מוטמעים (window.ERETZ_DATA – קובץ הבנייה היחיד) או בייטים אטומים p/eretz.<hash>.bin (window.ERETZ_URL; gzip, octet-stream – מסנני נטפרי/אתרוג לא נוגעים) = [uint32 אורך כותרת][כותרת JSON][PNG גבהים][WebP מרקם]; פענוח ב-DecompressionStream */
+ let dataP=null;
+ function fetchData(){if(window.ERETZ_DATA)return Promise.resolve(window.ERETZ_DATA);if(dataP)return dataP;
+  dataP=new Promise((res,rej)=>{
+   if(window.ERETZ_URL){if(typeof DecompressionStream=='undefined')return rej(new Error('no DecompressionStream'));
+    return fetch(window.ERETZ_URL,{credentials:'same-origin'}).then(r=>{if(!r.ok)throw new Error('http '+r.status);return r.arrayBuffer()})
+     .then(b=>new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer()).then(ab=>{
+      const dv=new DataView(ab),hl=dv.getUint32(0,true),h=JSON.parse(new TextDecoder().decode(new Uint8Array(ab,4,hl))),o=4+hl;
+      h.h=new Uint8Array(ab,o,h.hl);h.tex=new Uint8Array(ab,o+h.hl,h.tl);window.ERETZ_DATA=h;res(h)}).catch(rej)}
+   const src=window.ERETZ_SRC;if(!src)return rej(new Error('ERETZ data not bundled'));   /* ישן: סקריפט חיצוני */
+   const s=document.createElement('script');s.src=src;s.onload=()=>window.ERETZ_DATA?res(window.ERETZ_DATA):rej(new Error('ERETZ data empty'));s.onerror=()=>rej(new Error('ERETZ data failed to load'));document.head.appendChild(s)});
+  dataP.catch(()=>{dataP=null});return dataP}
+ function load(){if(loadP)return loadP;loadP=fetchData().then(()=>decodeData()).then(()=>{build();return true});
   loadP.catch(e=>{loadP=null;console.error('ERETZ',e);note('לא הצלחנו לטעון את מפת הארץ – נסו שוב')});return loadP}
+ /* מרקם משותף (תצוגה מפורשת + רקע) */
+ let texP=null;
+ function getTex(){if(texP)return texP;texP=new Promise((res,rej)=>{if(!D||!D.tex)return rej(new Error('no tex'));const im=new Image();im.onload=()=>{const t=new THREE.Texture(im);t.encoding=THREE.sRGBEncoding;t.anisotropy=8;t.needsUpdate=true;res(t)};im.onerror=()=>rej(new Error('tex decode'));im.src=URL.createObjectURL(new Blob([b64(D.tex)],{type:'image/webp'}))});texP.catch(()=>{texP=null});return texP}
  /* ----- הצגה / הסתרה ----- */
  function localHide(h){if(h===hiddenLocal)return;hiddenLocal=h;
   if(h){locVis=[];scene.children.forEach(o=>{if(o===G||o.isLight||o.name=='worldCine'||o.name=='risRoute')return;if(o.visible){locVis.push(o);o.visible=false}})}
@@ -118,6 +134,67 @@ const ERETZ=(()=>{
  /* כפתור הכניסה נוצר מיד (לפני הטעינה העצלנית) */
  function earlyBtn(){const mb=$$('bMap');if(mb&&!$$('bEretz')){const b=document.createElement('button');b.id='bEretz';b.textContent='🗺️ ארץ ישראל בתלת־ממד';b.style.cssText='background:linear-gradient(90deg,#4f9a5a,#e8c068);color:#1b1405';b.onclick=()=>on?hide({restore:true}):show();mb.after(b)}}
  try{earlyBtn()}catch(e){}
+ /* ===== רקע קבוע: הארץ כולה כאופק רחוק (בקנה מידה אמיתי, במטרים; ראשית = הר הבית בקואורדינטות ירושלים) ===== */
+ const B_LAT=31.7785,B_LON=35.2345,B_MX=111320*Math.cos(B_LAT*Math.PI/180),B_MZ=111200,B_PIV=740;   /* ראשית המודל המקומי (0,0) = B_LAT,B_LON; x מזרח, z דרום, אמה ≈ 0.5 מ'; גובה 0 ≈ 740 מ' */
+ const BD_CFG={vex:2.2,r1:1750,r2:5500,gain:1.15,seam:.18,hmax:.86,hl:34000,hide:9000,m0:2600,m1:7500,near:[.80,.70,.50],nearK:.55};   /* vex: הגזמת גובה ההרים הרחוקים (נכנסת בהדרגה עם המרחק); r1/r2: מטרים מההר – עד r1 הגובה כמו השטח המקומי (terrH), ומ-r2 נתוני SRTM; seam/hmax/hl: ערפל אופק (בקצה השטח המקומי / רחוק מאוד / אורך אקספוננט, מ'); hide: גובה מצלמה (אמות) שמעליו הרקע כבוי */
+ let bd=null,bdTried=false,bdTL=0;
+ const bdEnabled=()=>{try{if(typeof LITE!='undefined'&&LITE)return false;if(/[?&]backdrop=0/.test(location.search))localStorage.setItem('bh_backdrop','0');if(/[?&]backdrop=1/.test(location.search))localStorage.removeItem('bh_backdrop');return localStorage.getItem('bh_backdrop')!=='0'}catch(e){return true}};
+ const sm_=(a,b,v)=>{const t=Math.min(1,Math.max(0,(v-a)/(b-a)));return t*t*(3-2*t)};
+ function elevC(lat,lon){   /* גובה בספליין קטמול־רום (חלק יותר מאינטרפולציה לינארית על רשת 1.1 ק״מ) */
+  const u=(lon-box[0])/(box[1]-box[0])*(hw-1),v=(box[3]-lat)/(box[3]-box[2])*(hh-1),i=Math.floor(u),j=Math.floor(v),fu=u-i,fv=v-j;
+  const g=(a,b)=>H[Math.max(0,Math.min(hh-1,b))*hw+Math.max(0,Math.min(hw-1,a))];
+  const cr=(p0,p1,p2,p3,t)=>p1+.5*t*(p2-p0+t*(2*p0-5*p1+4*p2-p3+t*(3*(p1-p2)+p3-p0)));
+  const r0=cr(g(i-1,j-1),g(i,j-1),g(i+1,j-1),g(i+2,j-1),fu),r1=cr(g(i-1,j),g(i,j),g(i+1,j),g(i+2,j),fu),r2=cr(g(i-1,j+1),g(i,j+1),g(i+1,j+1),g(i+2,j+1),fu),r3=cr(g(i-1,j+2),g(i,j+2),g(i+1,j+2),g(i+2,j+2),fu);
+  return cr(r0,r1,r2,r3,fv)}
+ function bdAxis(a,b,nat){   /* צירי הרשת: צפוף (120 מ') ליד הר הבית ומתרחב עד פי 2 מרזולוציית הנתון; כולל את הגבולות במדויק */
+  const out=[0],st=d=>Math.min(2*nat,120+.035*d);let x=0;while(x<b-1){x=Math.min(b,x+st(x));out.push(x)}x=0;while(x>a+1){x=Math.max(a,x-st(-x));out.unshift(x)}return out}
+ function bdBuild(){return new Promise((res,rej)=>{
+  const X=bdAxis((box[0]-B_LON)*B_MX,(box[1]-B_LON)*B_MX,(box[1]-box[0])/(hw-1)*B_MX),Z=bdAxis(-(box[3]-B_LAT)*B_MZ,-(box[2]-B_LAT)*B_MZ,(box[3]-box[2])/(hh-1)*B_MZ),nx=X.length,nz=Z.length;
+  const pos=new Float32Array(nx*nz*3),uv=new Float32Array(nx*nz*2),tb=D.tbox||box,hasT=typeof terrH=='function',cl=(v,m)=>Math.max(-m,Math.min(m,v));let j=0;
+  const rows=()=>{const t0=performance.now();try{while(j<nz&&performance.now()-t0<7){const zz=Z[j],lat=B_LAT-zz/B_MZ;for(let i=0;i<nx;i++){const xx=X[i],lon=B_LON+xx/B_MX,r=Math.max(Math.abs(xx),Math.abs(zz)),k=j*nx+i;
+     const hv=(elevC(Math.max(box[2],Math.min(box[3],lat)),Math.max(box[0],Math.min(box[1],lon)))-B_PIV)*(1+(BD_CFG.vex-1)*sm_(3000,25000,r));let y=hv;
+     if(hasT&&r<BD_CFG.r2){const s=sm_(BD_CFG.r1,BD_CFG.r2,r),hl=terrH(cl(xx*2,3500),cl(zz*2,3500))*.5;y=hl+(hv-hl)*s}
+     pos[k*3]=xx;pos[k*3+1]=y;pos[k*3+2]=zz;uv[k*2]=(lon-tb[0])/(tb[1]-tb[0]);uv[k*2+1]=(lat-tb[2])/(tb[3]-tb[2])}j++}
+    if(j<nz)return setTimeout(rows,0);fin()}catch(e){rej(e)}};
+  const fin=()=>{try{const idx=new Uint32Array((nx-1)*(nz-1)*6);let n=0;for(let b=0;b<nz-1;b++)for(let a=0;a<nx-1;a++){const p=b*nx+a,q=p+1,r=p+nx,s=r+1;idx[n++]=p;idx[n++]=r;idx[n++]=q;idx[n++]=q;idx[n++]=r;idx[n++]=s}
+   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));g.setAttribute('uv',new THREE.BufferAttribute(uv,2));g.setIndex(new THREE.BufferAttribute(idx,1));g.boundingSphere=new THREE.Sphere(new THREE.Vector3(),1e7);
+   const U={uSeam:{value:BD_CFG.seam},uMax:{value:BD_CFG.hmax},uL:{value:BD_CFG.hl},uD0:{value:1750},uFade:{value:0},uFN:{value:900},uFF:{value:3100},uR:{value:new THREE.Vector2(BD_CFG.m0,BD_CFG.m1)},uNear:{value:new THREE.Vector3(...BD_CFG.near)},uNK:{value:BD_CFG.nearK},uBnd:{value:new THREE.Vector4(X[0],X[nx-1],Z[0],Z[nz-1])}};
+   const mat=new THREE.MeshBasicMaterial({color:0x8a8a7a,fog:true});
+   mat.onBeforeCompile=sh=>{Object.assign(sh.uniforms,U);
+    sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec2 vBdXZ;').replace('#include <begin_vertex>','#include <begin_vertex>\nvBdXZ=position.xz;');
+    sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\nvarying vec2 vBdXZ;uniform float uSeam,uMax,uL,uD0,uFade,uFN,uFF,uNK;uniform vec4 uBnd;uniform vec2 uR;uniform vec3 uNear;').replace('#include <map_fragment>','#include <map_fragment>\n float bdR=max(abs(vBdXZ.x),abs(vBdXZ.y));diffuseColor.rgb=mix(diffuseColor.rgb,diffuse*uNear,uNK*(1.0-smoothstep(uR.x,uR.y*1.8,bdR)));').replace('#include <fog_fragment>',
+     '#ifdef USE_FOG\n float bdF=fogDepth<uD0?uSeam*fogDepth/uD0:uSeam+(uMax-uSeam)*(1.0-exp(-(fogDepth-uD0)/uL));\n bdF=max(bdF,smoothstep(uFN,uFF,fogDepth)*(1.0-smoothstep(uR.x,uR.y,bdR)));\n float bdE=min(min(vBdXZ.x-uBnd.x,uBnd.y-vBdXZ.x),min(vBdXZ.y-uBnd.z,uBnd.w-vBdXZ.y));\n bdF=max(bdF,1.0-smoothstep(0.0,30000.0,bdE));bdF=mix(1.0,bdF,uFade);\n gl_FragColor.rgb=mix(gl_FragColor.rgb,fogColor,bdF);\n#endif')};
+   const sc=new THREE.Scene();sc.fog=new THREE.Fog(0xbcd4ec,1,1e9);const mesh=new THREE.Mesh(g,mat);mesh.frustumCulled=false;sc.add(mesh);
+   const cam=new THREE.PerspectiveCamera(camera.fov,camera.aspect,6,900000);
+   bd={sc,cam,mesh,mat,U,tris:n/3,verts:nx*nz,ready:false};
+   getTex().then(t=>{mat.map=t;mat.color.set(0xffffff);mat.needsUpdate=true;bd.ready=true;res()},e=>{bd.ready=true;res()})}catch(e){rej(e)}};
+  rows()})}
+ function bdStart(){if(bdTried||!bdEnabled())return;bdTried=true;
+  fetchData().then(()=>decodeData()).then(()=>bdBuild()).catch(e=>{bd=null;try{console.warn('ERETZ backdrop off:',e&&e.message||e)}catch(x){}})}
+ function bdSchedule(){const go=()=>{try{const l=document.getElementById('load');if(!(typeof SV!='undefined'&&typeof renderer!='undefined')||(l&&l.style.display!='none'))return setTimeout(go,1500);if(window.requestIdleCallback)requestIdleCallback(bdStart,{timeout:6000});else setTimeout(bdStart,500)}catch(e){}};setTimeout(go,4000)}
+ /* ציור רקע + מודל מקומי. מחזיר false = לא צוייר רקע (ui.js מצייר רגיל) */
+ const _bq=new THREE.Quaternion(),_bp=new THREE.Vector3(),_bs=new THREE.Vector3();
+ function bdDraw(){
+  if(!bd||!bd.ready)return false;
+  const cy=camera.position.y,want=bdEnabled()&&!on&&!(typeof WORLD!='undefined'&&(WORLD.gOn))&&cy<BD_CFG.hide,now=performance.now(),dt=Math.min(.2,(now-bdTL)/1000);bdTL=now;
+  let f=bd.U.uFade.value;f=want?Math.min(1,f+dt/1.6):Math.max(0,f-dt/.6);bd.U.uFade.value=f;if(f<=0)return false;
+  const bg=(scene.background&&scene.background.isColor)?scene.background:(scene.fog?scene.fog.color:null);if(!bg)return false;
+  const ac=renderer.autoClear;
+  try{
+   camera.updateMatrixWorld();camera.matrixWorld.decompose(_bp,_bq,_bs);
+   const c=bd.cam;if(c.fov!==camera.fov||c.aspect!==camera.aspect){c.fov=camera.fov;c.aspect=camera.aspect;c.updateProjectionMatrix()}
+   c.position.set(_bp.x*.5,_bp.y*.5,_bp.z*.5);c.quaternion.copy(_bq);
+   bd.sc.background=bg;bd.sc.fog.color.copy(scene.fog?scene.fog.color:bg);if(scene.fog){bd.U.uFN.value=scene.fog.near*.5;bd.U.uFF.value=scene.fog.far*.5}
+   const dy=typeof day=='number'?day:1,lum=BD_CFG.gain*(.06+.94*Math.pow(dy,.85)),sc=typeof sun!='undefined'&&sun.color?sun.color:null;   /* תאורת יום/ערב/לילה: כמו השמש והשמיים */
+   bd.mat.color.setRGB(lum*(sc?.55+.45*sc.r:1),lum*(sc?.55+.45*sc.g:1),lum*(sc?.55+.45*sc.b:1));
+   renderer.autoClear=false;renderer.render(bd.sc,c);renderer.clearDepth();
+   scene.background=null;try{renderer.render(scene,camera)}finally{scene.background=bg}
+  }catch(e){try{console.warn('ERETZ backdrop error, off:',e&&e.message||e)}catch(x){}bd.ready=false;bd.U.uFade.value=0;renderer.autoClear=ac;scene.background=bg;return false}
+  finally{renderer.autoClear=ac}
+  return true}
+ function backdrop(v){try{if(v===undefined)return !!(bd&&bd.ready)&&bdEnabled();if(v){localStorage.removeItem('bh_backdrop');bdStart()}else localStorage.setItem('bh_backdrop','0')}catch(e){}return !!(bd&&bd.ready)}
+ function backdropInfo(){return bd?{ready:bd.ready,tris:bd.tris,verts:bd.verts,fade:bd.U.uFade.value}:null}
+ try{bdSchedule()}catch(e){}
  /* ----- כל פריים ----- */
  let tL=performance.now();
  function frame(){requestAnimationFrame(frame);const now=performance.now(),dt=Math.min(.1,(now-tL)/1000);tL=now;if(!on||!built)return;
@@ -134,4 +211,4 @@ const ERETZ=(()=>{
    const h=Math.max(d*.02*(u.big?1.15:1),.9);s.scale.set(h*u.ar,h,1);s.visible=vis});
   marks.forEach(m=>{const d=camera.position.distanceTo(m.position),k=Math.max(1.4,Math.min(36,d*.008));m.scale.setScalar(k)})}
  requestAnimationFrame(frame);
- return{show,hide,load,place,pos,elev,camAt,flyTo,kmUnit,K,J,EY,YOFF,places:Object.values(byId),regions:RG.map(r=>({id:r[0],he:r[1],lat:r[2],lon:r[3]})),get on(){return on},get loaded(){return built},get hiddenLocal(){return hiddenLocal}}})();
+ return{show,hide,load,bdDraw,backdrop,backdropInfo,place,pos,elev,camAt,flyTo,kmUnit,K,J,EY,YOFF,places:Object.values(byId),regions:RG.map(r=>({id:r[0],he:r[1],lat:r[2],lon:r[3]})),get on(){return on},get loaded(){return built},get hiddenLocal(){return hiddenLocal}}})();
